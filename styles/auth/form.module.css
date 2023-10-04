@@ -19,7 +19,7 @@
 .inputField,
 .form button[type='submit'] {
 	width: 100%;
-	padding: 0.6rem;
+	padding: 0.9rem;
 	box-sizing: border-box;
 	margin: 1rem 0;
 	border-radius: 0.4rem;
@@ -27,7 +27,7 @@
 
 
 .form button[type='submit'] {
-	height: 2.7rem;
+	height: 3.1rem;
 	background-color: #458B00;
 	color: #fff;
 	border: 1px solid;
