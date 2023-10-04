@@ -24,16 +24,16 @@ export default function SignInPage() {
 	const [disabled, setDisabled] = useState(false);
 
 	const onSubmit: SubmitHandler<UserCredentials> = async (credentials) => {
-		setLoading(!loading);
-		setDisabled(!disabled);
+		setLoading(true);
+		setDisabled(true);
 
 		const response = await signIn('credentials', {
 			...credentials,
 			redirect: false,
 		});
 
-		setLoading(!loading);
-		setDisabled(!disabled);
+		setLoading(false);
+		setDisabled(false);
 
 		if (response?.error !== null) {
 			Alerts.error(response?.error as string);
@@ -71,6 +71,7 @@ export default function SignInPage() {
 				</div>
 				<button
 					disabled={disabled}
+					style={disabled ? { opacity: 0.5 } : { opacity: 1 }}
 					type="submit">
 					{loading ? (
 						<Spinner loading={loading} />
