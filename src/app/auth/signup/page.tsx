@@ -1,6 +1,7 @@
 'use client';
 
 import signupFormStyles from '@/../styles/auth/form.module.css';
+import Spinner from '@/components/spinner';
 import API_ROUTES from '@/constants/api-routes';
 import { APP_ROUTES } from '@/constants/app-routes';
 import Alerts from '@/lib/alerts';
@@ -19,10 +20,11 @@ export default function SignUpPage() {
 	const { register, handleSubmit, reset } = useForm<User>();
 	const [disabled, setDisabled] = useState(true);
 	const { push } = useRouter();
+	const [loading, setLoading] = useState(false);
 
 
 	const onSubmit: SubmitHandler<User> = async (user) => {
-
+		setLoading(!loading);
 		const response = await fetch(API_ROUTES.account.create,
 			{
 				method: 'POST',
@@ -31,6 +33,7 @@ export default function SignUpPage() {
 				},
 				body: JSON.stringify(user)
 			});
+		setLoading(!loading);
 		const body = await response.json();
 		if (response.status === StatusCodes.CREATED) {
 			reset();
@@ -97,7 +100,12 @@ export default function SignUpPage() {
 						disabled={disabled}
 						style={disabled ? { opacity: 0.5 } : { opacity: 1 }}
 					>
-						Create account
+						{loading ? (
+							<Spinner loading={loading} />
+						) : (
+							'Create account'
+						)
+						}
 					</button>
 				</footer>
 			</header>
