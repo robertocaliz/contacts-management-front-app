@@ -5,6 +5,7 @@
 	padding-right: 3rem;
 	background-color: #fff;
 	padding: 0.4rem 0;
+	
 }
 
 
@@ -12,4 +13,9 @@
 	list-style: none;
 	display: flex;
 	gap: 2rem;
+}
+
+.navContainer ul li a {
+	color: #000;
+	opacity: 0.6;
 }
