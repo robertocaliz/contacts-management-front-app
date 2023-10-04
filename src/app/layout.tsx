@@ -1,5 +1,3 @@
-'use client'
-
 import { ReactNode } from "react"
 import NextAuthContext from "@/contexts/next-auth-context"
 import { ToastContainer } from "react-toastify"
