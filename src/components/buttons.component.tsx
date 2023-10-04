@@ -40,6 +40,13 @@ export const ContactsButton = ({ href, text = 'Contacts' }: ContactsButtonProps)
 }
 
 
+export const HomeButton = () => {
+  return (
+    <Link href='/'>Home</Link>
+  );
+}
+
+
 export const LogoutButton = () => {
   return (
     <Link

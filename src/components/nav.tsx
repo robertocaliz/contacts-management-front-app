@@ -3,7 +3,7 @@
 import Link from "next/link";
 import utilsStyles from '../../styles/utils.module.css';
 import { useSession } from "next-auth/react";
-import { ContactsButton, LoginButton, LogoutButton, SignUpButton, UserButton } from "./buttons.component";
+import { ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, UserButton } from "./buttons.component";
 import { APP_ROUTES } from "@/constants/app-routes";
 
 
@@ -23,7 +23,9 @@ export default function Nav() {
 		<div className={utilsStyles.navContainer} >
 			<section>
 				<ul>
-					<li><Link href='/'>Home</Link></li>
+					<li>
+						<HomeButton />
+					</li>
 					<li>
 						{session && (
 							<ContactsButton href={APP_ROUTES.private.contacts} />
