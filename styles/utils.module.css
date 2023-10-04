@@ -1,0 +1,14 @@
+.navContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding-right: 3rem;
+	background-color: #fff;
+}
+
+
+.navContainer ul {
+	list-style: none;
+	display: flex;
+	gap: 2rem;
+}
