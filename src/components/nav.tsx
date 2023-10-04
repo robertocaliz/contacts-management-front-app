@@ -26,11 +26,13 @@ export default function Nav() {
 					<li>
 						<HomeButton />
 					</li>
-					<li>
-						{session && (
+
+					{session && (
+						<li>
 							<ContactsButton href={APP_ROUTES.private.contacts} />
-						)}
-					</li>
+						</li>
+					)}
+
 				</ul>
 			</section>
 			<section style={{ paddingRight: '2rem' }}>
