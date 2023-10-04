@@ -3,7 +3,8 @@
 import Link from "next/link";
 import utilsStyles from '../../styles/utils.module.css';
 import { useSession } from "next-auth/react";
-import { LoginButton, LogoutButton, ProfileButton } from "./buttons.component";
+import { LoginButton, LogoutButton, SignUpButton, UserButton } from "./buttons.component";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 
 
@@ -14,7 +15,7 @@ export default function Nav() {
 
 	console.log(session);
 
-	if (status === 'loading') { 
+	if (status === 'loading') {
 		return;
 	}
 
@@ -33,12 +34,12 @@ export default function Nav() {
 						{session ? (
 							<>
 								<LogoutButton />
-								<ProfileButton username={session.user?.name as string} />
+								<UserButton username={session.user?.name as string} />
 							</>
 						) : (
 							<>
-								<LoginButton />
-								<Link href='/'>Sig up</Link>
+								<LoginButton href={APP_ROUTES.public.login} />
+								<SignUpButton href={APP_ROUTES.public.signup} />
 							</>
 						)}
 

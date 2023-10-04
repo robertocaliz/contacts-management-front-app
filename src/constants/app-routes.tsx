@@ -6,6 +6,7 @@ export const APP_ROUTES = {
 	},
 	public: {
 		home: '/',
-		login: '/auth/signin'
+		login: '/auth/signin',
+		signup: '/auth/signup'
 	}
 }
