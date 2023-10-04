@@ -1,8 +1,7 @@
 'use client';
 
 import signupFormStyles from '@/../styles/auth/form.module.css';
-import Footer from '@/components/footer';
-import FormCenter from '@/components/form-center';
+import Centralize from '@/components/centralize';
 import Spinner from '@/components/spinner';
 import API_ROUTES from '@/constants/api-routes';
 import { APP_ROUTES } from '@/constants/app-routes';
@@ -49,7 +48,7 @@ export default function SignUpPage() {
 
 
 	return (
-		<FormCenter>
+		<Centralize>
 			<form onSubmit={handleSubmit(onSubmit)} className={signupFormStyles.form}>
 				<header>
 					<h1>Signup</h1>
@@ -116,7 +115,6 @@ export default function SignUpPage() {
 				</header>
 			</form>
 			<hr />
-			<Footer />
-		</FormCenter>
+		</Centralize>
 	)
 }

@@ -9,7 +9,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import loginFormStyles from '@/../styles/auth/form.module.css';
 import Footer from "@/components/footer";
-import FormCenter from "@/components/form-center";
+import Centralize from "@/components/centralize";
 
 
 type UserCredentials = {
@@ -47,7 +47,7 @@ export default function SignInPage() {
 	}
 
 	return (
-		<FormCenter>
+		<Centralize>
 			<form onSubmit={handleSubmit(onSubmit)} className={loginFormStyles.form}>
 				<header>
 					<h1>Login</h1>
@@ -85,7 +85,6 @@ export default function SignInPage() {
 				</main>
 			</form>
 			<hr />
-			<Footer />
-		</FormCenter>
+		</Centralize>
 	);
 };
