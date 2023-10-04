@@ -24,16 +24,16 @@ export default function SignInPage() {
 	const [disabled, setDisabled] = useState(false);
 
 	const onSubmit: SubmitHandler<UserCredentials> = async (credentials) => {
-		setLoading(true);
-		setDisabled(true);
+		setLoading(!loading);
+		setDisabled(!disabled);
 
 		const response = await signIn('credentials', {
 			...credentials,
 			redirect: false,
 		});
 
-		setLoading(false);
-		setDisabled(false);
+		setLoading(!loading);
+		setDisabled(!disabled);
 
 		if (response?.error !== null) {
 			Alerts.error(response?.error as string);
