@@ -13,6 +13,7 @@ type ButtonLinkProps = {
 
 type SignUpButtonProps = ButtonLinkProps;
 type LoginButtonProps = ButtonLinkProps;
+type ContactsButtonProps = ButtonLinkProps;
 
 
 
@@ -29,6 +30,13 @@ export const SignUpButton = ({ href, text = 'Sig up' }: SignUpButtonProps) => {
   return (
     <Link href={href}>{text}</Link>
   )
+}
+
+
+export const ContactsButton = ({ href, text = 'Contacts' }: ContactsButtonProps) => {
+  return (
+    <Link href={href}>{text}</Link>
+  );
 }
 
 
