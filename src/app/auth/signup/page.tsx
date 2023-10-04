@@ -1,8 +1,13 @@
 'use client';
 
 import signupFormStyles from '@/../styles/auth/form.module.css';
+import API_ROUTES from '@/constants/api-routes';
+import { APP_ROUTES } from '@/constants/app-routes';
+import Alerts from '@/lib/alerts';
 import User from '@/types/user';
+import { StatusCodes } from 'http-status-codes';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -13,13 +18,28 @@ export default function SignUpPage() {
 
 	const { register, handleSubmit, reset } = useForm<User>();
 	const [disabled, setDisabled] = useState(true);
+	const { push } = useRouter();
 
-	const onSubmit: SubmitHandler<User> = (user) => {
 
-		console.log(user);
+	const onSubmit: SubmitHandler<User> = async (user) => {
 
-		reset();
+		const response = await fetch(API_ROUTES.account.create,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(user)
+			});
+		const body = await response.json();
+		if (response.status === StatusCodes.CREATED) {
+			reset();
+			Alerts.success(body.message);
+			return push(APP_ROUTES.public.login);
+		}
+		Alerts.error(body.message);
 	}
+
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className={signupFormStyles.form}>
