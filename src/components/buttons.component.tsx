@@ -3,6 +3,7 @@
 import { APP_ROUTES } from "@/constants/app-routes";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 
 type ButtonLinkProps = {
@@ -62,9 +63,9 @@ export const LogoutButton = () => {
 
 
 type ProfileProps = {
-  username: string
+  content: string | ReactNode;
 }
 
-export const UserButton = ({ username }: ProfileProps) => {
-  return <Link href="/profile">{username}</Link>;
+export const UserButton = ({ content }: ProfileProps) => {
+  return <Link href="/profile">{content}</Link>;
 };

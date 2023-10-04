@@ -39,7 +39,7 @@ export default function Nav() {
 						{session ? (
 							<>
 								<LogoutButton />
-								<UserButton username={session.user?.name as string} />
+								<UserButton content={session.user?.name as string} />
 							</>
 						) : (
 							<>
