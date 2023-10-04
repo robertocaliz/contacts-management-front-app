@@ -1,0 +1,22 @@
+.tableContainer {
+	background-color: #fff;
+	height: 22rem;
+	overflow: auto;
+}
+
+
+.tableContainer table {
+	width: 100%;
+	border-collapse: collapse;
+	min-width: 555px;
+}
+
+
+.tableContainer table th,
+.tableContainer td {
+	padding: 0.6rem;
+	font-weight: normal;
+	opacity: 0.8;
+	text-align: left;
+	border-bottom: 1.5px solid lightgray;
+}

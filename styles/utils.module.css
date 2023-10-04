@@ -1,0 +1,15 @@
+.flexSpaceBetween {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+
+.addButton {
+	background-color: #458B00;
+	color: #fff;
+	width: 8rem;
+	text-align: center;
+	padding: 1rem;
+	border-radius: 0.6rem;
+}

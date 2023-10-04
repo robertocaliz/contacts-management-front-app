@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Nav from "@/components/nav";
 import '../../styles/global.css'
 import Footer from "@/components/footer";
+import Main from "@/components/main";
 
 
 export default function RootLayout({
@@ -18,7 +19,9 @@ export default function RootLayout({
       <body>
         <NextAuthContext>
           <Nav />
-          {children}
+          <Main>
+            {children}
+          </Main>
           <Footer />
           <ToastContainer />
         </NextAuthContext>

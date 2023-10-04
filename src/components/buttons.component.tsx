@@ -1,11 +1,11 @@
 "use client";
 
 import { APP_ROUTES } from "@/constants/app-routes";
-import Alerts from "@/lib/alerts";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, ReactNode } from "react";
+import utilsStyles from '@/../styles/utils.module.css';
 
 
 type ButtonLinkProps = {
@@ -79,3 +79,12 @@ type ProfileProps = {
 export const UserButton = ({ content }: ProfileProps) => {
   return <Link href="/profile">{content}</Link>;
 };
+
+
+
+
+export const AddButton = () => {
+  return (
+    <Link href={APP_ROUTES.private.contacts} className={utilsStyles.addButton}>Add</Link>
+  )
+}
