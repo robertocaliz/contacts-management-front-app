@@ -35,20 +35,17 @@ export default function Nav() {
 			</section>
 			<section style={{ paddingRight: '2rem' }}>
 				<ul>
-					<li>
-						{session ? (
-							<>
-								<LogoutButton />
-								<UserButton content={session.user?.name as string} />
-							</>
-						) : (
-							<>
-								<LoginButton href={APP_ROUTES.public.login} />
-								<SignUpButton href={APP_ROUTES.public.signup} />
-							</>
-						)}
-
-					</li>
+					{session ? (
+						<>
+							<li><LogoutButton /></li>
+							<li><UserButton content={session.user?.name as string} /></li>
+						</>
+					) : (
+						<>
+							<li><LoginButton href={APP_ROUTES.public.login} /></li>
+							<li><SignUpButton href={APP_ROUTES.public.signup} /></li>
+						</>
+					)}
 				</ul>
 			</section>
 		</div>

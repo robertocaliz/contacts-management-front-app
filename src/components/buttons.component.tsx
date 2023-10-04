@@ -1,9 +1,11 @@
 "use client";
 
 import { APP_ROUTES } from "@/constants/app-routes";
+import Alerts from "@/lib/alerts";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { FormEvent, ReactNode } from "react";
 
 
 type ButtonLinkProps = {
@@ -49,11 +51,19 @@ export const HomeButton = () => {
 
 
 export const LogoutButton = () => {
+  const { push } = useRouter();
+
+  const onClick = (e: FormEvent) => {
+    signOut({ redirect: false })
+      .then(() => {
+        push(APP_ROUTES.public.home);
+      });
+  }
+
   return (
     <Link
-      style={{ marginRight: 10 }}
       href={''}
-      onClick={() => signOut({ redirect: false })}
+      onClick={onClick}
     >
       Sign Out
     </Link>
