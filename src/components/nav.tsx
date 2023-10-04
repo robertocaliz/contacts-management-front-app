@@ -25,14 +25,15 @@ export default function Nav() {
 				<ul>
 					<li><Link href='/'>Home</Link></li>
 					<li>
-						{session && <ContactsButton href={APP_ROUTES.private.contacts} />}
+						{session && (
+							<ContactsButton href={APP_ROUTES.private.contacts} />
+						)}
 					</li>
 				</ul>
 			</section>
 			<section style={{ paddingRight: '2rem' }}>
 				<ul>
 					<li>
-
 						{session ? (
 							<>
 								<LogoutButton />
