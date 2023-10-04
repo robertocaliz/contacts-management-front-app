@@ -68,11 +68,17 @@ export default function SignUpPage() {
 					<section>
 						<input
 							type="checkbox"
-							onChange={() => setDisabled(false)}
+							onChange={() => setDisabled(!disabled)}
 						/>
 						<span> I have read and agree to the <Link href='/'>Terms of Use.</Link></span>
 					</section>
-					<button type="submit" disabled={disabled}>Create account</button>
+					<button
+						type="submit"
+						disabled={disabled}
+						style={disabled ? { opacity: 0.5 } : { opacity: 1 }}
+					>
+						Create account
+					</button>
 				</footer>
 			</header>
 		</form>
