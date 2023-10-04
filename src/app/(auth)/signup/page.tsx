@@ -3,7 +3,6 @@
 import signupFormStyles from '@/../styles/auth/form.module.css';
 import Centralize from '@/components/centralize';
 import Spinner from '@/components/spinner';
-import API_ROUTES from '@/constants/api-routes';
 import { APP_ROUTES } from '@/constants/app-routes';
 import Alerts from '@/lib/alerts';
 import User from '@/types/user';
@@ -27,7 +26,7 @@ export default function SignUpPage() {
 	const onSubmit: SubmitHandler<User> = async (user) => {
 		setLoading(true);
 		setDisabled(true);
-		const response = await fetch(API_ROUTES.account.create,
+		const response = await fetch(APP_ROUTES.public.users.account.create,
 			{
 				method: 'POST',
 				headers: {

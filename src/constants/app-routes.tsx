@@ -8,6 +8,11 @@ export const APP_ROUTES = {
 	public: {
 		home: '/',
 		login: '/signin',
-		signup: '/signup'
+		signup: '/signup',
+		users: {
+			account: {
+				create: '/api/users',
+			}
+		}
 	}
 }

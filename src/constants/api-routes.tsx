@@ -2,8 +2,10 @@
 
 
 const API_ROUTES = {
-	account: {
-		create: '/api/users'
+	users: {
+		account: {
+			create: '/users'
+		}
 	}
 }
 
