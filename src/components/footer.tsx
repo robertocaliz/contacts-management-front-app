@@ -8,7 +8,12 @@ export default function Footer() {
 		<footer className={footerStyles.footer}>
 			<ul>
 				<li>
-					<Link href='/'>GitHub</Link>
+					<Link
+						href='https://github.com/robertocaliz/contacts-management-front-app'
+						target="_blank"
+					>
+						GitHub
+					</Link>
 				</li>
 				<li>
 					<Link href='/'>About</Link>
