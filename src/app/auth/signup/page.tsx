@@ -2,6 +2,8 @@
 
 import signupFormStyles from '@/../styles/auth/form.module.css';
 import User from '@/types/user';
+import Link from 'next/link';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 
@@ -10,10 +12,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 export default function SignUpPage() {
 
 	const { register, handleSubmit, reset } = useForm<User>();
+	const [disabled, setDisabled] = useState(true);
 
 	const onSubmit: SubmitHandler<User> = (user) => {
-		
-		console.log(user)
+
+		console.log(user);
 
 		reset();
 	}
@@ -61,7 +64,16 @@ export default function SignUpPage() {
 						name="confirmPassword"
 						id="confirm-password" />
 				</div>
-				<button type="submit">Create account</button>
+				<footer>
+					<section>
+						<input
+							type="checkbox"
+							onChange={() => setDisabled(false)}
+						/>
+						<span> I have read and agree to the <Link href='/'>Terms of Use.</Link></span>
+					</section>
+					<button type="submit" disabled={disabled}>Create account</button>
+				</footer>
 			</header>
 		</form>
 	)
