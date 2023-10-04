@@ -13,3 +13,8 @@ a {
     text-decoration: none;
     color: #0070f3;
 }
+
+
+li {
+    list-style: none;
+}

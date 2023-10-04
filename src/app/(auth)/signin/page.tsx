@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import loginFormStyles from '@/../styles/auth/form.module.css';
+import Footer from "@/components/footer";
+import FormCenter from "@/components/form-center";
 
 
 type UserCredentials = {
@@ -44,42 +46,46 @@ export default function SignInPage() {
 
 	}
 
-	return <>
-		<form onSubmit={handleSubmit(onSubmit)} className={loginFormStyles.form}>
-			<header>
-				<h1>Login</h1>
-			</header>
-			<main>
-				<div className="field">
-					<label htmlFor="email">Email: </label>
-					<input
-						className={loginFormStyles.inputField}
-						{...register('email')}
-						type="email"
-						name="email"
-						id="email"
-					/>
-				</div>
-				<div className="field">
-					<label htmlFor="password">Password: </label>
-					<input
-						className={loginFormStyles.inputField}
-						{...register('password')}
-						type="password"
-						name="password"
-						id="password" />
-				</div>
-				<button
-					disabled={disabled}
-					style={disabled ? { opacity: 0.5 } : { opacity: 1 }}
-					type="submit">
-					{loading ? (
-						<Spinner loading={loading} />
-					) : (
-						'Login'
-					)}
-				</button>
-			</main>
-		</form>
-	</>
+	return (
+		<FormCenter>
+			<form onSubmit={handleSubmit(onSubmit)} className={loginFormStyles.form}>
+				<header>
+					<h1>Login</h1>
+				</header>
+				<main>
+					<div className="field">
+						<label htmlFor="email">Email: </label>
+						<input
+							className={loginFormStyles.inputField}
+							{...register('email')}
+							type="email"
+							name="email"
+							id="email"
+						/>
+					</div>
+					<div className="field">
+						<label htmlFor="password">Password: </label>
+						<input
+							className={loginFormStyles.inputField}
+							{...register('password')}
+							type="password"
+							name="password"
+							id="password" />
+					</div>
+					<button
+						disabled={disabled}
+						style={disabled ? { opacity: 0.5 } : { opacity: 1 }}
+						type="submit">
+						{loading ? (
+							<Spinner loading={loading} />
+						) : (
+							'Login'
+						)}
+					</button>
+				</main>
+			</form>
+			<hr />
+			<Footer />
+		</FormCenter>
+	);
 };
