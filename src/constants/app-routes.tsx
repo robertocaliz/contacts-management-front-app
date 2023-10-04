@@ -7,7 +7,7 @@ export const APP_ROUTES = {
 	},
 	public: {
 		home: '/',
-		login: '/auth/signin',
-		signup: '/auth/signup'
+		login: '/signin',
+		signup: '/signup'
 	}
 }

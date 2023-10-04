@@ -24,7 +24,8 @@ export default function SignUpPage() {
 
 
 	const onSubmit: SubmitHandler<User> = async (user) => {
-		setLoading(!loading);
+		setLoading(true);
+		setDisabled(true);
 		const response = await fetch(API_ROUTES.account.create,
 			{
 				method: 'POST',
@@ -33,7 +34,8 @@ export default function SignUpPage() {
 				},
 				body: JSON.stringify(user)
 			});
-		setLoading(!loading);
+		setLoading(false);
+		setDisabled(false);
 		const body = await response.json();
 		if (response.status === StatusCodes.CREATED) {
 			reset();
