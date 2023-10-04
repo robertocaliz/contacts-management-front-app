@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import utilsStyles from '../../styles/utils.module.css';
+import utilsStyles from '@/../styles/nav.module.css';
 import { useSession } from "next-auth/react";
 import { ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, UserButton } from "./buttons.component";
 import { APP_ROUTES } from "@/constants/app-routes";
