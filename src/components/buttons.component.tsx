@@ -4,7 +4,7 @@ import { APP_ROUTES } from "@/constants/app-routes";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, InputHTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes, FormEvent, ReactNode } from "react";
 import utilsStyles from '@/../styles/utils.module.css';
 
 
@@ -94,12 +94,12 @@ export const AddButton = ({ href, text = 'Add' }: AddButtons) => {
 
 
 type ButtonSubmitProps = {
-  value: string;
-} & InputHTMLAttributes<HTMLInputElement>;
+  content_: string | ReactNode;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 
-export const ButtonSubmit = ({ value, ...rest }: ButtonSubmitProps) => {
+export const ButtonSubmit = ({ content_, ...rest }: ButtonSubmitProps) => {
   return (
-    <input type="submit" {...rest} value={value} />
+    <button type="submit" {...rest} >{content_}</button>
   )
 }
