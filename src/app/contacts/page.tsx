@@ -1,13 +1,15 @@
 import tableStyles from '@/../styles/contact-table.module.css';
 import { AddButton } from '@/components/buttons.component';
 import utilsStyles from '@/../styles/utils.module.css';
+import Input from '@/components/input';
+import { BiSearch } from 'react-icons/bi'
 
 
 export default function ContactsPage() {
 	return (
 		<>
 			<section className={utilsStyles.flexSpaceBetween} style={{ marginBottom: '2rem' }}>
-				<input type="search" name="" id="" />
+				<Input type='search' startAdornment ={<BiSearch />} />
 				<AddButton />
 			</section>
 			<section>
