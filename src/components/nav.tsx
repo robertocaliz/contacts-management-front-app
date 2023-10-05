@@ -29,7 +29,7 @@ export default function Nav() {
 
 					{session && (
 						<li>
-							<ContactsButton href={APP_ROUTES.private.contacts} />
+							<ContactsButton href={APP_ROUTES.private.contacts.list} />
 						</li>
 					)}
 

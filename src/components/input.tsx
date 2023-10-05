@@ -1,22 +1,31 @@
 import { InputHTMLAttributes, ReactNode } from "react"
 import inputStyles from '@/../styles/input.module.css';
+import { UseFormRegister } from "react-hook-form";
 
 type InputProps = {
 	startAdornment?: ReactNode;
 	endAdornment?: ReactNode;
 	label?: string;
+	register?: UseFormRegister<any>
 } & InputHTMLAttributes<HTMLInputElement>;
 
 
-export default function Input({ label, startAdornment, endAdornment, ...rest }: InputProps) {
+export default function Input({
+	name = 'submit',
+	label,
+	startAdornment,
+	endAdornment,
+	register,
+	...rest
+}: InputProps) {
 	return (
 		<>
-			<div>
-				<label htmlFor={label}>{label}</label>
+			<div style={{ margin: '1rem 0' }}>
+				{label && <label htmlFor={label}>{label}</label>}
 				<div className={inputStyles.inputContainer}>
-					<span className={inputStyles.adornment}>{startAdornment}</span>
-					<input {...rest} id={label} />
-					<span className={inputStyles.adornment}>{endAdornment}</span>
+					{startAdornment && <span className={inputStyles.adornment}>{startAdornment}</span>}
+					<input {...rest} id={label} name={name} {...register?.(name)} />
+					{endAdornment && <span className={inputStyles.adornment}>{endAdornment}</span>}
 				</div>
 			</div>
 		</>

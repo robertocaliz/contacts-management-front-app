@@ -3,7 +3,10 @@
 export const APP_ROUTES = {
 	private: {
 		dashboard: '/dashboard',
-		contacts: '/contacts'
+		contacts: {
+			list: '/contacts',
+			add: '/contacts/add'
+		}
 	},
 	public: {
 		home: '/',

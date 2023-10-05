@@ -4,7 +4,7 @@ import { APP_ROUTES } from "@/constants/app-routes";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, ReactNode } from "react";
+import { FormEvent, InputHTMLAttributes, ReactNode } from "react";
 import utilsStyles from '@/../styles/utils.module.css';
 
 
@@ -17,6 +17,7 @@ type ButtonLinkProps = {
 type SignUpButtonProps = ButtonLinkProps;
 type LoginButtonProps = ButtonLinkProps;
 type ContactsButtonProps = ButtonLinkProps;
+type AddButtons = ButtonLinkProps;
 
 
 
@@ -83,8 +84,22 @@ export const UserButton = ({ content }: ProfileProps) => {
 
 
 
-export const AddButton = () => {
+export const AddButton = ({ href, text = 'Add' }: AddButtons) => {
   return (
-    <Link href={APP_ROUTES.private.contacts} className={utilsStyles.addButton}>Add</Link>
+    <Link
+      href={href}
+      className={utilsStyles.addButton}>{text}</Link>
+  )
+}
+
+
+type ButtonSubmitProps = {
+  value: string;
+} & InputHTMLAttributes<HTMLInputElement>;
+
+
+export const ButtonSubmit = ({ value, ...rest }: ButtonSubmitProps) => {
+  return (
+    <input type="submit" {...rest} value={value} />
   )
 }
