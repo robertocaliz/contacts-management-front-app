@@ -6,6 +6,7 @@ import Nav from "@/components/nav";
 import '../../styles/global.css'
 import Footer from "@/components/footer";
 import Main from "@/components/main";
+import ProgressBar from "@/components/progress-bar";
 
 
 export default function RootLayout({
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <NextAuthContext>
+          <ProgressBar />
           <Nav />
           <Main>
             {children}
