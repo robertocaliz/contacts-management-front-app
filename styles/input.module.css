@@ -1,24 +1,22 @@
 .inputContainer {
 	background-color: #fff;
-	width: 100%;
 	border: 2px solid lightgray;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 3rem;
-	margin-top: 1rem;
+	margin: 1rem 0;
 }
 
 .inputContainer,
 .inputContainer input {
-	border-radius: 0.6rem;
+	border-radius: 0.4rem;
+	box-sizing: border-box;
+	width: 100%;
 }
 
 
 .inputContainer input {
-	width: 100%;
-	box-sizing: border-box;
-	padding: 1rem 0.5rem;
+	padding: 0.9rem;
 	border: none;
 	outline: none;
 }

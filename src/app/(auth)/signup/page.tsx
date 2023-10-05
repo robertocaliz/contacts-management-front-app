@@ -1,8 +1,12 @@
 'use client';
 
 import signupFormStyles from '@/../styles/auth/form.module.css';
+import { ButtonSubmit } from '@/components/buttons.component';
 import Centralize from '@/components/centralize';
+import FormHeader from '@/components/form-header';
+import Input from '@/components/input';
 import Spinner from '@/components/spinner';
+import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from '@/constants';
 import { APP_ROUTES } from '@/constants/app-routes';
 import Alerts from '@/lib/alerts';
 import User from '@/types/user';
@@ -18,10 +22,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 export default function SignUpPage() {
 
 	const { register, handleSubmit, reset } = useForm<User>();
+	const [loading, setLoading] = useState(false);
 	const [disabled, setDisabled] = useState(true);
 	const { push } = useRouter();
-	const [loading, setLoading] = useState(false);
-
 
 	const onSubmit: SubmitHandler<User> = async (user) => {
 		setLoading(true);
@@ -48,70 +51,56 @@ export default function SignUpPage() {
 
 	return (
 		<Centralize>
-			<form onSubmit={handleSubmit(onSubmit)} className={signupFormStyles.form}>
-				<header>
-					<h1>Signup</h1>
-					<div className='field'>
-						<label htmlFor="name">Name: </label>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<FormHeader text='Sign up' />
+				<main>
+					<Input
+						type='text'
+						label='Name:'
+						name='name'
+						register={register}
+					/>
+					<Input
+						type='email'
+						label='Email:'
+						name='email'
+						register={register}
+					/>
+					<Input
+						type='password'
+						label='Password'
+						name='password'
+						register={register}
+					/>
+					<Input
+						type='password'
+						label='Confirm password:'
+						name='confirmPassword'
+						register={register}
+					/>
+				</main>
+				<footer>
+					<section>
 						<input
-							{...register('name')}
-							className={signupFormStyles.inputField}
-							type="text"
-							name="name"
-							id="name"
+							type="checkbox"
+							onChange={() => setDisabled(!disabled)}
 						/>
-					</div>
-
-					<div className='field'>
-						<label htmlFor="email">Email: </label>
-						<input
-							{...register('email')}
-							className={signupFormStyles.inputField}
-							type="text"
-							name="email"
-							id="email"
-						/>
-					</div>
-					<div className='field'>
-						<label htmlFor="password">Password: </label>
-						<input
-							{...register('password')}
-							className={signupFormStyles.inputField}
-							type="text"
-							name="password"
-							id="password"
-						/>
-					</div>
-					<div className='field'>
-						<label htmlFor="confirm-password">Confirm password: </label>
-						<input
-							className={signupFormStyles.inputField}
-							type="text"
-							name="confirmPassword"
-							id="confirm-password" />
-					</div>
-					<footer>
-						<section>
-							<input
-								type="checkbox"
-								onChange={() => setDisabled(!disabled)}
-							/>
-							<span> I have read and agree to the <Link href='/'>Terms of Use.</Link></span>
-						</section>
-						<button
-							type="submit"
-							disabled={disabled}
-							style={disabled ? { opacity: 0.5 } : { opacity: 1 }}
-						>
-							{loading ? (
-								<Spinner loading={loading} />
-							) : (
-								'Create account'
-							)
-							}
-						</button>
-					</footer>
-				</header>
+						<span> I have read and agree to the <Link href='/'>Terms of Use.</Link></span>
+					</section>
+					<ButtonSubmit
+						content_={loading ? (
+							<Spinner loading={loading} />
+						) : (
+							'Create account'
+						)}
+						disabled={disabled}
+						style={loading ? (
+							{ opacity: OPACITY_WHILE_LOADING_TRUE }
+						) : (
+							{ opacity: OPACITY_WHILE_LOADING_FALSE }
+						)}
+					/>
+				</footer>
 			</form>
 			<hr />
 		</Centralize>

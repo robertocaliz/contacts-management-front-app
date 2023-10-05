@@ -3,7 +3,6 @@
 import { ButtonSubmit } from "@/components/buttons.component";
 import Centralize from "@/components/centralize";
 import Input from "@/components/input";
-import utilsStyles from '@/../styles/utils.module.css';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Contact } from "@/types";
 import { StatusCodes } from "http-status-codes";
@@ -11,6 +10,7 @@ import Alerts from "@/lib/alerts";
 import { useState } from "react";
 import Spinner from "@/components/spinner";
 import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from "@/constants";
+import FormHeader from "@/components/form-header";
 
 
 
@@ -46,9 +46,7 @@ export default function AddContactPage() {
 		<>
 			<Centralize>
 				<form onSubmit={handleSubmit(onSubmit)}>
-					<header>
-						<h1>Add Contact</h1>
-					</header>
+					<FormHeader text='Add Contact' />
 					<Input
 						type="text"
 						name="name"
@@ -58,7 +56,7 @@ export default function AddContactPage() {
 					<Input
 						type="email"
 						name="email"
-						label="Email"
+						label="Email:"
 						register={register}
 					/>
 					<Input
@@ -72,7 +70,6 @@ export default function AddContactPage() {
 						) : (
 							'Create contact'
 						)}
-						className={utilsStyles.buttonSubmit}
 						disabled={disabled}
 						style={loading ? (
 							{ opacity: OPACITY_WHILE_LOADING_TRUE }

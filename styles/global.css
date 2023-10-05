@@ -18,3 +18,12 @@ a {
 li {
     list-style: none;
 }
+
+
+a,
+th,
+td,
+h1,
+label {
+    opacity: 0.8;
+}

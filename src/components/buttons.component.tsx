@@ -84,11 +84,11 @@ export const UserButton = ({ content }: ProfileProps) => {
 
 
 
-export const AddButton = ({ href, text = 'Add' }: AddButtons) => {
+export const ButtonAdd = ({ href, text = 'Add' }: AddButtons) => {
   return (
     <Link
       href={href}
-      className={utilsStyles.addButton}>{text}</Link>
+      className={utilsStyles.buttonAdd}>{text}</Link>
   )
 }
 
@@ -100,6 +100,6 @@ type ButtonSubmitProps = {
 
 export const ButtonSubmit = ({ content_, ...rest }: ButtonSubmitProps) => {
   return (
-    <button type="submit" {...rest} >{content_}</button>
+    <button type="submit" {...rest} className={utilsStyles.buttonSubmit}>{content_}</button>
   )
 }

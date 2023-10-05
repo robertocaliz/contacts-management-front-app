@@ -7,15 +7,15 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import loginFormStyles from '@/../styles/auth/form.module.css';
-import Footer from "@/components/footer";
 import Centralize from "@/components/centralize";
+import User from "@/types/user";
+import Input from "@/components/input";
+import { ButtonSubmit } from "@/components/buttons.component";
+import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from "@/constants";
+import FormHeader from "@/components/form-header";
 
 
-type UserCredentials = {
-	email: string,
-	password: string
-};
+interface UserCredentials extends Pick<User, 'email' | 'password'> { }
 
 
 export default function SignInPage() {
@@ -28,60 +28,49 @@ export default function SignInPage() {
 	const onSubmit: SubmitHandler<UserCredentials> = async (credentials) => {
 		setLoading(true);
 		setDisabled(true);
-
 		const response = await signIn('credentials', {
 			...credentials,
 			redirect: false,
 		});
-
 		setLoading(false);
 		setDisabled(false);
-
 		if (response?.error !== null) {
 			Alerts.error(response?.error as string);
 			return;
 		}
-
 		push(APP_ROUTES.private.dashboard);
-
 	}
 
 	return (
 		<Centralize>
-			<form onSubmit={handleSubmit(onSubmit)} className={loginFormStyles.form}>
-				<header>
-					<h1>Login</h1>
-				</header>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<FormHeader text='Login' />
 				<main>
-					<div className="field">
-						<label htmlFor="email">Email: </label>
-						<input
-							className={loginFormStyles.inputField}
-							{...register('email')}
-							type="email"
-							name="email"
-							id="email"
-						/>
-					</div>
-					<div className="field">
-						<label htmlFor="password">Password: </label>
-						<input
-							className={loginFormStyles.inputField}
-							{...register('password')}
-							type="password"
-							name="password"
-							id="password" />
-					</div>
-					<button
-						disabled={disabled}
-						style={disabled ? { opacity: 0.5 } : { opacity: 1 }}
-						type="submit">
-						{loading ? (
+					<Input
+						type="email"
+						label="Email:"
+						name="email"
+						register={register}
+					/>
+					<Input
+						type="password"
+						label="Password:"
+						name='password'
+						register={register}
+					/>
+					<ButtonSubmit
+						content_={loading ? (
 							<Spinner loading={loading} />
 						) : (
 							'Login'
 						)}
-					</button>
+						disabled={disabled}
+						style={loading ? (
+							{ opacity: OPACITY_WHILE_LOADING_TRUE }
+						) : (
+							{ opacity: OPACITY_WHILE_LOADING_FALSE }
+						)}
+					/>
 				</main>
 			</form>
 			<hr />
