@@ -1,6 +1,5 @@
 "use client";
 
-import { APP_ROUTES } from "@/constants/app-routes";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,7 +10,7 @@ import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from "@/const
 
 
 type ButtonLinkProps = {
-  href: string;
+  href?: string;
   text?: string;
 }
 
@@ -22,26 +21,38 @@ type ContactsButtonProps = ButtonLinkProps;
 type AddButtons = ButtonLinkProps;
 
 
+type SubmitButtonProps = {
+  loading: boolean;
+  disabled: boolean;
+  content: string;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const LoginButton = ({ href, text = 'Sign in' }: LoginButtonProps) => {
+
+
+type ProfileProps = {
+  content: string | ReactNode;
+}
+
+
+export const LoginButton = ({ text = 'Sign in' }: LoginButtonProps) => {
   return (
-    <Link style={{ marginRight: 16 }} href={href}>
+    <Link style={{ marginRight: 16 }} href='/signin'>
       {text}
     </Link>
   );
 };
 
 
-export const SignUpButton = ({ href, text = 'Sig up' }: SignUpButtonProps) => {
+export const SignUpButton = ({ text = 'Sig up' }: SignUpButtonProps) => {
   return (
-    <Link href={href}>{text}</Link>
+    <Link href='/signup'>{text}</Link>
   )
 }
 
 
-export const ContactsButton = ({ href, text = 'Contacts' }: ContactsButtonProps) => {
+export const ContactsButton = ({ text = 'Contacts' }: ContactsButtonProps) => {
   return (
-    <Link href={href}>{text}</Link>
+    <Link href='/contacts'>{text}</Link>
   );
 }
 
@@ -55,14 +66,12 @@ export const HomeButton = () => {
 
 export const LogoutButton = () => {
   const { push } = useRouter();
-
   const onClick = (e: FormEvent) => {
     signOut({ redirect: false })
       .then(() => {
-        push(APP_ROUTES.public.home);
+        push('/');
       });
   }
-
   return (
     <Link
       href={''}
@@ -74,31 +83,18 @@ export const LogoutButton = () => {
 };
 
 
-
-type ProfileProps = {
-  content: string | ReactNode;
-}
-
-export const UserButton = ({ content }: ProfileProps) => {
-  return <Link href="/profile">{content}</Link>;
+export const ButtonProfile = ({ content }: ProfileProps) => {
+  return <Link href="/">{content}</Link>;
 };
-
 
 
 export const ButtonAdd = ({ href, text = 'Add' }: AddButtons) => {
   return (
     <Link
-      href={href}
+      href={!href ? ('/contacts/add') : (href)}
       className={utilsStyles.buttonAdd}>{text}</Link>
   )
 }
-
-
-type SubmitButtonProps = {
-  loading: boolean;
-  disabled: boolean;
-  content: string;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 
 export const SubmitButton = ({
@@ -126,7 +122,6 @@ export const SubmitButton = ({
     </button>
   )
 };
-
 
 
 export const ButtonBack = () => {

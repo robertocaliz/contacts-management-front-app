@@ -4,6 +4,7 @@ import utilsStyles from '@/../styles/utils.module.css';
 import Input from '@/components/input';
 import { BiSearch } from 'react-icons/bi'
 
+
 export default function ContactsPage() {
 
 	return (
@@ -15,9 +16,7 @@ export default function ContactsPage() {
 					name='search'
 					startAdornment={<BiSearch />}
 				/>
-				<ButtonAdd
-					href='/contacts/add'
-				/>
+				<ButtonAdd />
 			</section>
 			<section>
 				<div className={tableStyles.tableContainer}>

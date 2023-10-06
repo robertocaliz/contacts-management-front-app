@@ -2,15 +2,14 @@
 
 import utilsStyles from '@/../styles/nav.module.css';
 import { useSession } from "next-auth/react";
-import { ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, UserButton } from "./buttons.component";
-import { APP_ROUTES } from "@/constants/app-routes";
-
-
+import {
+	ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, ButtonProfile
+} from "./buttons.component";
 
 
 export default function Nav() {
 
-	const { data: session, status } = useSession();
+	const { data: session } = useSession();
 
 	console.log(session);
 
@@ -24,7 +23,7 @@ export default function Nav() {
 
 					{session && (
 						<li>
-							<ContactsButton href={APP_ROUTES.private.contacts.list} />
+							<ContactsButton />
 						</li>
 					)}
 
@@ -35,12 +34,12 @@ export default function Nav() {
 					{session ? (
 						<>
 							<li><LogoutButton /></li>
-							<li><UserButton content={session.user?.name as string} /></li>
+							<li><ButtonProfile content={session.user?.name as string} /></li>
 						</>
 					) : (
 						<>
-							<li><LoginButton href={APP_ROUTES.public.login} /></li>
-							<li><SignUpButton href={APP_ROUTES.public.signup} /></li>
+							<li><LoginButton /></li>
+							<li><SignUpButton /></li>
 						</>
 					)}
 				</ul>
