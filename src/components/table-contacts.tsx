@@ -7,6 +7,7 @@ import { useFetch } from '@/hooks';
 import { Contact } from '@/types';
 import Spinner from './spinner';
 import { useState } from 'react';
+import { DeleteButton, UpdateButton } from './buttons.component';
 
 
 export default function TableContacts() {
@@ -31,6 +32,8 @@ export default function TableContacts() {
 						<th>Name</th>
 						<th>Email</th>
 						<th>Phone number</th>
+						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -40,6 +43,12 @@ export default function TableContacts() {
 							<td>{contact.name}</td>
 							<td>{contact.email}</td>
 							<td>{contact.phoneNumber}</td>
+							<td>
+								<DeleteButton />
+							</td>
+							<td>
+								<UpdateButton />
+							</td>
 						</tr>
 					))}
 				</tbody>

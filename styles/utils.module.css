@@ -42,3 +42,18 @@
 	font-weight: bold;
 	margin-top: 1rem;
 }
+
+
+.colorDarkBlue {
+	color: #0070f3;
+}
+
+
+.colorRed {
+	color: red;
+}
+
+
+.tableButtonSize {
+	font-size: 1.3rem;
+}

@@ -7,6 +7,8 @@ import { ButtonHTMLAttributes, FormEvent, ReactNode } from "react";
 import utilsStyles from '@/../styles/utils.module.css';
 import Spinner from "./spinner";
 import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from "@/constants";
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { RxUpdate } from 'react-icons/rx';
 
 
 type ButtonLinkProps = {
@@ -53,6 +55,25 @@ export const SignUpButton = ({ text = 'Sig up' }: SignUpButtonProps) => {
 export const ContactsButton = ({ text = 'Contacts' }: ContactsButtonProps) => {
   return (
     <Link href='/contacts'>{text}</Link>
+  );
+}
+
+
+
+export const DeleteButton = () => {
+  return (
+    <Link href={''} className={`${utilsStyles.colorRed} ${utilsStyles.tableButtonSize}`}>
+      <RiDeleteBinLine />
+    </Link >
+  );
+}
+
+
+export const UpdateButton = () => {
+  return (
+    <Link href={''} className={utilsStyles.tableButtonSize}>
+      <RxUpdate />
+    </Link>
   );
 }
 
