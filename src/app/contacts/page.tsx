@@ -3,7 +3,6 @@ import { ButtonAdd, ButtonBack } from '@/components/buttons.component';
 import utilsStyles from '@/../styles/utils.module.css';
 import Input from '@/components/input';
 import { BiSearch } from 'react-icons/bi'
-import { APP_ROUTES } from '@/constants/app-routes';
 
 export default function ContactsPage() {
 
@@ -17,7 +16,7 @@ export default function ContactsPage() {
 					startAdornment={<BiSearch />}
 				/>
 				<ButtonAdd
-					href={APP_ROUTES.private.contacts.add}
+					href='/contacts/add'
 				/>
 			</section>
 			<section>

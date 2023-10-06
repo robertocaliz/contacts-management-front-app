@@ -1,12 +1,9 @@
 'use client';
 
-import signupFormStyles from '@/../styles/auth/form.module.css';
-import { ButtonSubmit } from '@/components/buttons.component';
+import { SubmitButton } from '@/components/buttons.component';
 import Centralize from '@/components/centralize';
 import FormHeader from '@/components/form-header';
 import Input from '@/components/input';
-import Spinner from '@/components/spinner';
-import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from '@/constants';
 import { APP_ROUTES } from '@/constants/app-routes';
 import Alerts from '@/lib/alerts';
 import User from '@/types/user';
@@ -15,8 +12,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
-
 
 
 export default function SignUpPage() {
@@ -85,20 +80,12 @@ export default function SignUpPage() {
 							type="checkbox"
 							onChange={() => setDisabled(!disabled)}
 						/>
-						<span> I have read and agree to the <Link href='/'>Terms of Use.</Link></span>
+						<span> I have read and agree to the <Link href='/terms-of-use'>Terms of Use.</Link></span>
 					</section>
-					<ButtonSubmit
-						content_={loading ? (
-							<Spinner loading={loading} />
-						) : (
-							'Create account'
-						)}
+					<SubmitButton
 						disabled={disabled}
-						style={loading ? (
-							{ opacity: OPACITY_WHILE_LOADING_TRUE }
-						) : (
-							{ opacity: OPACITY_WHILE_LOADING_FALSE }
-						)}
+						loading={loading}
+						content='Create account'
 					/>
 				</footer>
 			</form>

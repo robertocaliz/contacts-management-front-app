@@ -1,6 +1,5 @@
 'use client';
 
-import Link from "next/link";
 import utilsStyles from '@/../styles/nav.module.css';
 import { useSession } from "next-auth/react";
 import { ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, UserButton } from "./buttons.component";
@@ -15,12 +14,8 @@ export default function Nav() {
 
 	console.log(session);
 
-	if (status === 'loading') {
-		return;
-	}
-
 	return (
-		<div className={utilsStyles.navContainer} >
+		<nav className={utilsStyles.nav} >
 			<section>
 				<ul>
 					<li>
@@ -50,6 +45,6 @@ export default function Nav() {
 					)}
 				</ul>
 			</section>
-		</div>
-	)
+		</nav>
+	);
 }

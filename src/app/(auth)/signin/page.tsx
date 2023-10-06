@@ -1,6 +1,6 @@
 'use client';
 
-import Spinner from "@/components/spinner";
+
 import { APP_ROUTES } from "@/constants/app-routes";
 import Alerts from "@/lib/alerts";
 import { signIn } from "next-auth/react"
@@ -10,8 +10,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Centralize from "@/components/centralize";
 import User from "@/types/user";
 import Input from "@/components/input";
-import { ButtonSubmit } from "@/components/buttons.component";
-import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from "@/constants";
+import { SubmitButton } from "@/components/buttons.component";
 import FormHeader from "@/components/form-header";
 
 
@@ -58,18 +57,10 @@ export default function SignInPage() {
 						name='password'
 						register={register}
 					/>
-					<ButtonSubmit
-						content_={loading ? (
-							<Spinner loading={loading} />
-						) : (
-							'Login'
-						)}
+					<SubmitButton
 						disabled={disabled}
-						style={loading ? (
-							{ opacity: OPACITY_WHILE_LOADING_TRUE }
-						) : (
-							{ opacity: OPACITY_WHILE_LOADING_FALSE }
-						)}
+						loading={loading}
+						content='login'
 					/>
 				</main>
 			</form>

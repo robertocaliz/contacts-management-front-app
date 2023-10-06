@@ -1,20 +1,19 @@
-.navContainer {
+.nav {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	padding-right: 3rem;
 	background-color: #fff;
-	padding: 0.4rem 0;
-	
+	padding: 0.8rem 0;
 }
 
 
-.navContainer ul {
+.nav ul {
 	list-style: none;
 	display: flex;
 	gap: 2rem;
 }
 
-.navContainer ul li a {
+.nav ul li a {
 	color: #000;
 }

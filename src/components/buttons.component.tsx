@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ButtonHTMLAttributes, FormEvent, ReactNode } from "react";
 import utilsStyles from '@/../styles/utils.module.css';
+import Spinner from "./spinner";
+import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from "@/constants";
 
 
 type ButtonLinkProps = {
@@ -83,7 +85,6 @@ export const UserButton = ({ content }: ProfileProps) => {
 
 
 
-
 export const ButtonAdd = ({ href, text = 'Add' }: AddButtons) => {
   return (
     <Link
@@ -93,16 +94,38 @@ export const ButtonAdd = ({ href, text = 'Add' }: AddButtons) => {
 }
 
 
-type ButtonSubmitProps = {
-  content_: string | ReactNode;
+type SubmitButtonProps = {
+  loading: boolean;
+  disabled: boolean;
+  content: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 
-export const ButtonSubmit = ({ content_, ...rest }: ButtonSubmitProps) => {
+export const SubmitButton = ({
+  content,
+  loading,
+  disabled,
+  ...rest
+}: SubmitButtonProps) => {
   return (
-    <button type="submit" {...rest} className={utilsStyles.buttonSubmit}>{content_}</button>
+    <button
+      type='submit' {...rest}
+      className={utilsStyles.buttonSubmit}
+      disabled={disabled}
+      style={loading ? (
+        { opacity: OPACITY_WHILE_LOADING_TRUE }
+      ) : (
+        { opacity: OPACITY_WHILE_LOADING_FALSE }
+      )}
+    >
+      {loading ? (
+        <Spinner loading={loading} />
+      ) : (
+        content
+      )}
+    </button>
   )
-}
+};
 
 
 

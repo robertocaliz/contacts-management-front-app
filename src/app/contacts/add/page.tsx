@@ -1,6 +1,6 @@
 'use client';
 
-import { ButtonBack, ButtonSubmit } from "@/components/buttons.component";
+import { ButtonBack, SubmitButton } from "@/components/buttons.component";
 import Centralize from "@/components/centralize";
 import Input from "@/components/input";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -10,10 +10,7 @@ import Alerts from "@/lib/alerts";
 import { useState } from "react";
 import Spinner from "@/components/spinner";
 import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from "@/constants";
-import FormHeader from "@/components/form-header";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-
+import FormHeader from "@/components/form-header";;
 
 
 export default function AddContactPage() {
@@ -67,18 +64,10 @@ export default function AddContactPage() {
 						name="phoneNumber"
 						label="Phone number:"
 						register={register} />
-					<ButtonSubmit
-						content_={loading ? (
-							<Spinner loading={loading} />
-						) : (
-							'Create contact'
-						)}
+					<SubmitButton
 						disabled={disabled}
-						style={loading ? (
-							{ opacity: OPACITY_WHILE_LOADING_TRUE }
-						) : (
-							{ opacity: OPACITY_WHILE_LOADING_FALSE }
-						)}
+						loading={loading}
+						content='Create contact'
 					/>
 				</form>
 				<hr />
