@@ -23,6 +23,13 @@ export const POST = async (req: Request) => {
 
 export const GET = async () => {
 	try {
+
+		await new Promise(resolve => {
+			setTimeout(() => {
+				resolve(0)
+			}, 4000);
+		});
+
 		const { data: contacts, status } = await api.get('/contacts');
 		return NextResponse.json(contacts, { status });
 	} catch (error) {
