@@ -103,3 +103,12 @@ export const ButtonSubmit = ({ content_, ...rest }: ButtonSubmitProps) => {
     <button type="submit" {...rest} className={utilsStyles.buttonSubmit}>{content_}</button>
   )
 }
+
+
+
+export const ButtonBack = () => {
+  const { back } = useRouter();
+  return (
+    <Link href='' onClick={() => back()}>&larr;Back</Link>
+  )
+}

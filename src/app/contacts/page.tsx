@@ -1,5 +1,5 @@
 import tableStyles from '@/../styles/contact-table.module.css';
-import { ButtonAdd } from '@/components/buttons.component';
+import { ButtonAdd, ButtonBack } from '@/components/buttons.component';
 import utilsStyles from '@/../styles/utils.module.css';
 import Input from '@/components/input';
 import { BiSearch } from 'react-icons/bi'
@@ -9,6 +9,7 @@ export default function ContactsPage() {
 
 	return (
 		<>
+			<ButtonBack />
 			<section className={utilsStyles.flexSpaceBetween}>
 				<Input
 					type='search'

@@ -1,6 +1,6 @@
 'use client';
 
-import { ButtonSubmit } from "@/components/buttons.component";
+import { ButtonBack, ButtonSubmit } from "@/components/buttons.component";
 import Centralize from "@/components/centralize";
 import Input from "@/components/input";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -11,6 +11,8 @@ import { useState } from "react";
 import Spinner from "@/components/spinner";
 import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from "@/constants";
 import FormHeader from "@/components/form-header";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
 
@@ -45,6 +47,7 @@ export default function AddContactPage() {
 	return (
 		<>
 			<Centralize>
+				<ButtonBack />
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<FormHeader text='Add Contact' />
 					<Input
