@@ -74,9 +74,15 @@ export const DeleteButton = ({
 }
 
 
-export const UpdateButton = () => {
+export const UpdateButton = ({
+  handleUpdate
+}: { handleUpdate: (e: FormEvent) => void }) => {
   return (
-    <Link href={''} className={utilsStyles.tableButtonSize}>
+    <Link
+      href={''}
+      className={utilsStyles.tableButtonSize}
+      onClick={handleUpdate}
+    >
       <RxUpdate />
     </Link>
   );

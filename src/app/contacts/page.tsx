@@ -3,6 +3,12 @@ import utilsStyles from '@/../styles/utils.module.css';
 import Input from '@/components/input';
 import { BiSearch } from 'react-icons/bi'
 import TableContacts from '@/components/table-contacts';
+import { Metadata } from 'next';
+
+
+export const metadata:Metadata = {
+	title: 'Contacts'
+};
 
 
 export default function ContactsPage() {

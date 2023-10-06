@@ -10,10 +10,12 @@ import { FormEvent, useEffect, useState } from 'react';
 import { DeleteButton, UpdateButton } from './buttons.component';
 import { StatusCodes } from 'http-status-codes';
 import Alerts from '@/lib/alerts';
+import { useRouter } from 'next/navigation';
+
+
 
 export default function TableContacts() {
-
-	const [loading, setLoading] = useState(true);
+	const { push } = useRouter();
 	const [contacts, setContacts] = useState<Contact[]>([]);
 
 	const {
@@ -28,7 +30,7 @@ export default function TableContacts() {
 
 
 	if (isLoading) {
-		return <Spinner loading={loading} text='Loading contacts...' />
+		return <Spinner loading={true} text='Loading contacts...' />
 	}
 
 	const removeContactFromTable = (contactId: number) => {
@@ -50,6 +52,11 @@ export default function TableContacts() {
 		Alerts.error(body.message);
 	}
 
+
+	const handleUpdate = (e: FormEvent, contactId: number) => {
+		push(`/contacts/${contactId}/update`);
+	}
+
 	return (
 		<div className={tableContactsStyles.tableContainer}>
 			<table>
@@ -65,7 +72,7 @@ export default function TableContacts() {
 				</thead>
 				<tbody>
 					{contacts.map(contact => (
-						<tr key={contact.id}>
+						<tr key={contact.id} onDoubleClick={(e) => handleUpdate(e, contact.id)}>
 							<td>{contact.id}</td>
 							<td>{contact.name}</td>
 							<td>{contact.email}</td>
@@ -74,7 +81,7 @@ export default function TableContacts() {
 								<DeleteButton handleDelete={(e) => handleDelete(e, contact.id)} />
 							</td>
 							<td>
-								<UpdateButton />
+								<UpdateButton handleUpdate={(e) => handleUpdate(e, contact.id)} />
 							</td>
 						</tr>
 					))}
