@@ -59,10 +59,15 @@ export const ContactsButton = ({ text = 'Contacts' }: ContactsButtonProps) => {
 }
 
 
-
-export const DeleteButton = () => {
+export const DeleteButton = ({
+  handleDelete
+}: { handleDelete: (e: FormEvent) => void }) => {
   return (
-    <Link href={''} className={`${utilsStyles.colorRed} ${utilsStyles.tableButtonSize}`}>
+    <Link
+      href={''}
+      className={`${utilsStyles.colorRed} ${utilsStyles.tableButtonSize}`}
+      onClick={handleDelete}
+    >
       <RiDeleteBinLine />
     </Link >
   );

@@ -4,6 +4,7 @@
 	flex-direction: row;
 	align-items: center;
 	margin: 1rem 0;
+	background-color: #fff;
 }
 
 .inputContainer,

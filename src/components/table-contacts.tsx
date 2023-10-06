@@ -6,21 +6,48 @@ import tableContactsStyles from '@/../styles/contact-table.module.css';
 import { useFetch } from '@/hooks';
 import { Contact } from '@/types';
 import Spinner from './spinner';
-import { useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { DeleteButton, UpdateButton } from './buttons.component';
-
+import { StatusCodes } from 'http-status-codes';
+import Alerts from '@/lib/alerts';
 
 export default function TableContacts() {
 
 	const [loading, setLoading] = useState(true);
+	const [contacts, setContacts] = useState<Contact[]>([]);
 
 	const {
-		data: contacts
+		data,
+		isLoading
 	} = useFetch<Contact[]>('/api/contacts');
 
 
-	if (!contacts) {
+	useEffect(() => {
+		setContacts(data ?? [])
+	}, [data])
+
+
+	if (isLoading) {
 		return <Spinner loading={loading} text='Loading contacts...' />
+	}
+
+	const removeContactFromTable = (contactId: number) => {
+		setContacts(contacts.filter(contact => contact.id !== contactId));
+	}
+
+	const handleDelete = async (e: FormEvent, contactId: number) => {
+		e.preventDefault();
+		const response = await fetch(`/api/contacts/${contactId}`,
+			{
+				method: 'DELETE'
+			});
+		const body = await response.json();
+		if (response.status === StatusCodes.OK) {
+			removeContactFromTable(contactId);
+			Alerts.success(body.message);
+			return;
+		}
+		Alerts.error(body.message);
 	}
 
 	return (
@@ -44,7 +71,7 @@ export default function TableContacts() {
 							<td>{contact.email}</td>
 							<td>{contact.phoneNumber}</td>
 							<td>
-								<DeleteButton />
+								<DeleteButton handleDelete={(e) => handleDelete(e, contact.id)} />
 							</td>
 							<td>
 								<UpdateButton />
