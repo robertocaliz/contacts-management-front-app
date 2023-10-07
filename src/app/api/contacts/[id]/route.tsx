@@ -1,3 +1,4 @@
+import wait from "@/lib/wait";
 import { ParamsProps } from "@/types";
 import { StatusCodes } from "http-status-codes";
 import { NextResponse } from "next/server";
@@ -10,14 +11,7 @@ export const DELETE = async (req: Request, { params }: ParamsProps) => {
 
 
 export const GET = async (req: Request, { params }: ParamsProps) => {
-
-	await new Promise(resolve => {
-		setTimeout(() => {
-			resolve(0)
-		}, 4000);
-	});
-
-
+	await wait(4000);
 	return NextResponse.json({
 		id: 1,
 		name: 'Roberto Caliz',
@@ -25,4 +19,10 @@ export const GET = async (req: Request, { params }: ParamsProps) => {
 		phoneNumber: '844215602'
 	}, { status: StatusCodes.OK });
 
+}
+
+
+
+export const PUT = async (req: Request, { params }: ParamsProps) => {
+	return NextResponse.json({ message: 'Contact updated' }, { status: StatusCodes.OK });
 }

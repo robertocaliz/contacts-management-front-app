@@ -6,7 +6,10 @@ import { Contact } from "@/types";
 import { StatusCodes } from "http-status-codes";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import ContactForm from "./contact-form";
+import Centralize from "./centralize";
+import { ButtonBack, SubmitButton } from "./buttons.component";
+import FormHeader from "./form-header";
+import Input from "./input";
 
 
 export default function FormAddContact() {
@@ -38,14 +41,39 @@ export default function FormAddContact() {
 	}
 
 	return (
-		<ContactForm
-			handleSubmit={handleSubmit}
-			onSubmit={onSubmit}
-			register={register}
-			disabled={disabled}
-			loading={loading}
-			buttonContent={'Create contact'}
-		/>
+		<>
+			<Centralize>
+				<ButtonBack />
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<FormHeader text='Add Contact' />
+					<Input
+						type='text'
+						name='name'
+						label='Name:'
+						register={register}
+					/>
+					<Input
+						type='email'
+						name='email'
+						label='Email:'
+						register={register}
+					/>
+					<Input
+						type='text'
+						name='phoneNumber'
+						label='Phone number:'
+						register={register}
+					/>
+					<SubmitButton
+						disabled={disabled}
+						loading={loading}
+						content='Create contact'
+						spinnerText='Creating...'
+					/>
+				</form>
+				<hr />
+			</Centralize>
+		</>
 	);
 
 }

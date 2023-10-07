@@ -27,6 +27,7 @@ type SubmitButtonProps = {
   loading: boolean;
   disabled: boolean;
   content: string;
+  spinnerText?: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 
@@ -133,6 +134,7 @@ export const SubmitButton = ({
   content,
   loading,
   disabled,
+  spinnerText,
   ...rest
 }: SubmitButtonProps) => {
   return (
@@ -147,7 +149,7 @@ export const SubmitButton = ({
       )}
     >
       {loading ? (
-        <Spinner loading={loading} />
+        <Spinner loading={loading} text={spinnerText} />
       ) : (
         content
       )}

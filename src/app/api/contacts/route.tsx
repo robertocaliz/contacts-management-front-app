@@ -1,4 +1,6 @@
 import api from "@/axios/axios-config";
+import { WAITING_TIME } from "@/constants";
+import wait from "@/lib/wait";
 import { StatusCodes } from "http-status-codes";
 import { NextResponse } from "next/server"
 
@@ -6,6 +8,7 @@ import { NextResponse } from "next/server"
 export const POST = async (req: Request) => {
 	const contact = await req.json();
 	try {
+		await wait(WAITING_TIME);
 		const { status } = await api.post('/contacts', contact);
 		return NextResponse.json(
 			{ message: 'Contact created!' },
@@ -23,13 +26,7 @@ export const POST = async (req: Request) => {
 
 export const GET = async () => {
 	try {
-
-		await new Promise(resolve => {
-			setTimeout(() => {
-				resolve(0)
-			}, 4000);
-		});
-
+		await wait(WAITING_TIME);
 		const { data: contacts, status } = await api.get('/contacts');
 		return NextResponse.json(contacts, { status });
 	} catch (error) {
