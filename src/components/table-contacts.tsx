@@ -61,7 +61,7 @@ export default function TableContacts() {
 		<div className={tableContactsStyles.tableContainer}>
 			<table>
 				<thead>
-					<tr>
+					<tr className={tableContactsStyles.headerRow}>
 						<th>ID</th>
 						<th>Name</th>
 						<th>Email</th>

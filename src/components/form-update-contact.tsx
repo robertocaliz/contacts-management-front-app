@@ -21,7 +21,7 @@ export default function FormUpdateContact({ contactId }: FormUpdateContactProps)
 	const [disabled, setDisabled] = useState(false);
 	const [loadingContact, setLoadingContact] = useState(true);
 
-	
+
 	const onSubmit: SubmitHandler<Contact> = async (contact) => {
 		console.log(contact);
 	}
@@ -40,7 +40,7 @@ export default function FormUpdateContact({ contactId }: FormUpdateContactProps)
 
 
 	if (loadingContact) {
-		return <Spinner loading={loadingContact} />
+		return <Spinner loading={loadingContact} text="Loading contact..." />
 	}
 
 	return (

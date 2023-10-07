@@ -22,7 +22,7 @@ export default function Footer() {
 					<Link href='/'>Developer</Link>
 				</li>
 				<li>
-					<Link href='/'>Terms of use</Link>
+					<Link href='/terms-of-use'>Terms of use</Link>
 				</li>
 			</ul>
 		</footer>
