@@ -37,9 +37,9 @@ type ProfileProps = {
 }
 
 
-export const LoginButton = ({ text = 'Sign in' }: LoginButtonProps) => {
+export const LoginButton = ({ text = 'Login' }: LoginButtonProps) => {
   return (
-    <Link style={{ marginRight: 16 }} href='/signin'>
+    <Link style={{ marginRight: 16 }} href='/login'>
       {text}
     </Link>
   );
@@ -142,7 +142,7 @@ export const SubmitButton = ({
       type='submit' {...rest}
       className={utilsStyles.buttonSubmit}
       disabled={disabled}
-      style={loading ? (
+      style={loading || disabled ? (
         { opacity: OPACITY_WHILE_LOADING_TRUE }
       ) : (
         { opacity: OPACITY_WHILE_LOADING_FALSE }

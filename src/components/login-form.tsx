@@ -1,24 +1,22 @@
+
 'use client';
 
-
-import { APP_ROUTES } from "@/constants/app-routes";
 import Alerts from "@/lib/alerts";
-import { signIn } from "next-auth/react"
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Centralize from "@/components/centralize";
-import User from "@/types/user";
-import Input from "@/components/input";
-import { SubmitButton } from "@/components/buttons.component";
-import FormHeader from "@/components/form-header";
+import Centralize from "./centralize";
+import FormHeader from "./form-header";
+import Input from "./input";
+import { SubmitButton } from "./buttons.component";
+import { User } from "@/types";
 
 
 interface UserCredentials extends Pick<User, 'email' | 'password'> { }
 
 
-export default function SignInPage() {
-
+export default function LoginForm() {
 	const [loading, setLoading] = useState(false);
 	const { push } = useRouter();
 	const { register, handleSubmit } = useForm<UserCredentials>();
@@ -37,7 +35,7 @@ export default function SignInPage() {
 			Alerts.error(response?.error as string);
 			return;
 		}
-		push(APP_ROUTES.private.dashboard);
+		push('/dashboard');
 	}
 
 	return (
@@ -46,14 +44,14 @@ export default function SignInPage() {
 				<FormHeader text='Login' />
 				<main>
 					<Input
-						type="email"
-						label="Email:"
+						type='email'
+						label='Email:'
 						name="email"
 						register={register}
 					/>
 					<Input
-						type="password"
-						label="Password:"
+						type='password'
+						label='Password:'
 						name='password'
 						register={register}
 					/>
@@ -61,10 +59,11 @@ export default function SignInPage() {
 						disabled={disabled}
 						loading={loading}
 						content='login'
+						spinnerText='Authenticating...'
 					/>
 				</main>
 			</form>
 			<hr />
 		</Centralize>
 	);
-};
+}

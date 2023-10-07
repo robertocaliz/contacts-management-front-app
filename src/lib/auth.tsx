@@ -2,7 +2,9 @@ import api from "@/axios/axios-config";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { AuthenticationError, UnauthorizedError } from "./errors";
-import User from "@/types/user";
+import wait from "./wait";
+import { WAITING_TIME } from "@/constants";
+import { User } from "@/types";
 
 
 type Credentials = {
@@ -18,10 +20,10 @@ export const authOptions: NextAuthOptions = {
 			async authorize(credentials) {
 				const { email, password } = credentials as Credentials;
 				try {
+					await wait(WAITING_TIME);
 					const {
 						data: user,
 					} = await api.post<User>('/signin', { email, password });
-					console.log(user);
 					return user as any;
 				} catch (error) {
 					if (error instanceof UnauthorizedError) {
