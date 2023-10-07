@@ -1,5 +1,9 @@
+import { Metadata } from 'next';
 
-import { useSession } from "next-auth/react";
+
+export const metadata: Metadata = {
+  title: 'Home'
+}
 
 export default async function Home() {
   return <h1></h1>

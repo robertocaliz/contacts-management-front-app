@@ -24,6 +24,7 @@ export const POST = async (req: Request) => {
 }
 
 
+
 export const GET = async () => {
 	try {
 		await wait(WAITING_TIME);
@@ -32,7 +33,7 @@ export const GET = async () => {
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json(
-			{ message: 'Error trying to get contacts!' },
+			{},
 			{ status: StatusCodes.INTERNAL_SERVER_ERROR }
 		)
 	}
