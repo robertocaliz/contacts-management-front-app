@@ -17,7 +17,7 @@ export const POST = async (req: Request) => {
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json(
-			{ message: 'Error while creating contact!' },
+			{},
 			{ status: StatusCodes.INTERNAL_SERVER_ERROR }
 		)
 	}

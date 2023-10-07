@@ -18,26 +18,29 @@ export default function FormAddContact() {
 	const [loading, setLoading] = useState(false);
 	const [disabled, setDisabled] = useState(false);
 
-	const onSubmit: SubmitHandler<Contact> = async (contact) => {
+	const onSubmit: SubmitHandler<Contact> = (contact) => {
 		setLoading(true);
 		setDisabled(true);
-		const response = await fetch('/api/contacts',
+		fetch('/api/contacts',
 			{
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(contact)
+			})
+			.then(res => {
+				return (res.status === StatusCodes.CREATED) ? res.json() : Promise.reject();
+			})
+			.then(resBody => Alerts.success(resBody.message))
+			.catch(() => {
+				Alerts.error('Error while creating contact');
+			})
+			.finally(() => {
+				setLoading(false);
+				setDisabled(false);
+				reset();
 			});
-		const { message } = await response.json();
-		setLoading(false);
-		setDisabled(false);
-		if (response.status === StatusCodes.CREATED) {
-			reset();
-			Alerts.success(message);
-			return;
-		}
-		Alerts.error(message);
 	}
 
 	return (
