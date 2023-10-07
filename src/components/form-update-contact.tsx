@@ -14,6 +14,8 @@ import FormHeader from "./form-header";
 import Input from "./input";
 
 
+const { OK } = StatusCodes;
+
 
 type FormUpdateContactProps = {
 	contactId: number;
@@ -28,26 +30,33 @@ export default function FormUpdateContact({ contactId }: FormUpdateContactProps)
 	const [loadingContact, setLoadingContact] = useState(true);
 	const { back } = useRouter();
 
-	const onSubmit: SubmitHandler<Contact> = async (contact) => {
+	const onSubmit: SubmitHandler<Contact> = (contact) => {
 		setLoading(true);
 		setDisabled(true);
-		const response = await fetch(`/api/contacts/${contactId}`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(contact)
-		})
-		const { message } = await response.json();
-		setLoading(false);
-		setDisabled(false);
-		if (response.status === StatusCodes.OK) {
-			reset();
-			back();
-			Alerts.success(message);
-			return;
-		}
-		Alerts.error(message);
+		fetch(`/api/contacts/${contactId}`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(contact)
+			})
+			.then(async res => {
+				return (res.status === OK) ? res.json() : Promise.reject();
+			})
+			.then(resBody => {
+				reset();
+				back();
+				Alerts.success(resBody.message);
+				return;
+			})
+			.catch(() => {
+				Alerts.error('Error loading contact');
+			})
+			.finally(() => {
+				setLoading(false);
+				setDisabled(false);
+			});
 	}
 
 	useEffect(() => {
@@ -55,12 +64,15 @@ export default function FormUpdateContact({ contactId }: FormUpdateContactProps)
 			{
 				method: 'GET'
 			})
-			.then(res => res.json())
-			.then(contact => {
-				setLoadingContact(false);
-				reset(contact);
+			.then(async res => {
+				return (res.status === OK) ? res.json() : Promise.reject();
 			})
-	}, [contactId, reset, loadingContact])
+			.then(contact => reset(contact))
+			.catch(() => {
+				Alerts.error('Error loading contact!');
+			})
+			.finally(() => setLoadingContact(false));
+	}, [contactId, reset, loadingContact]);
 
 
 	if (loadingContact) {
