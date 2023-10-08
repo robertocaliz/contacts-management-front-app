@@ -1,7 +1,6 @@
 
 
 
-
 export const OPACITY_WHILE_LOADING_TRUE = 0.5
 
 

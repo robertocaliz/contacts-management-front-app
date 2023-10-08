@@ -10,10 +10,8 @@ import Centralize from "./centralize";
 import FormHeader from "./form-header";
 import Input from "./input";
 import { SubmitButton } from "./buttons.component";
-import { User } from "@/types";
+import { User, UserCredentials } from "@/types";
 
-
-interface UserCredentials extends Pick<User, 'email' | 'password'> { }
 
 
 export default function LoginForm() {

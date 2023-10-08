@@ -99,11 +99,9 @@ export const HomeButton = () => {
 
 export const LogoutButton = () => {
   const { push } = useRouter();
-  const onClick = (e: FormEvent) => {
+  const onClick = () => {
     signOut({ redirect: false })
-      .then(() => {
-        push('/');
-      });
+      .then(() => push('/login'));
   }
   return (
     <Link
