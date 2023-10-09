@@ -22,6 +22,8 @@ export default async function AuthMiddleware(req: NextRequest) {
 export const config = {
 	matcher: [
 		'/dashboard',
-		'/contacts/:path*'
+		'/contacts/:path*',
+		'/api/contacts',
+		'/api/users/:path*'
 	]
 }
