@@ -15,12 +15,12 @@ import Input from "./input";
 export default function FormAddContact() {
 
 	const { register, handleSubmit, reset } = useForm<Contact>();
-	const [loading, setLoading] = useState(false);
-	const [disabled, setDisabled] = useState(false);
+	const [runSpinner, setRunSpinner] = useState(false);
+	const [disable, setDisable] = useState(false);
 
 	const onSubmit: SubmitHandler<Contact> = (contact) => {
-		setLoading(true);
-		setDisabled(true);
+		setRunSpinner(true);
+		setDisable(true);
 		fetch('/api/contacts',
 			{
 				method: 'POST',
@@ -37,8 +37,8 @@ export default function FormAddContact() {
 				Alerts.error('Error while creating contact');
 			})
 			.finally(() => {
-				setLoading(false);
-				setDisabled(false);
+				setRunSpinner(false);
+				setDisable(false);
 				reset();
 			});
 	}
@@ -68,8 +68,8 @@ export default function FormAddContact() {
 						register={register}
 					/>
 					<SubmitButton
-						disabled={disabled}
-						loading={loading}
+						disable={disable}
+						runSpinner={runSpinner}
 						content='Create contact'
 						spinnerText='Creating...'
 					/>

@@ -24,8 +24,8 @@ type AddButtons = ButtonLinkProps;
 
 
 type SubmitButtonProps = {
-  loading: boolean;
-  disabled: boolean;
+  runSpinner: boolean;
+  disable: boolean;
   content: string;
   spinnerText?: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
@@ -130,8 +130,8 @@ export const ButtonAdd = ({ href, text = 'Add' }: AddButtons) => {
 
 export const SubmitButton = ({
   content,
-  loading,
-  disabled,
+  runSpinner,
+  disable,
   spinnerText,
   ...rest
 }: SubmitButtonProps) => {
@@ -139,15 +139,15 @@ export const SubmitButton = ({
     <button
       type='submit' {...rest}
       className={utilsStyles.buttonSubmit}
-      disabled={disabled}
-      style={loading || disabled ? (
+      disabled={disable}
+      style={runSpinner || disable ? (
         { opacity: OPACITY_WHILE_LOADING_TRUE }
       ) : (
         { opacity: OPACITY_WHILE_LOADING_FALSE }
       )}
     >
-      {loading ? (
-        <Spinner loading={loading} text={spinnerText} />
+      {runSpinner ? (
+        <Spinner loading={runSpinner} text={spinnerText} />
       ) : (
         content
       )}

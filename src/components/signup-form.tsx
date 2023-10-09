@@ -17,14 +17,14 @@ import Alerts from "@/lib/alerts";
 export default function SignUpForm() {
 
 	const { register, handleSubmit, reset } = useForm<User>();
-	const [loading, setLoading] = useState(false);
-	const [disabled, setDisabled] = useState(true);
+	const [runSpinner, setRunSpinner] = useState(false);
+	const [disable, setDisable] = useState(true);
 	const { push } = useRouter();
 
 
 	const onSubmit: SubmitHandler<User> = (user) => {
-		setLoading(true);
-		setDisabled(true);
+		setRunSpinner(true);
+		setDisable(true);
 		fetch('/api/users',
 			{
 				method: 'POST',
@@ -45,8 +45,8 @@ export default function SignUpForm() {
 				Alerts.error('Error while creating account!');
 			})
 			.finally(() => {
-				setLoading(false);
-				setDisabled(false);
+				setRunSpinner(false);
+				setDisable(false);
 			});
 	}
 
@@ -85,13 +85,13 @@ export default function SignUpForm() {
 					<section>
 						<input
 							type="checkbox"
-							onChange={() => setDisabled(!disabled)}
+							onChange={() => setDisable(!disable)}
 						/>
 						<span> I have read and agree to the <Link href='/terms-of-use'>Terms of Use.</Link></span>
 					</section>
 					<SubmitButton
-						disabled={disabled}
-						loading={loading}
+						runSpinner={runSpinner}
+						disable={disable}
 						content='Create account'
 						spinnerText='Creating account...'
 					/>

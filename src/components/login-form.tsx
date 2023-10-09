@@ -10,25 +10,25 @@ import Centralize from "./centralize";
 import FormHeader from "./form-header";
 import Input from "./input";
 import { SubmitButton } from "./buttons.component";
-import { User, UserCredentials } from "@/types";
+import { UserCredentials } from "@/types";
 
 
 
 export default function LoginForm() {
-	const [loading, setLoading] = useState(false);
+	const [runSpinner, setRunSpinner] = useState(false);
+	const [disable, setDisable] = useState(false);
 	const { push } = useRouter();
 	const { register, handleSubmit } = useForm<UserCredentials>();
-	const [disabled, setDisabled] = useState(false);
 
 	const onSubmit: SubmitHandler<UserCredentials> = async (credentials) => {
-		setLoading(true);
-		setDisabled(true);
+		setRunSpinner(true);
+		setDisable(true);
 		const response = await signIn('credentials', {
 			...credentials,
 			redirect: false,
 		});
-		setLoading(false);
-		setDisabled(false);
+		setRunSpinner(false);
+		setDisable(false);
 		if (response?.error !== null) {
 			Alerts.error(response?.error as string);
 			return;
@@ -54,8 +54,8 @@ export default function LoginForm() {
 						register={register}
 					/>
 					<SubmitButton
-						disabled={disabled}
-						loading={loading}
+						disable={disable}
+						runSpinner={runSpinner}
 						content='login'
 						spinnerText='Authenticating...'
 					/>

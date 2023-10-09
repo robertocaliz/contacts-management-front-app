@@ -25,14 +25,14 @@ type FormUpdateContactProps = {
 export default function FormUpdateContact({ contactId }: FormUpdateContactProps) {
 
 	const { register, handleSubmit, reset } = useForm<Contact>();
-	const [loading, setLoading] = useState(false);
-	const [disabled, setDisabled] = useState(false);
+	const [runSpinner, setRunSpinner] = useState(false);
+	const [disable, setDisable] = useState(false);
 	const [loadingContact, setLoadingContact] = useState(true);
 	const { back } = useRouter();
 
 	const onSubmit: SubmitHandler<Contact> = (contact) => {
-		setLoading(true);
-		setDisabled(true);
+		setRunSpinner(true);
+		setDisable(true);
 		fetch(`/api/contacts/${contactId}`,
 			{
 				method: 'PUT',
@@ -54,8 +54,8 @@ export default function FormUpdateContact({ contactId }: FormUpdateContactProps)
 				Alerts.error('Error loading contact');
 			})
 			.finally(() => {
-				setLoading(false);
-				setDisabled(false);
+				setRunSpinner(false);
+				setDisable(false);
 			});
 	}
 
@@ -104,8 +104,8 @@ export default function FormUpdateContact({ contactId }: FormUpdateContactProps)
 						register={register}
 					/>
 					<SubmitButton
-						disabled={disabled}
-						loading={loading}
+						disable={disable}
+						runSpinner={runSpinner}
 						content='Update contact'
 						spinnerText='Updating...'
 					/>

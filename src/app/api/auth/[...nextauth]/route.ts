@@ -1,7 +1,5 @@
 
 import NextAuth from "next-auth/next";
-
-
 import api from "@/axios/axios-config";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -54,10 +52,6 @@ export const authOptions: NextAuthOptions = {
 				}
 			}
 		}
-	}
-	,
-	pages: {
-		signIn: '/auth/signin'
 	}
 };
 

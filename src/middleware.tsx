@@ -17,12 +17,11 @@ export default async function AuthMiddleware(req: NextRequest) {
 
 	return NextResponse.redirect(loginPathname)
 
-} 
+}
 
 export const config = {
 	matcher: [
 		'/dashboard',
-		'/contacts/:path*',
-		'/api/:path*'
+		'/contacts/:path*'
 	]
 }

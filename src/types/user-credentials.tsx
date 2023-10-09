@@ -1,6 +1,4 @@
+import { User } from ".";
 
 
-export type UserCredentials = {
-	email: string;
-	password: string;
-}
+export interface UserCredentials extends Pick<User, 'email' | 'password'> { }
