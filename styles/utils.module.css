@@ -16,15 +16,21 @@
 
 
 .buttonAdd {
-	background-color: #458B00;
-	color: #fff;
+	background-color: #fff;
+	color:  #458B00;
 	width: 8rem;
 	text-align: center;
 	padding: 1rem;
 	border-radius: 0.6rem;
 	font-weight: bold;
 	font-size: 0.9rem;
-	border: 4px solid;
+	border: 3px solid;
+}
+
+
+.buttonAdd:hover {
+	background-color: #458B00;
+	color: #fff;
 }
 
 
@@ -55,5 +61,5 @@
 
 
 .tableButtonSize {
-	font-size: 1.3rem;
+	font-size: 1.5rem;
 }
