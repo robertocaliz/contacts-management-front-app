@@ -8,7 +8,7 @@ import utilsStyles from '@/../styles/utils.module.css';
 import Spinner from "./spinner";
 import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from "@/constants";
 import { RiDeleteBinLine } from 'react-icons/ri';
-import { RxUpdate } from 'react-icons/rx';
+import { BsPencil } from 'react-icons/bs';
 
 
 type ButtonLinkProps = {
@@ -84,7 +84,7 @@ export const UpdateButton = ({
       className={utilsStyles.tableButtonSize}
       onClick={handleUpdate}
     >
-      <RxUpdate />
+      <BsPencil />
     </Link>
   );
 }
