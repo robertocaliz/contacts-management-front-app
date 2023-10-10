@@ -9,3 +9,11 @@ export const OPACITY_WHILE_LOADING_FALSE = 1;
 
 export const WAITING_TIME = 4000;
 
+
+
+export const PUBLIC_ROUTES = [
+	'/',
+	'/login',
+	'/signup'
+];
+

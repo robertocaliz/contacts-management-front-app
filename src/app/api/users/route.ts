@@ -1,3 +1,4 @@
+import api from "@/axios/axios-config";
 import { WAITING_TIME } from "@/constants";
 import wait from "@/lib/wait";
 import { StatusCodes } from "http-status-codes";
@@ -9,7 +10,9 @@ export const POST = async (req: Request) => {
 	try {
 		const user = await req.json();
 		await wait(WAITING_TIME);
-		return NextResponse.json({ message: 'Account Created!' }, { status: StatusCodes.CREATED });
+		const { status } = await api.post('/users', user);
+		console.log(status)
+		return NextResponse.json({ message: 'Account Created!' }, { status });
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json(

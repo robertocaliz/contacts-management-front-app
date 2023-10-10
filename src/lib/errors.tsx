@@ -1,16 +1,30 @@
+import { StatusCodes } from "http-status-codes";
 
 
-export class AppError extends Error {
-	public constructor(message?: string) {
+export class APIError extends Error {
+	public status: number;
+	public constructor(status: number, message?: string) {
 		super(message);
+		this.status = status;
+	}
+}
+
+export class AuthenticationError extends APIError {
+	public constructor(message?: string) {
+		super(StatusCodes.INTERNAL_SERVER_ERROR, message);
 	}
 }
 
 
-export class AuthenticationError extends AppError { }
+export class UnauthorizedError extends APIError {
+	public constructor(message?: string) {
+		super(StatusCodes.UNAUTHORIZED, message);
+	}
+}
 
 
-export class UnauthorizedError extends AppError { }
-
-
-export class NotFoundError extends AppError { }
+export class NotFoundError extends APIError {
+	public constructor(message?: string) {
+		super(StatusCodes.NOT_FOUND);
+	}
+}
