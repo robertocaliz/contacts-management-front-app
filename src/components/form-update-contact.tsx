@@ -13,23 +13,34 @@ import { ButtonBack, SubmitButton } from "./buttons.component";
 import FormHeader from "./form-header";
 import Input from "./input";
 import { BiIdCard, BiMessage, BiPhone } from "react-icons/bi";
+import { useContact } from "@/hooks";
 
 
 const { OK } = StatusCodes;
 
 
-type FormUpdateContactProps = {
-	contactId: number;
-}
-
-
-export default function FormUpdateContact({ contactId }: FormUpdateContactProps) {
+export default function FormUpdateContact({ contactId }: { contactId: number }) {
 
 	const { register, handleSubmit, reset } = useForm<Contact>();
 	const [runSpinner, setRunSpinner] = useState(false);
 	const [disable, setDisable] = useState(false);
-	const [loadingContact, setLoadingContact] = useState(true);
 	const { back } = useRouter();
+
+
+	const {
+		contact,
+		error,
+		isLoading
+	} = useContact(contactId);
+
+	useEffect(() => {
+		reset(contact);
+	}, [contact, reset]);
+
+
+	if (isLoading) return <Spinner loading={isLoading} text='Loading contact...' />
+	if (error) return <h1>Error!</h1>
+
 
 	const onSubmit: SubmitHandler<Contact> = (contact) => {
 		setRunSpinner(true);
@@ -42,7 +53,7 @@ export default function FormUpdateContact({ contactId }: FormUpdateContactProps)
 				},
 				body: JSON.stringify(contact)
 			})
-			.then(async res => {
+			.then(res => {
 				return (res.status === OK) ? res.json() : Promise.reject();
 			})
 			.then(resBody => {
@@ -60,24 +71,9 @@ export default function FormUpdateContact({ contactId }: FormUpdateContactProps)
 			});
 	}
 
-	useEffect(() => {
-		fetch(`/api/contacts/${contactId}`,
-			{
-				method: 'GET'
-			})
-			.then(async res => {
-				return (res.status === OK) ? res.json() : Promise.reject();
-			})
-			.then(contact => reset(contact))
-			.catch(() => {
-				Alerts.error('Error loading contact!');
-			})
-			.finally(() => setLoadingContact(false));
-	}, [contactId, reset, loadingContact]);
 
-
-	if (loadingContact) {
-		return <Spinner loading={loadingContact} text='Loading contact...' />
+	if (isLoading) {
+		return <Spinner loading={isLoading} text='Loading contact...' />
 	}
 
 	return (

@@ -1,0 +1,28 @@
+.container {
+	max-width: 80rem;
+	margin: auto;
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+
+.container section {
+	width: 100%;
+	background-color: #fff;
+	padding: 2rem;
+	border-radius: 0.8rem;
+}
+
+
+.container section:last-child {
+	display: flex;
+	flex-direction: column;
+	gap: 0.8rem;
+}
+
+
+.container section:last-child p {
+	display: flex;
+	justify-content: space-between;
+}
