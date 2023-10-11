@@ -16,7 +16,7 @@ export default function Nav() {
 
 	return (
 		<nav className={navStyles.nav} >
-			<section style={{ paddingTop: '0.7rem' }}>
+			<section>
 				<ul>
 					<li>
 						<HomeButton />

@@ -10,6 +10,8 @@
 	display: flex;
 	gap: 2rem;
 	align-items: center;
+	padding: 1.5rem;
+	max-height: 0.1rem;
 }
 
 .nav ul li a {
