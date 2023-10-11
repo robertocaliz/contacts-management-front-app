@@ -1,26 +1,26 @@
 'use client';
 
-import utilsStyles from '@/../styles/nav.module.css';
+import navStyles from '@/../styles/nav.module.css';
 import { useSession } from "next-auth/react";
 import {
-	ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, ButtonProfile
+	ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, ProfileButton
 } from "./buttons.component";
+import { User } from '@/types';
+import { BsPersonGear } from 'react-icons/bs';
 
 
 export default function Nav() {
 
 	const { data: session } = useSession();
-
-	console.log(session);
+	const user = session?.user as User;
 
 	return (
-		<nav className={utilsStyles.nav} >
-			<section>
+		<nav className={navStyles.nav} >
+			<section style={{ paddingTop: '0.7rem' }}>
 				<ul>
 					<li>
 						<HomeButton />
 					</li>
-
 					{session && (
 						<li>
 							<ContactsButton />
@@ -34,7 +34,7 @@ export default function Nav() {
 					{session ? (
 						<>
 							<li><LogoutButton /></li>
-							<li><ButtonProfile content={session.user?.name as string} /></li>
+							<li><ProfileButton userId={user.id} content={<BsPersonGear />} /></li>
 						</>
 					) : (
 						<>

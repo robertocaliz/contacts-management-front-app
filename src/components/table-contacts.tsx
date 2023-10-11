@@ -54,6 +54,7 @@ export default function TableContacts() {
 
 
 	const handleUpdate = (e: FormEvent, contactId: number) => {
+		e.preventDefault();
 		push(`/contacts/${contactId}/update`);
 	}
 

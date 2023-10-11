@@ -10,6 +10,7 @@ import Centralize from "./centralize";
 import { ButtonBack, SubmitButton } from "./buttons.component";
 import FormHeader from "./form-header";
 import Input from "./input";
+import { BiPhone, BiMessage, BiIdCard } from 'react-icons/bi'
 
 
 export default function FormAddContact() {
@@ -54,18 +55,22 @@ export default function FormAddContact() {
 						name='name'
 						label='Name:'
 						register={register}
+						startAdornment={<BiIdCard />}
 					/>
 					<Input
 						type='email'
 						name='email'
 						label='Email:'
 						register={register}
+						startAdornment={<BiMessage />}
 					/>
 					<Input
 						type='text'
 						name='phoneNumber'
 						label='Phone number:'
 						register={register}
+						startAdornment={<BiPhone />}
+
 					/>
 					<SubmitButton
 						disable={disable}
