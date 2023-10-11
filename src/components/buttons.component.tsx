@@ -116,7 +116,7 @@ export const LogoutButton = () => {
 
 
 export const ProfileButton = ({ content, userId }: ProfileButtonProps) => {
-  return <Link href={`/users/${userId}`} style={{fontSize: '2rem'}}>{content}</Link>;
+  return <Link href={`/users/${userId}/profile`} style={{fontSize: '2rem'}}>{content}</Link>;
 };
 
 
