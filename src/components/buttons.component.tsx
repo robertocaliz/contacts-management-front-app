@@ -3,7 +3,7 @@
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ButtonHTMLAttributes, FormEvent, ReactNode } from "react";
+import { ButtonHTMLAttributes, Dispatch, FormEvent, ReactNode, SetStateAction } from "react";
 import utilsStyles from '@/../styles/utils.module.css';
 import Spinner from "./spinner";
 import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from "@/constants";
@@ -116,7 +116,7 @@ export const LogoutButton = () => {
 
 
 export const ProfileButton = ({ content, userId }: ProfileButtonProps) => {
-  return <Link href={`/users/${userId}/profile`} style={{fontSize: '2rem'}}>{content}</Link>;
+  return <Link href={`/users/${userId}/profile`} style={{ fontSize: '2rem' }}>{content}</Link>;
 };
 
 
@@ -163,3 +163,29 @@ export const ButtonBack = () => {
     <Link href='' onClick={() => back()}>&larr;Back</Link>
   )
 }
+
+
+type EditUserButtonProps = {
+  edit: boolean;
+  setEdit: Dispatch<SetStateAction<boolean>>
+}
+
+
+export const EditUserButton = ({ edit, setEdit }: EditUserButtonProps) => {
+  return (
+    <Link
+      href={''}
+      onClick={() => setEdit(!edit)}
+      style={{ fontSize: '1.5rem' }}
+    >
+      <BsPencil />
+    </Link>
+  );
+};
+
+
+export const EditFormBackButton = ({ edit, setEdit }: EditUserButtonProps) => {
+  return (
+    <Link href={''} onClick={() => setEdit(!edit)}>&larr;Back</Link>
+  );
+};

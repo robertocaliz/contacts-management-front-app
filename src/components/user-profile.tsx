@@ -5,10 +5,9 @@ import userProfileStyles from '@/../styles/user-profile.module.css';
 import { useEffect, useState } from 'react';
 import { User } from '@/types';
 import FormUpdateUser from './form-update-user';
-import Link from 'next/link';
-import { BsPencil } from 'react-icons/bs';
 import Image from 'next/image';
-import profilePicture from '@/../public/images/profile.jpg';
+import defaultProfileImage from '@/../public/images/default-profile-image.jpg';
+import { EditFormBackButton, EditUserButton } from './buttons.component';
 
 
 export default function UserProfile({ userId }: { userId: number }) {
@@ -37,7 +36,7 @@ export default function UserProfile({ userId }: { userId: number }) {
 		<div className={userProfileStyles.container}>
 			<section>
 				<Image
-					src={profilePicture}
+					src={defaultProfileImage}
 					alt='User image'
 					width={400}
 					height={400}
@@ -62,13 +61,11 @@ export default function UserProfile({ userId }: { userId: number }) {
 							<span>Birthday</span>
 							<span>{user?.birthday}</span>
 						</p>
-						<Link href={''} onClick={() => setEdit(!edit)}>
-							<BsPencil />
-						</Link>
+						<EditUserButton edit={edit} setEdit={setEdit} />
 					</>
 				) : (
 					<>
-						<Link href={''} onClick={() => setEdit(!edit)}>&larr;Back</Link>
+						<EditFormBackButton edit={edit} setEdit={setEdit} />
 						<FormUpdateUser user={user as User} />
 					</>
 
