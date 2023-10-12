@@ -15,6 +15,14 @@
 }
 
 
+.container section:first-child {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+
 .container section:last-child {
 	display: flex;
 	flex-direction: column;
@@ -25,4 +33,9 @@
 .container section:last-child p {
 	display: flex;
 	justify-content: space-between;
+}
+
+
+.container section:last-child p span:last-child {
+	opacity: 0.6;
 }

@@ -7,6 +7,8 @@ import { User } from '@/types';
 import FormUpdateUser from './form-update-user';
 import Link from 'next/link';
 import { BsPencil } from 'react-icons/bs';
+import Image from 'next/image';
+import profilePicture from '@/../public/images/profile.jpg';
 
 
 export default function UserProfile({ userId }: { userId: number }) {
@@ -28,16 +30,23 @@ export default function UserProfile({ userId }: { userId: number }) {
 
 
 	if (isLoading) return <h1>Loading user...</h1>
-	if (error) return <h1>Error!</h1>
+	if (error) throw new Error('Error');
 
 
 	return (
 		<div className={userProfileStyles.container}>
 			<section>
-				<h1>Image</h1>
+				<Image
+					src={profilePicture}
+					alt='User image'
+					width={400}
+					height={400}
+					style={{
+						borderRadius: '14rem'
+					}}
+				/>
 			</section>
 			<section>
-				{edit && <Link href={''} onClick={() => setEdit(!edit)}>&larr;Back</Link>}
 				{!edit ? (
 					<>
 						<h1>User Data</h1>
@@ -58,7 +67,11 @@ export default function UserProfile({ userId }: { userId: number }) {
 						</Link>
 					</>
 				) : (
-					<FormUpdateUser user={user as User} />
+					<>
+						<Link href={''} onClick={() => setEdit(!edit)}>&larr;Back</Link>
+						<FormUpdateUser user={user as User} />
+					</>
+
 				)}
 			</section>
 		</div>
