@@ -28,3 +28,11 @@ export class NotFoundError extends APIError {
 		super(StatusCodes.NOT_FOUND);
 	}
 }
+
+
+
+export class SessionNotFoundError extends APIError {
+	public constructor(message?: string) {
+		super(StatusCodes.NOT_FOUND, message);
+	}
+}

@@ -1,4 +1,3 @@
-import Centralize from '@/components/centralize';
 import UserProfile from '@/components/user-profile';
 import { ParamsProps } from '@/types';
 import { Metadata } from 'next';

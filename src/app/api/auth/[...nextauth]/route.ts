@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
 					await wait(WAITING_TIME);
 					const {
 						data: user,
-					} = await api.post<User>('/signin', { email, password });
+					} = await api.post<User>('/login', { email, password });
 					return user as any;
 				} catch (error) {
 					if (error instanceof UnauthorizedError) {

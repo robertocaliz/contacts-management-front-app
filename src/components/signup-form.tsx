@@ -78,7 +78,7 @@ export default function SignUpForm() {
 						type='password'
 						label='Confirm password:'
 						name='confirmPassword'
-						register={register}
+						//register={register}
 					/>
 				</main>
 				<footer>

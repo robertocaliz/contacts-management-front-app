@@ -10,7 +10,7 @@ export const POST = async (req: Request) => {
 	try {
 		const user = await req.json();
 		await wait(WAITING_TIME);
-		const { status } = await api.post('/users', user);
+		const { status } = await api.post('/signup', user);
 		console.log(status)
 		return NextResponse.json({ message: 'Account Created!' }, { status });
 	} catch (error) {
