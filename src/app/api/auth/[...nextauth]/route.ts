@@ -1,12 +1,13 @@
 
-import NextAuth from "next-auth/next";
-import api from "@/axios/axios-config";
-import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { WAITING_TIME } from "@/constants";
-import { User, UserCredentials } from "@/types";
-import { AuthenticationError, UnauthorizedError } from "@/lib/errors";
-import wait from "@/lib/wait";
+import NextAuth from 'next-auth/next';
+import api from '@/axios/axios-config';
+import { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { WAITING_TIME } from '@/constants';
+import { User, UserCredentials } from '@/types';
+import { AuthenticationError, UnauthorizedError } from '@/lib/errors';
+import wait from '@/lib/wait';
+
 
 
 export const authOptions: NextAuthOptions = {
@@ -20,13 +21,14 @@ export const authOptions: NextAuthOptions = {
 					const {
 						data: user,
 					} = await api.post<User>('/login', { email, password });
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					return user as any;
 				} catch (error) {
 					if (error instanceof UnauthorizedError) {
-						throw new AuthenticationError('Invalid e-mail or password');
+						throw new AuthenticationError('Email ou senha inválida.');
 					}
 					console.log(error);
-					throw new AuthenticationError('Error trying to authenticate user!');
+					throw new AuthenticationError('Erro de autenticação.');
 				}
 			}
 		}),
@@ -37,7 +39,7 @@ export const authOptions: NextAuthOptions = {
 				return {
 					...token,
 					...user
-				}
+				};
 			}
 			return token;
 		},
@@ -50,7 +52,7 @@ export const authOptions: NextAuthOptions = {
 					accessToken: token.accessToken
 
 				}
-			}
+			};
 		}
 	}
 };
