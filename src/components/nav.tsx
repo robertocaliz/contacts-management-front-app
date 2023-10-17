@@ -1,10 +1,10 @@
 'use client';
 
 import navStyles from '@/../styles/nav.module.css';
-import { useSession } from "next-auth/react";
+import { useSession } from 'next-auth/react';
 import {
 	ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, ProfileButton
-} from "./buttons.component";
+} from './buttons.component';
 import { User } from '@/types';
 import { BsPersonGear } from 'react-icons/bs';
 
@@ -19,7 +19,7 @@ export default function Nav() {
 			<section>
 				<ul>
 					<li>
-						<HomeButton />
+						<HomeButton href={session ? '/dashboard' : undefined} />
 					</li>
 					{session && (
 						<li>

@@ -62,7 +62,7 @@ export default function LoginForm() {
 					/>
 					<Input
 						type='password'
-						label='Password:'
+						label='Senha:'
 						name='password'
 						register={register}
 						error={errors.password?.message}

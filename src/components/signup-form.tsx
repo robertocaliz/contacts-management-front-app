@@ -76,7 +76,7 @@ export default function SignUpForm() {
 	return (
 		<Centralize>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<FormHeader text='Sign up' />
+				<FormHeader text='Cadastro' />
 				<main>
 					<Input
 						type='text'
