@@ -29,7 +29,7 @@ export default function SignUpForm() {
 		formState: { errors }
 	} = useForm<FormData>({
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		resolver: yupResolver(ValidationSchemas.USERS) as any
+		resolver: yupResolver(ValidationSchemas.users.SIGNUP) as any
 	});
 
 
