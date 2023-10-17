@@ -1,54 +1,76 @@
 'use client';
 
-import { User } from "@/types";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import Centralize from "./centralize";
-import FormHeader from "./form-header";
-import Input from "./input";
-import { SubmitButton } from "./buttons.component";
-import Link from "next/link";
-import { StatusCodes } from "http-status-codes";
-import Alerts from "@/lib/alerts";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import Centralize from './centralize';
+import FormHeader from './form-header';
+import Input from './input';
+import { SubmitButton } from './buttons.component';
+import Link from 'next/link';
+import { StatusCodes } from 'http-status-codes';
+import Alerts from '@/lib/alerts';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { User } from '@/types';
+import { ValidationSchemas } from '@/constants';
 
+
+interface FormData extends User {
+	confirmPassword?: string
+}
 
 
 export default function SignUpForm() {
 
-	const { register, handleSubmit, reset } = useForm<User>();
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors }
+	} = useForm<FormData>({
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		resolver: yupResolver(ValidationSchemas.USERS) as any
+	});
+
+
 	const [runSpinner, setRunSpinner] = useState(false);
 	const [disable, setDisable] = useState(true);
 	const { push } = useRouter();
 
+	const onSubmit: SubmitHandler<FormData> = (formData) => {
 
-	const onSubmit: SubmitHandler<User> = (user) => {
+		delete formData.confirmPassword;
+
 		setRunSpinner(true);
 		setDisable(true);
+
 		fetch('/api/users',
 			{
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(user)
+				body: JSON.stringify(formData)
 			})
-			.then(res => {
-				return (res.status === StatusCodes.CREATED) ? res.json() : Promise.resolve();
+			.then(async res => {
+				const resBody = await res.json();
+				return (res.status === StatusCodes.CREATED) ?
+					resBody :
+					Promise.reject(resBody);
 			})
-			.then(resBody => {
+			.then(() => {
 				reset();
-				Alerts.success(resBody.message);
+				Alerts.success('Conta criada com sucesso.');
 				return push('/login');
 			})
 			.catch(() => {
-				Alerts.error('Error while creating account!');
+				Alerts.error('Um erro ocorreu ao tentar criar a conta.');
 			})
 			.finally(() => {
 				setRunSpinner(false);
 				setDisable(false);
 			});
-	}
+	};
 
 
 	return (
@@ -58,36 +80,40 @@ export default function SignUpForm() {
 				<main>
 					<Input
 						type='text'
-						label='Name:'
+						label='Nome:'
 						name='name'
 						register={register}
+						error={errors.name?.message}
 					/>
 					<Input
-						type='email'
+						type='text'
 						label='Email:'
 						name='email'
 						register={register}
+						error={errors.email?.message}
 					/>
 					<Input
 						type='password'
-						label='Password'
+						label='Senha:'
 						name='password'
 						register={register}
+						error={errors.password?.message}
 					/>
 					<Input
 						type='password'
-						label='Confirm password:'
+						label='Confirmar senha:'
 						name='confirmPassword'
-						//register={register}
+						register={register}
+						error={errors.confirmPassword?.message}
 					/>
 				</main>
 				<footer>
 					<section>
 						<input
-							type="checkbox"
+							type='checkbox'
 							onChange={() => setDisable(!disable)}
 						/>
-						<span> I have read and agree to the <Link href='/terms-of-use'>Terms of Use.</Link></span>
+						<span> Eu li e concordo com os <Link href='/terms-of-use'>Termos de uso.</Link></span>
 					</section>
 					<SubmitButton
 						runSpinner={runSpinner}
@@ -99,5 +125,5 @@ export default function SignUpForm() {
 			</form>
 			<hr />
 		</Centralize>
-	)
+	);
 }

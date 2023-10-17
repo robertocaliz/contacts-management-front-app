@@ -4,5 +4,5 @@ export interface User {
 	email: string;
 	birthday: string;
 	password: string;
-	accessToken: string;
+	accessToken?: string;
 }

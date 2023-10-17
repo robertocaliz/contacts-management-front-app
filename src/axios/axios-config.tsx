@@ -14,7 +14,7 @@ const api = axios.create({
 
 
 api.interceptors.response.use(null, error => {
-	switch (error.response.status) {
+	switch (error.response?.status) {
 		case StatusCodes.UNAUTHORIZED: throw new UnauthorizedError('Access denied!');
 		case StatusCodes.NOT_FOUND: throw new NotFoundError('Resource not found!');
 	}

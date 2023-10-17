@@ -20,7 +20,8 @@ export default function TableContacts() {
 
 	const {
 		data,
-		isLoading
+		isLoading,
+		error
 	} = useFetch<Contact[]>('/api/contacts');
 
 
@@ -28,6 +29,8 @@ export default function TableContacts() {
 		setContacts(data ?? [])
 	}, [data])
 
+
+	if (error) return <h1>Error!</h1>;
 
 	if (isLoading) {
 		return <Spinner loading={true} text='Loading contacts...' />

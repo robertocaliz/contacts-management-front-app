@@ -13,16 +13,13 @@ import Input from "./input";
 import { BiPhone, BiMessage, BiIdCard } from 'react-icons/bi'
 
 
-export default function FormAddContact({
-	authenticatedUserId
-}: { authenticatedUserId: number }) {
+export default function FormAddContact() {
 
 	const { register, handleSubmit, reset } = useForm<Contact>();
 	const [runSpinner, setRunSpinner] = useState(false);
 	const [disable, setDisable] = useState(false);
 
 	const onSubmit: SubmitHandler<Contact> = (contact) => {
-		contact.createdBy = authenticatedUserId;
 		setRunSpinner(true);
 		setDisable(true);
 		fetch('/api/contacts',
