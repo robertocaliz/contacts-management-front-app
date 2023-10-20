@@ -1,15 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isPublicRoute } from './functions/is-public-route';
-import { checkIfUserIsAuthenticated } from './functions/session';
+import { checkIfUserIsAuthenticated } from './functions/session/auth';
 
 
 export default async function AuthMiddleware(req: NextRequest) {
 
+
 	const loginPage = new URL('/login', req.url);
 	const dashboardPage = new URL('/dashboard', req.url);
 
-	const isUserAuthenticated = await checkIfUserIsAuthenticated();
+
+	const isUserAuthenticated = await checkIfUserIsAuthenticated(req);
 	const route = req.nextUrl.pathname;
+
 
 	if (!isUserAuthenticated) {
 		if (isPublicRoute(route)) {

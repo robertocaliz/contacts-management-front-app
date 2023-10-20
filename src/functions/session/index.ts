@@ -16,9 +16,3 @@ export const getAcessToken = async () => {
 	return session?.user?.accessToken;
 };
 
-
-
-export const checkIfUserIsAuthenticated = async () => {
-	const session = await getServerSession(authOptions);
-	return !!session;
-};
