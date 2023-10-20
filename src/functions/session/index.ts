@@ -8,3 +8,10 @@ export const getUserData = async() => {
 	const session = await getServerSession(authOptions);
 	return session?.user as User;
 };
+
+
+
+export const getAcessToken = async () => {
+	const session = await getServerSession(authOptions);
+	return session?.user?.accessToken;
+};

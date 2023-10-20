@@ -1,4 +1,5 @@
-import { getAcessToken } from '@/functions';
+
+import { getAcessToken } from '@/functions/session';
 import { NotFoundError, UnauthorizedError } from '@/lib/errors';
 import axios from 'axios';
 import { StatusCodes } from 'http-status-codes';
