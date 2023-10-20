@@ -52,7 +52,7 @@ export default function UserProfile({ userData }: { userData: User }) {
 				) : (
 					<>
 						<EditFormBackButton edit={edit} setEdit={setEdit} />
-						<FormUpdateUser user$={user as User} />
+						<FormUpdateUser userData={user as User} />
 					</>
 
 				)}
