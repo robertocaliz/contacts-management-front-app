@@ -12,7 +12,7 @@ import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 
-export default function FormUpdateUser({ user$ }: { user$: User }) {
+export default function FormUpdateUser({ userData }: { userData: User }) {
 	const { push } = useRouter();
 	const [runSpinner, setRunSpinner] = useState(false);
 	const [disableButton, setDisableButton] = useState(false);
@@ -29,14 +29,14 @@ export default function FormUpdateUser({ user$ }: { user$: User }) {
 
 
 	useEffect(() => {
-		if (user$) reset(user$);
-	}, [reset, user$]);
+		if (userData) reset(userData);
+	}, [reset, userData]);
 
 
 	const updateUserData: SubmitHandler<User> = (user) => {
 		setRunSpinner(true);
 		setDisableButton(true);
-		fetch(`/api/users/${user$.id}`,
+		fetch(`/api/users/${userData.id}`,
 			{
 				method: 'PUT',
 				headers: {

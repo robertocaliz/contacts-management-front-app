@@ -7,35 +7,20 @@ import FormUpdateUser from './form-update-user';
 import Image from 'next/image';
 import defaultProfileImage from '@/../public/images/default-profile-image.jpg';
 import { EditFormBackButton, EditUserButton } from './buttons.component';
-import { useUser } from '@/hooks';
-import Spinner from './spinner';
 
 
 
-export default function UserProfile({ userId }: { userId: number }) {
+export default function UserProfile({ userData }: { userData: User }) {
 
 
 	const [user, setUser] = useState<User>();
 	const [edit, setEdit] = useState(false);
 
-	const {
-		obj,
-		error,
-		isLoading
-	} = useUser(userId);
-
 
 	useEffect(() => {
-		setUser(obj);
-	}, [obj]);
+		setUser(userData);
+	}, [userData]);
 
-
-	if (isLoading) return <Spinner loading={isLoading} text='Loading user...' />;
-
-
-	if (error) {
-		return <h1>Errror!</h1>;
-	}
 
 	return (
 		<div className={userProfileStyles.container}>

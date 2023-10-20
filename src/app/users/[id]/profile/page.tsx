@@ -1,5 +1,5 @@
 import UserProfile from '@/components/user-profile';
-import { ParamsProps } from '@/types';
+import { getUserData } from '@/functions/session';
 import { Metadata } from 'next';
 
 
@@ -8,7 +8,9 @@ export const metadata: Metadata = {
 };
 
 
-export default function UserProfilePage({ params }: ParamsProps) {
-	const { id: userId } = params;
-	return (<UserProfile userId={userId} />);
+export default async function UserProfilePage() {
+
+	const userData = await getUserData();
+
+	return (<UserProfile userData={userData} />);
 }

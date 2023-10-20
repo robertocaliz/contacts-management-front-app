@@ -1,5 +1,5 @@
-import { Contact } from "@/types";
-import { useAny } from "./use-any";
+import { Contact } from '@/types';
+import { useAny } from './use-any';
 
 
 export const useContact = (contactId: number) => {
@@ -13,4 +13,4 @@ export const useContact = (contactId: number) => {
 		isLoading,
 		error
 	};
-}
+};
