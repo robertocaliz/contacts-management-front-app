@@ -1,4 +1,3 @@
-
 'use client';
 
 import Alerts from '@/lib/alerts';
@@ -12,7 +11,7 @@ import Input from './input';
 import { SubmitButton } from './buttons.component';
 import { UserCredentials } from '@/types';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ValidationSchemas } from '@/constants';
+import { LOGIN_SCHEMA } from '@/constants/validation-schemas';
 
 
 
@@ -24,15 +23,14 @@ export default function LoginForm() {
 		formState: { errors }
 	} = useForm<UserCredentials>({
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		resolver: yupResolver(ValidationSchemas.users.LOGIN) as any
+		resolver: yupResolver(LOGIN_SCHEMA) as any
 	});
 
 	const [runSpinner, setRunSpinner] = useState(false);
 	const [disable, setDisable] = useState(false);
 	const { push } = useRouter();
 
-
-	const onSubmit: SubmitHandler<UserCredentials> = async (credentials) => {
+	const loginUser: SubmitHandler<UserCredentials> = async (credentials) => {
 		setRunSpinner(true);
 		setDisable(true);
 		const response = await signIn('credentials', {
@@ -50,7 +48,7 @@ export default function LoginForm() {
 
 	return (
 		<Centralize>
-			<form onSubmit={handleSubmit(onSubmit)}>
+			<form onSubmit={handleSubmit(loginUser)}>
 				<FormHeader text='Login' />
 				<main>
 					<Input

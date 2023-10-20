@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 import footerStyles from '@/../styles/footer.module.css';
 
@@ -16,13 +16,13 @@ export default function Footer() {
 					</Link>
 				</li>
 				<li>
-					<Link href='/'>About</Link>
+					<Link href='/'>Sobre</Link>
 				</li>
 				<li>
-					<Link href='/'>Developer</Link>
+					<Link href='/'>Desenvolvedor</Link>
 				</li>
 				<li>
-					<Link href='/terms-of-use'>Terms of use</Link>
+					<Link href='/terms-of-use'>Termos de uso</Link>
 				</li>
 			</ul>
 		</footer>

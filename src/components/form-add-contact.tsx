@@ -1,25 +1,33 @@
-
 'use client';
 
-import Alerts from "@/lib/alerts";
-import { Contact } from "@/types";
-import { StatusCodes } from "http-status-codes";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import Centralize from "./centralize";
-import { ButtonBack, SubmitButton } from "./buttons.component";
-import FormHeader from "./form-header";
-import Input from "./input";
-import { BiPhone, BiMessage, BiIdCard } from 'react-icons/bi'
+import Alerts from '@/lib/alerts';
+import { Contact } from '@/types';
+import { StatusCodes } from 'http-status-codes';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import Centralize from './centralize';
+import { ButtonBack, SubmitButton } from './buttons.component';
+import FormHeader from './form-header';
+import Input from './input';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { CREATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
 
 
 export default function FormAddContact() {
 
-	const { register, handleSubmit, reset } = useForm<Contact>();
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors }
+	} = useForm<Contact>({
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		resolver: yupResolver(CREATE_CONTACT_SCHEMA) as any
+	});
 	const [runSpinner, setRunSpinner] = useState(false);
 	const [disable, setDisable] = useState(false);
 
-	const onSubmit: SubmitHandler<Contact> = (contact) => {
+	const createContact: SubmitHandler<Contact> = (contact) => {
 		setRunSpinner(true);
 		setDisable(true);
 		fetch('/api/contacts',
@@ -31,51 +39,55 @@ export default function FormAddContact() {
 				body: JSON.stringify(contact)
 			})
 			.then(res => {
-				return (res.status === StatusCodes.CREATED) ? res.json() : Promise.reject();
+				return (res.status === StatusCodes.CREATED) ?
+					res.json() :
+					Promise.reject();
 			})
 			.then(resBody => Alerts.success(resBody.message))
 			.catch(() => {
-				Alerts.error('Error while creating contact');
+				reset();
+				Alerts.error('Correu um erro!');
 			})
 			.finally(() => {
 				setRunSpinner(false);
 				setDisable(false);
-				reset();
+
 			});
-	}
+	};
 
 	return (
 		<>
 			<Centralize>
 				<ButtonBack />
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<FormHeader text='Add Contact' />
+				<form onSubmit={handleSubmit(createContact)}>
+					<FormHeader text='Adicionar' />
 					<Input
 						type='text'
 						name='name'
-						label='Name:'
+						label='Nome:'
 						register={register}
-						startAdornment={<BiIdCard />}
+						error={errors.name?.message}
 					/>
 					<Input
 						type='email'
 						name='email'
 						label='Email:'
 						register={register}
-						startAdornment={<BiMessage />}
+						error={errors.email?.message}
 					/>
 					<Input
 						type='text'
 						name='phoneNumber'
-						label='Phone number:'
+						label='Telefone/Telemóvel:'
 						register={register}
-						startAdornment={<BiPhone />}
+						error={errors.phoneNumber?.message}
+						startAdornment={'+258'}
 
 					/>
 					<SubmitButton
 						disable={disable}
 						runSpinner={runSpinner}
-						content='Create contact'
+						content='Criar contacto'
 						spinnerText='Creating...'
 					/>
 				</form>

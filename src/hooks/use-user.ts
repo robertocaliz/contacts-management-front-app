@@ -12,4 +12,4 @@ export const useUser = (userId: number) => {
 		error,
 		isLoading
 	};
-}
+};

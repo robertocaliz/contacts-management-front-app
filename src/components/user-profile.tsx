@@ -1,6 +1,5 @@
 'use client';
 
-import { useUser } from '@/hooks';
 import userProfileStyles from '@/../styles/user-profile.module.css';
 import { useEffect, useState } from 'react';
 import { User } from '@/types';
@@ -8,6 +7,9 @@ import FormUpdateUser from './form-update-user';
 import Image from 'next/image';
 import defaultProfileImage from '@/../public/images/default-profile-image.jpg';
 import { EditFormBackButton, EditUserButton } from './buttons.component';
+import { useUser } from '@/hooks';
+import Spinner from './spinner';
+
 
 
 export default function UserProfile({ userId }: { userId: number }) {
@@ -28,9 +30,12 @@ export default function UserProfile({ userId }: { userId: number }) {
 	}, [obj]);
 
 
-	if (isLoading) return <h1>Loading user...</h1>
-	if (error) throw new Error('Error');
+	if (isLoading) return <Spinner loading={isLoading} text='Loading user...' />;
 
+
+	if (error) {
+		return <h1>Errror!</h1>;
+	}
 
 	return (
 		<div className={userProfileStyles.container}>
@@ -48,7 +53,7 @@ export default function UserProfile({ userId }: { userId: number }) {
 			<section>
 				{!edit ? (
 					<>
-						<h1>User Data</h1>
+						<h1>Dados do utilizador</h1>
 						<p>
 							<span>Name</span>
 							<span>{user?.name}</span>
@@ -57,16 +62,12 @@ export default function UserProfile({ userId }: { userId: number }) {
 							<span>Email</span>
 							<span>{user?.email}</span>
 						</p>
-						<p>
-							<span>Birthday</span>
-							<span>{user?.birthday}</span>
-						</p>
 						<EditUserButton edit={edit} setEdit={setEdit} />
 					</>
 				) : (
 					<>
 						<EditFormBackButton edit={edit} setEdit={setEdit} />
-						<FormUpdateUser user={user as User} />
+						<FormUpdateUser user$={user as User} />
 					</>
 
 				)}

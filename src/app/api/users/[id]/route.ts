@@ -1,25 +1,38 @@
-import api from '@/axios/axios-config';
-import { WAITING_TIME } from '@/constants';
+import api from '@/lib/axios/axios-config';
 import { NotFoundError } from '@/lib/errors';
-import wait from '@/lib/wait';
 import { ParamsProps } from '@/types';
-import { StatusCodes } from 'http-status-codes';
 import { NextResponse } from 'next/server';
 
 
 
+let userId: number;
+
+
+
 export const GET = async (req: Request, { params }: ParamsProps) => {
-	const userId = params.id;
+	userId = params.id;
 	try {
-		await wait(WAITING_TIME);
 		const { data: user, status } = await api.get(`/users/${userId}`);
 		return NextResponse.json(user, { status });
 	} catch (error) {
+		console.log(error);
 		if (error instanceof NotFoundError) {
-			return NextResponse.json({ error: 'User not found!' }, { status: error.status })
+			return NextResponse.json({ error: 'Usuário não encontrado!' }, { status: error.status });
 		}
-		return NextResponse.json(
-			{},
-			{ status: StatusCodes.INTERNAL_SERVER_ERROR });
+		throw error;
+	}
+};
+
+
+
+export const PUT = async (req: Request, { params }: ParamsProps) => {
+	userId = params.id;
+	const user = await req.json();
+	try {
+		const { status } = await api.put(`/users/${userId}`, user);
+		return NextResponse.json({ message: 'Usuário actualizado!' }, { status });
+	} catch (error) {
+		console.log(error);
+		throw error;
 	}
 };

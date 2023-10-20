@@ -1,5 +1,4 @@
-import api from '@/axios/axios-config';
-import { StatusCodes } from 'http-status-codes';
+import api from '@/lib/axios/axios-config';
 import { NextResponse } from 'next/server';
 
 
@@ -9,9 +8,7 @@ export const POST = async (req: Request) => {
 		const { status } = await api.post('/signup', user);
 		return NextResponse.json({}, { status });
 	} catch (error) {
-		return NextResponse.json(
-			{},
-			{ status: StatusCodes.INTERNAL_SERVER_ERROR }
-		);
+		console.log(error);
+		throw error;
 	}
 };

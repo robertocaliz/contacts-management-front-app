@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 
 type CentralizeProps = {
@@ -15,5 +15,5 @@ export default function Centralize({ children, maxWidth = '500px' }: CentralizeP
 		}}>
 			{children}
 		</div>
-	)
+	);
 }

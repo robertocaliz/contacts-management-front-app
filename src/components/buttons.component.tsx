@@ -133,7 +133,7 @@ export const ProfileButton = ({ content, userId }: ProfileButtonProps) => {
 };
 
 
-export const ButtonAdd = ({ href, text = 'Add' }: AddButtons) => {
+export const ButtonAdd = ({ href, text = 'Adicionar' }: AddButtons) => {
 	return (
 		<Link
 			href={!href ? ('/contacts/add') : (href)}
@@ -173,7 +173,7 @@ export const SubmitButton = ({
 export const ButtonBack = () => {
 	const { back } = useRouter();
 	return (
-		<Link href='' onClick={() => back()}>&larr;Back</Link>
+		<Link href='' onClick={() => back()}>&larr;Voltar</Link>
 	);
 };
 

@@ -1,13 +1,13 @@
 import { ButtonAdd, ButtonBack } from '@/components/buttons.component';
 import utilsStyles from '@/../styles/utils.module.css';
 import Input from '@/components/input';
-import { BiSearch } from 'react-icons/bi'
+import { BiSearch } from 'react-icons/bi';
 import TableContacts from '@/components/table-contacts';
 import { Metadata } from 'next';
 
 
-export const metadata:Metadata = {
-	title: 'Contacts'
+export const metadata: Metadata = {
+	title: 'Contatos'
 };
 
 
@@ -28,5 +28,5 @@ export default function ContactsPage() {
 				<TableContacts />
 			</section>
 		</>
-	)
+	);
 }

@@ -4,8 +4,8 @@ import { UseFormRegister } from 'react-hook-form';
 import { TbInfoTriangle } from 'react-icons/tb';
 
 type InputProps = {
-	startAdornment?: ReactNode;
-	endAdornment?: ReactNode;
+	startAdornment?: ReactNode | string;
+	endAdornment?: ReactNode | string;
 	label?: string;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	register?: UseFormRegister<any>,

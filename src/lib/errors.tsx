@@ -1,9 +1,9 @@
-import { StatusCodes } from "http-status-codes";
+import { StatusCodes } from 'http-status-codes';
 
 
 export class APIError extends Error {
-	public status: number;
-	public constructor(status: number, message?: string) {
+	public status?: number;
+	public constructor(status?: number, message?: string) {
 		super(message);
 		this.status = status;
 	}
@@ -25,7 +25,7 @@ export class UnauthorizedError extends APIError {
 
 export class NotFoundError extends APIError {
 	public constructor(message?: string) {
-		super(StatusCodes.NOT_FOUND);
+		super(StatusCodes.NOT_FOUND, message);
 	}
 }
 

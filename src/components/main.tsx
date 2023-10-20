@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 type MainProps = {
 	children: ReactNode;
@@ -15,5 +15,5 @@ export default function Main({ children, margin = '2rem' }: MainProps) {
 		}>
 			{children}
 		</div>
-	)
+	);
 }

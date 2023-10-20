@@ -1,4 +1,3 @@
-
 'use client';
 
 
@@ -26,19 +25,22 @@ export default function TableContacts() {
 
 
 	useEffect(() => {
-		setContacts(data ?? [])
-	}, [data])
+		setContacts(data);
+	}, [data]);
 
 
-	if (error) return <h1>Error!</h1>;
+	if (error) {
+		return <h1>Error!</h1>;
+	}
+
 
 	if (isLoading) {
-		return <Spinner loading={true} text='Loading contacts...' />
+		return <Spinner loading={true} text='Loading contacts...' />;
 	}
 
 	const removeContactFromTable = (contactId: number) => {
 		setContacts(contacts.filter(contact => contact.id !== contactId));
-	}
+	};
 
 	const handleDelete = async (e: FormEvent, contactId: number) => {
 		e.preventDefault();
@@ -53,13 +55,13 @@ export default function TableContacts() {
 			return;
 		}
 		Alerts.error(body.message);
-	}
+	};
 
 
 	const handleUpdate = (e: FormEvent, contactId: number) => {
 		e.preventDefault();
 		push(`/contacts/${contactId}/update`);
-	}
+	};
 
 	return (
 		<div className={tableContactsStyles.tableContainer}>
@@ -67,9 +69,9 @@ export default function TableContacts() {
 				<thead>
 					<tr className={tableContactsStyles.headerRow}>
 						<th>ID</th>
-						<th>Name</th>
+						<th>Nome</th>
 						<th>Email</th>
-						<th>Phone number</th>
+						<th>Telefone/Telemóvel</th>
 						<th></th>
 						<th></th>
 					</tr>
@@ -92,5 +94,5 @@ export default function TableContacts() {
 				</tbody>
 			</table>
 		</div >
-	)
+	);
 }

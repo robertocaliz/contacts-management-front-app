@@ -15,4 +15,4 @@ export default function Spinner({ loading, text }: SpinnerProps) {
 			{text && <span>{text}</span>}
 		</div>
 	);
-};
+}

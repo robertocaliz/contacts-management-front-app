@@ -1,13 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import NextAuth from 'next-auth/next';
-import api from '@/axios/axios-config';
+import api from '@/lib/axios/axios-config';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { WAITING_TIME } from '@/constants';
 import { User, UserCredentials } from '@/types';
 import { AuthenticationError, UnauthorizedError } from '@/lib/errors';
-import wait from '@/lib/wait';
-
 
 
 export const authOptions: NextAuthOptions = {
@@ -17,7 +15,6 @@ export const authOptions: NextAuthOptions = {
 			async authorize(credentials) {
 				const { email, password } = credentials as UserCredentials;
 				try {
-					await wait(WAITING_TIME);
 					const {
 						data: user,
 					} = await api.post<User>('/login', { email, password });

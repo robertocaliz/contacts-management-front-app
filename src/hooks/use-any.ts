@@ -1,3 +1,4 @@
+
 import { StatusCodes } from 'http-status-codes';
 import { useEffect, useState } from 'react';
 
@@ -10,22 +11,24 @@ export const useAny = <T>(url: string) => {
 	const [obj, setObj] = useState<T>();
 	const [error, setError] = useState<Error>();
 	const [isLoading, setIsLoading] = useState(true);
-	const loadAny = () => {
+	useEffect(() => {
 		fetch(url,
 			{
-				method: 'GET',
+				method: 'GET'
 			})
-			.then(res => {
-				return (res.status === StatusCodes.OK) ? res.json() : Promise.reject(res.json());
+			.then(async (res) => {
+				const resBody = await res.json();
+				return (res.status === StatusCodes.OK) ?
+					resBody :
+					Promise.reject(resBody);
 			})
 			.then(obj => setObj(obj))
 			.catch(error => setError(error))
 			.finally(() => setIsLoading(false));
-	}
-	useEffect(loadAny, [url]);
+	}, [url]);
 	return {
 		obj,
 		error,
 		isLoading
 	};
-}
+};

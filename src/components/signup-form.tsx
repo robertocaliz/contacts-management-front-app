@@ -12,12 +12,12 @@ import { StatusCodes } from 'http-status-codes';
 import Alerts from '@/lib/alerts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { User } from '@/types';
-import { ValidationSchemas } from '@/constants';
+import { SIGNUP_SCHEMA } from '@/constants/validation-schemas';
 
 
-interface FormData extends User {
+type AccountData = {
 	confirmPassword?: string
-}
+} & User;
 
 
 export default function SignUpForm() {
@@ -27,9 +27,9 @@ export default function SignUpForm() {
 		handleSubmit,
 		reset,
 		formState: { errors }
-	} = useForm<FormData>({
+	} = useForm<AccountData>({
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		resolver: yupResolver(ValidationSchemas.users.SIGNUP) as any
+		resolver: yupResolver(SIGNUP_SCHEMA) as any
 	});
 
 
@@ -37,9 +37,9 @@ export default function SignUpForm() {
 	const [disable, setDisable] = useState(true);
 	const { push } = useRouter();
 
-	const onSubmit: SubmitHandler<FormData> = (formData) => {
+	const createAccount: SubmitHandler<AccountData> = (AccountData) => {
 
-		delete formData.confirmPassword;
+		delete AccountData['confirmPassword'];
 
 		setRunSpinner(true);
 		setDisable(true);
@@ -50,7 +50,7 @@ export default function SignUpForm() {
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(formData)
+				body: JSON.stringify(AccountData)
 			})
 			.then(async res => {
 				const resBody = await res.json();
@@ -61,7 +61,7 @@ export default function SignUpForm() {
 			.then(() => {
 				reset();
 				Alerts.success('Conta criada com sucesso.');
-				return push('/login');
+				push('/login');
 			})
 			.catch(() => {
 				Alerts.error('Um erro ocorreu ao tentar criar a conta.');
@@ -75,7 +75,7 @@ export default function SignUpForm() {
 
 	return (
 		<Centralize>
-			<form onSubmit={handleSubmit(onSubmit)}>
+			<form onSubmit={handleSubmit(createAccount)}>
 				<FormHeader text='Cadastro' />
 				<main>
 					<Input
@@ -113,7 +113,7 @@ export default function SignUpForm() {
 							type='checkbox'
 							onChange={() => setDisable(!disable)}
 						/>
-						<span> Eu li e concordo com os <Link href='/terms-of-use'>Termos de uso.</Link></span>
+						<span> Li e estou de acordo com os <Link href='/terms-of-use'>Termos de uso.</Link></span>
 					</section>
 					<SubmitButton
 						runSpinner={runSpinner}

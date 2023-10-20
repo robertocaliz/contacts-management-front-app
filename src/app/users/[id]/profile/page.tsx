@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 
 
 export const metadata: Metadata = {
-	title: 'User profile'
+	title: 'Perfíl do utilizador'
 };
 
 
