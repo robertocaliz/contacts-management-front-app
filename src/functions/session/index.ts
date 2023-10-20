@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 
 
 
-export const getUserData = async() => {
+export const getUserData = async () => {
 	const session = await getServerSession(authOptions);
 	return session?.user as User;
 };
@@ -14,4 +14,11 @@ export const getUserData = async() => {
 export const getAcessToken = async () => {
 	const session = await getServerSession(authOptions);
 	return session?.user?.accessToken;
+};
+
+
+
+export const checkIfUserIsAuthenticated = async () => {
+	const session = await getServerSession(authOptions);
+	return !!session;
 };
