@@ -71,7 +71,7 @@ export default function LoginForm() {
 						disable={disable}
 						runSpinner={runSpinner}
 						content='login'
-						spinnerText='Authenticating...'
+						spinnerText='Autenticando...'
 					/>
 				</footer>
 			</form>

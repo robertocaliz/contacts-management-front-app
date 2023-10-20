@@ -27,7 +27,7 @@ export default function FormUpdateUser({ userData }: { userData: User }) {
 		resolver: yupResolver(UPDATE_USER_SCHEMA) as any
 	});
 
-
+	
 	useEffect(() => {
 		if (userData) reset(userData);
 	}, [reset, userData]);
@@ -83,7 +83,7 @@ export default function FormUpdateUser({ userData }: { userData: User }) {
 			/>
 			<SubmitButton
 				runSpinner={runSpinner}
-				spinnerText='Updating user...'
+				spinnerText='Actualizando...'
 				disable={disableButton}
 				content='Actualizar usuário'
 			/>

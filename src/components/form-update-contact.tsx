@@ -113,7 +113,7 @@ export default function FormUpdateContact({ contactId }: { contactId: number }) 
 						disable={disable}
 						runSpinner={runSpinner}
 						content='Actualizar contacto'
-						spinnerText='Updating...'
+						spinnerText='Actualizando...'
 					/>
 				</form>
 				<hr />

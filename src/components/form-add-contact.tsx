@@ -15,6 +15,11 @@ import { CREATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
 
 export default function FormAddContact() {
 
+	
+	const [runSpinner, setRunSpinner] = useState(false);
+	const [disable, setDisable] = useState(false);
+
+
 	const {
 		register,
 		handleSubmit,
@@ -24,8 +29,7 @@ export default function FormAddContact() {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		resolver: yupResolver(CREATE_CONTACT_SCHEMA) as any
 	});
-	const [runSpinner, setRunSpinner] = useState(false);
-	const [disable, setDisable] = useState(false);
+
 
 	const createContact: SubmitHandler<Contact> = (contact) => {
 		setRunSpinner(true);
@@ -55,6 +59,7 @@ export default function FormAddContact() {
 			});
 	};
 
+	
 	return (
 		<>
 			<Centralize>
@@ -88,7 +93,7 @@ export default function FormAddContact() {
 						disable={disable}
 						runSpinner={runSpinner}
 						content='Criar contacto'
-						spinnerText='Creating...'
+						spinnerText='Criando...'
 					/>
 				</form>
 				<hr />
