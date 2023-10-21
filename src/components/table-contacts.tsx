@@ -25,7 +25,7 @@ export default function TableContacts() {
 
 
 	useEffect(() => {
-		setContacts(data);
+		if(data) setContacts(data);
 	}, [data]);
 
 

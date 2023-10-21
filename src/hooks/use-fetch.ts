@@ -12,7 +12,7 @@ export const useFetch = <Data = unknown>(url: string,) => {
 	});
 
 	return {
-		data: data ?? [],
+		data: data,
 		isLoading,
 		error
 	};
