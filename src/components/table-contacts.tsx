@@ -35,7 +35,7 @@ export default function TableContacts() {
 
 
 	if (isLoading) {
-		return <Spinner loading={true} text='Loading contacts...' />;
+		return <Spinner loading={isLoading} text='Loading contacts...' />;
 	}
 
 	const removeContactFromTable = (contactId: number) => {

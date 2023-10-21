@@ -6,14 +6,6 @@
 	gap: 1rem;
 }
 
-.flexRowCenter {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 1rem;
-}
-
-
 
 .buttonAdd {
 	background-color: #fff;

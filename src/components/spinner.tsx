@@ -1,6 +1,7 @@
 
 import ClipLoader from 'react-spinners/ClipLoader';
-import utilsStyles from '@/../styles/utils.module.css';
+import { CSSProperties } from 'react';
+
 
 
 type SpinnerProps = {
@@ -8,10 +9,20 @@ type SpinnerProps = {
 	text?: string;
 }
 
+
+
+const spinnerStyles: CSSProperties = {
+	display: 'flex',
+	flexDirection: 'row',
+	alignItems: 'center',
+	gap: '1rem'
+};
+
+
 export default function Spinner({ loading, text }: SpinnerProps) {
 	return (
-		<div className={utilsStyles.flexRowCenter}>
-			<ClipLoader color="#52bfd9" size={20} loading={loading} />
+		<div style={spinnerStyles}>
+			<ClipLoader color=" #0070f3" size={20} loading={loading} />
 			{text && <span>{text}</span>}
 		</div>
 	);
