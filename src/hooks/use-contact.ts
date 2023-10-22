@@ -7,7 +7,7 @@ export const useContact = (contactId: number) => {
 		obj: contact,
 		isLoading,
 		error
-	} = useAny<Contact>(`/api/contacts/${contactId}`);
+	} = useAny<Contact>(`/contacts/${contactId}`);
 	return {
 		contact,
 		isLoading,

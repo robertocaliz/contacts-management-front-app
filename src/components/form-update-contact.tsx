@@ -4,7 +4,6 @@
 import { Contact } from '@/types';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { StatusCodes } from 'http-status-codes';
 import Alerts from '@/lib/alerts';
 import Spinner from './spinner';
 import { useRouter } from 'next/navigation';
@@ -15,6 +14,7 @@ import Input from './input';
 import { useContact } from '@/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UPDATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
+import { ContactsProvider } from '@/lib/providers/contacts';
 
 
 export default function FormUpdateContact({ contactId }: { contactId: number }) {
@@ -41,6 +41,7 @@ export default function FormUpdateContact({ contactId }: { contactId: number }) 
 		isLoading
 	} = useContact(contactId);
 
+
 	useEffect(() => {
 		reset(contact);
 	}, [contact, reset]);
@@ -48,32 +49,24 @@ export default function FormUpdateContact({ contactId }: { contactId: number }) 
 
 	if (isLoading) return <Spinner loading={isLoading} text='Loading contact...' />;
 
-	if (error) return <h1>Error!</h1>;
+
+	if (error) {
+		return <h1>Error!</h1>;
+	}
 
 
-	const updateContact: SubmitHandler<Contact> = (contact) => {
+	const updateContact: SubmitHandler<Contact> = async (contact) => {
 		setRunSpinner(true);
 		setDisable(true);
-		fetch(`/api/contacts/${contactId}`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(contact)
-			})
-			.then(res => {
-				return (res.status === StatusCodes.OK) ?
-					res.json() :
-					Promise.reject();
-			})
-			.then(resBody => {
+		await ContactsProvider
+			.update(contact, contactId)
+			.then(() => {
 				reset();
 				back();
-				Alerts.success(resBody.message);
+				Alerts.success('Contacto actualizado.');
 			})
 			.catch(() => {
-				Alerts.error('Error loading contact');
+				Alerts.error('Ocorreu um erro.');
 			})
 			.finally(() => {
 				setRunSpinner(false);

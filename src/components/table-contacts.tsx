@@ -3,13 +3,13 @@
 
 import tableContactsStyles from '@/../styles/contact-table.module.css';
 import { useFetch } from '@/hooks';
-import { Contact } from '@/types';
+import { Contact, Id } from '@/types';
 import Spinner from './spinner';
 import { FormEvent, useEffect, useState } from 'react';
 import { DeleteButton, UpdateButton } from './buttons.component';
-import { StatusCodes } from 'http-status-codes';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
+import { ContactsProvider } from '@/lib/providers/contacts';
 
 
 
@@ -37,27 +37,26 @@ export default function TableContacts() {
 		return <Spinner loading={isLoading} text='Loading contacts...' />;
 	}
 
-	const removeContactFromTable = (contactId: number) => {
+	const removeContactFromTable = (contactId: Id) => {
 		setContacts(contacts.filter(contact => contact.id !== contactId));
 	};
 
-	const handleDelete = async (e: FormEvent, contactId: number) => {
+
+	const handleDelete = async (e: FormEvent, contactId: Id) => {
 		e.preventDefault();
-		const response = await fetch(`/api/contacts/${contactId}`,
-			{
-				method: 'DELETE'
+		await ContactsProvider
+			.del(contactId)
+			.then(() => {
+				removeContactFromTable(contactId);
+				Alerts.success('Contacto apagado.');
+			})
+			.catch(() => {
+				Alerts.error('Ocorreu um erro.');
 			});
-		const body = await response.json();
-		if (response.status === StatusCodes.OK) {
-			removeContactFromTable(contactId);
-			Alerts.success(body.message);
-			return;
-		}
-		Alerts.error(body.message);
 	};
 
 
-	const handleUpdate = (e: FormEvent, contactId: number) => {
+	const handleUpdate = (e: FormEvent, contactId: Id) => {
 		e.preventDefault();
 		push(`/contacts/${contactId}/update`);
 	};

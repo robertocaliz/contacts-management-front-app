@@ -8,11 +8,11 @@ import FormHeader from './form-header';
 import Input from './input';
 import { SubmitButton } from './buttons.component';
 import Link from 'next/link';
-import { StatusCodes } from 'http-status-codes';
 import Alerts from '@/lib/alerts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { User } from '@/types';
 import { SIGNUP_SCHEMA } from '@/constants/validation-schemas';
+import { UsersProvider } from '@/lib/providers/users';
 
 
 type AccountData = {
@@ -37,39 +37,26 @@ export default function SignUpForm() {
 	const [disable, setDisable] = useState(true);
 	const { push } = useRouter();
 
-	const createAccount: SubmitHandler<AccountData> = (AccountData) => {
-
+	
+	const createAccount: SubmitHandler<AccountData> = async (AccountData) => {
 		delete AccountData['confirmPassword'];
-
 		setRunSpinner(true);
 		setDisable(true);
-
-		fetch('/api/users',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(AccountData)
-			})
-			.then(async res => {
-				const resBody = await res.json();
-				return (res.status === StatusCodes.CREATED) ?
-					resBody :
-					Promise.reject(resBody);
-			})
+		await UsersProvider
+			.create(AccountData)
 			.then(() => {
 				reset();
 				Alerts.success('Conta criada com sucesso.');
 				push('/login');
 			})
 			.catch(() => {
-				Alerts.error('Um erro ocorreu ao tentar criar a conta.');
+				Alerts.error('Ocorreu um erro.');
 			})
 			.finally(() => {
 				setRunSpinner(false);
 				setDisable(false);
 			});
+
 	};
 
 

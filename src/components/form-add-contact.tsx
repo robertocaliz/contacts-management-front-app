@@ -2,7 +2,6 @@
 
 import Alerts from '@/lib/alerts';
 import { Contact } from '@/types';
-import { StatusCodes } from 'http-status-codes';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Centralize from './centralize';
@@ -11,11 +10,12 @@ import FormHeader from './form-header';
 import Input from './input';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CREATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
+import { ContactsProvider } from '@/lib/providers/contacts';
 
 
 export default function FormAddContact() {
 
-	
+
 	const [runSpinner, setRunSpinner] = useState(false);
 	const [disable, setDisable] = useState(false);
 
@@ -31,35 +31,25 @@ export default function FormAddContact() {
 	});
 
 
-	const createContact: SubmitHandler<Contact> = (contact) => {
+	const createContact: SubmitHandler<Contact> = async (contact) => {
 		setRunSpinner(true);
 		setDisable(true);
-		fetch('/api/contacts',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(contact)
-			})
-			.then(res => {
-				return (res.status === StatusCodes.CREATED) ?
-					res.json() :
-					Promise.reject();
-			})
-			.then(resBody => Alerts.success(resBody.message))
-			.catch(() => {
+		await ContactsProvider
+			.create(contact)
+			.then(() => {
 				reset();
-				Alerts.error('Correu um erro!');
+				Alerts.success('Contacto criado.');
+			})
+			.catch(() => {
+				Alerts.error('Ocorreu um erro.');
 			})
 			.finally(() => {
 				setRunSpinner(false);
 				setDisable(false);
-
 			});
 	};
 
-	
+
 	return (
 		<>
 			<Centralize>

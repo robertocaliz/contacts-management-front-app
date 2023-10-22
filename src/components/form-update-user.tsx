@@ -6,10 +6,10 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UPDATE_USER_SCHEMA } from '@/constants/validation-schemas';
-import { StatusCodes } from 'http-status-codes';
 import Alerts from '@/lib/alerts';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { UsersProvider } from '@/lib/providers/users';
 
 
 export default function FormUpdateUser({ userData }: { userData: User }) {
@@ -27,35 +27,26 @@ export default function FormUpdateUser({ userData }: { userData: User }) {
 		resolver: yupResolver(UPDATE_USER_SCHEMA) as any
 	});
 
-	
+
 	useEffect(() => {
 		if (userData) reset(userData);
 	}, [reset, userData]);
 
 
-	const updateUserData: SubmitHandler<User> = (user) => {
+	const updateUserData: SubmitHandler<User> = async (user) => {
 		setRunSpinner(true);
 		setDisableButton(true);
-		fetch(`/api/users/${userData.id}`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(user)
-			})
-			.then(res => {
-				return (res.status === StatusCodes.OK) ?
-					res.json() :
-					Promise.resolve();
-			})
-			.then(resBody => {
-				Alerts.success(resBody.message);
+		delete user.accessToken;
+		delete user.refreshToken;
+		await UsersProvider
+			.update(user, userData.id)
+			.then(() => {
+				Alerts.success('Dados actualizados.');
 				signOut({ redirect: false })
 					.then(() => push('/login'));
 			})
-			.catch(error => {
-				Alerts.error(error.message);
+			.catch(() => {
+				Alerts.error('Ocorreu um erro.');
 			})
 			.finally(() => {
 				setRunSpinner(false);
