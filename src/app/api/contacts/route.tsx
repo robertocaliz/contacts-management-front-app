@@ -1,11 +1,12 @@
-import api from '@/lib/axios/axios-config';
+import { apiAuth } from '@/lib/axios/auth';
 import { NextResponse } from 'next/server';
+
 
 
 export const POST = async (req: Request) => {
 	const contact = await req.json();
 	try {
-		const { status } = await api.post('/contacts', contact);
+		const { status } = await apiAuth.post('/contacts', contact);
 		return NextResponse.json(
 			{ message: 'Contact created!' }, { status }
 		);
@@ -18,7 +19,7 @@ export const POST = async (req: Request) => {
 
 export const GET = async () => {
 	try {
-		const { data: contacts, status } = await api.get('/contacts');
+		const { data: contacts, status } = await apiAuth.get('/contacts');
 		return NextResponse.json(contacts, { status });
 	} catch (error) {
 		console.log(error);

@@ -1,4 +1,4 @@
-import api from '@/lib/axios/axios-config';
+import api from '@/lib/axios';
 import { NextResponse } from 'next/server';
 
 

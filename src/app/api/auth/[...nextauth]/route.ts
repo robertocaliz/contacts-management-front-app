@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import NextAuth from 'next-auth/next';
-import api from '@/lib/axios/axios-config';
+import axiosPublic from '@/lib/axios';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { User, UserCredentials } from '@/types';
@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
 				try {
 					const {
 						data: user,
-					} = await api.post<User>('/login', { email, password });
+					} = await axiosPublic.post<User>('/login', { email, password });
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					return user as any;
 				} catch (error) {
@@ -31,7 +31,14 @@ export const authOptions: NextAuthOptions = {
 		}),
 	],
 	callbacks: {
-		async jwt({ token, user, session }) {
+		async jwt({ token, user, trigger, session }) {
+			console.log(session);
+			if (trigger === 'update') {
+				return {
+					...token,
+					...session.user
+				};
+			}
 			if (user) {
 				return {
 					...token,
@@ -46,8 +53,8 @@ export const authOptions: NextAuthOptions = {
 				user: {
 					...session.user,
 					id: token.id,
-					accessToken: token.accessToken
-
+					accessToken: token.accessToken,
+					refreshToken: token.refreshToken
 				}
 			};
 		}

@@ -21,18 +21,17 @@ export default function TableContacts() {
 		data,
 		isLoading,
 		error
-	} = useFetch<Contact[]>('/api/contacts');
+	} = useFetch<Contact[]>('/contacts');
 
 
 	useEffect(() => {
-		if(data) setContacts(data);
+		if (data) setContacts(data);
 	}, [data]);
 
 
 	if (error) {
 		return <h1>Error!</h1>;
 	}
-
 
 	if (isLoading) {
 		return <Spinner loading={isLoading} text='Loading contacts...' />;

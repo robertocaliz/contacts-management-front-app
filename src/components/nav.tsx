@@ -13,7 +13,7 @@ export default function Nav() {
 
 	const { data: session } = useSession();
 	const user = session?.user as User;
-
+	
 	return (
 		<nav className={navStyles.nav} >
 			<section>
