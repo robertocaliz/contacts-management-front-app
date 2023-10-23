@@ -3,17 +3,24 @@ import FormHeader from './form-header';
 import Input from './input';
 import { SubmitButton } from './buttons.component';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UPDATE_USER_SCHEMA } from '@/constants/validation-schemas';
 import Alerts from '@/lib/alerts';
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { UsersProvider } from '@/lib/providers/users';
+import { updateSession } from '@/functions/update-session';
 
 
-export default function FormUpdateUser({ userData }: { userData: User }) {
-	const { push } = useRouter();
+export default function FormUpdateUser({
+	userData,
+	setUserData,
+	setEditUserData
+}: {
+	userData: User,
+	setUserData: Dispatch<SetStateAction<User | undefined>>,
+	setEditUserData: Dispatch<SetStateAction<boolean>>
+}) {
+
 	const [runSpinner, setRunSpinner] = useState(false);
 	const [disableButton, setDisableButton] = useState(false);
 
@@ -33,17 +40,18 @@ export default function FormUpdateUser({ userData }: { userData: User }) {
 	}, [reset, userData]);
 
 
-	const updateUserData: SubmitHandler<User> = async (user) => {
+	const updateUserData: SubmitHandler<User> = async (newUserData) => {
 		setRunSpinner(true);
 		setDisableButton(true);
-		delete user.accessToken;
-		delete user.refreshToken;
+		delete newUserData.accessToken;
+		delete newUserData.refreshToken;
 		await UsersProvider
-			.update(user, userData.id)
-			.then(() => {
+			.update(newUserData, userData.id)
+			.then(async () => {
+				await updateSession(newUserData);
+				setUserData(newUserData);
+				setEditUserData(false);
 				Alerts.success('Dados actualizados.');
-				signOut({ redirect: false })
-					.then(() => push('/login'));
 			})
 			.catch(() => {
 				Alerts.error('Ocorreu um erro.');

@@ -10,15 +10,17 @@ import { EditFormBackButton, EditUserButton } from './buttons.component';
 
 
 
-export default function UserProfile({ userData }: { userData: User }) {
+export default function UserProfile({
+	userData
+}: { userData: User }) {
 
 
-	const [user, setUser] = useState<User>();
-	const [edit, setEdit] = useState(false);
+	const [userData_, setUserData] = useState<User>();
+	const [editUserData, setEditUserData] = useState(false);
 
 
 	useEffect(() => {
-		setUser(userData);
+		setUserData(userData);
 	}, [userData]);
 
 
@@ -36,23 +38,27 @@ export default function UserProfile({ userData }: { userData: User }) {
 				/>
 			</section>
 			<section>
-				{!edit ? (
+				{!editUserData ? (
 					<>
 						<h1>Dados do utilizador</h1>
 						<p>
 							<span>Name</span>
-							<span>{user?.name}</span>
+							<span>{userData_?.name}</span>
 						</p>
 						<p>
 							<span>Email</span>
-							<span>{user?.email}</span>
+							<span>{userData_?.email}</span>
 						</p>
-						<EditUserButton edit={edit} setEdit={setEdit} />
+						<EditUserButton edit={editUserData} setEdit={setEditUserData} />
 					</>
 				) : (
 					<>
-						<EditFormBackButton edit={edit} setEdit={setEdit} />
-						<FormUpdateUser userData={user as User} />
+						<EditFormBackButton edit={editUserData} setEdit={setEditUserData} />
+						<FormUpdateUser
+							userData={userData_ as User}
+							setUserData={setUserData}
+							setEditUserData={setEditUserData}
+						/>
 					</>
 
 				)}

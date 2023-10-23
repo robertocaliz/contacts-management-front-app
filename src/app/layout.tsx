@@ -8,7 +8,6 @@ import Footer from '@/components/footer';
 import Main from '@/components/main';
 import ProgressBar from '@/components/progress-bar';
 
-
 export default function RootLayout({
 	children,
 }: {
