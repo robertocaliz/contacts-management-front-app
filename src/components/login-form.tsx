@@ -12,7 +12,7 @@ import { SubmitButton } from './buttons.component';
 import { UserCredentials } from '@/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/constants/validation-schemas';
-
+import PasswordInput from './password-input';
 
 
 export default function LoginForm() {
@@ -58,8 +58,7 @@ export default function LoginForm() {
 						register={register}
 						error={errors.email?.message}
 					/>
-					<Input
-						type='password'
+					<PasswordInput
 						label='Senha:'
 						name='password'
 						register={register}

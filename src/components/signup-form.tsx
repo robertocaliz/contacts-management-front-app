@@ -13,6 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { User } from '@/types';
 import { SIGNUP_SCHEMA } from '@/constants/validation-schemas';
 import { UsersProvider } from '@/lib/providers/users';
+import PasswordInput from './password-input';
 
 
 type AccountData = {
@@ -37,7 +38,7 @@ export default function SignUpForm() {
 	const [disable, setDisable] = useState(true);
 	const { push } = useRouter();
 
-	
+
 	const createAccount: SubmitHandler<AccountData> = async (AccountData) => {
 		delete AccountData['confirmPassword'];
 		setRunSpinner(true);
@@ -79,15 +80,13 @@ export default function SignUpForm() {
 						register={register}
 						error={errors.email?.message}
 					/>
-					<Input
-						type='password'
+					<PasswordInput
 						label='Senha:'
 						name='password'
 						register={register}
 						error={errors.password?.message}
 					/>
-					<Input
-						type='password'
+					<PasswordInput
 						label='Confirmar senha:'
 						name='confirmPassword'
 						register={register}
