@@ -18,13 +18,11 @@ axiosPublic.interceptors.response.use(
 	(response) => response,
 	error => {
 		switch (error.response.status) {
-			case StatusCodes.UNAUTHORIZED: new UnauthorizedError('Access denied!');
-			case StatusCodes.NOT_FOUND: new NotFoundError('Resource not found!');
+			case StatusCodes.UNAUTHORIZED: throw new UnauthorizedError('Access denied!');
+			case StatusCodes.NOT_FOUND: throw new NotFoundError('Resource not found!');
 		}
 		return Promise.reject(error);
 	});
-
-
 
 
 
