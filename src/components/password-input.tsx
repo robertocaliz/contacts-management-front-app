@@ -54,9 +54,9 @@ export default function PasswordInput({
 						onClick={handleEyeClick}
 						className={inputStyles.adornment}>
 						{displayPassword ? (
-							<AiOutlineEyeInvisible />
+							<AiOutlineEyeInvisible title='ocultar senha' />
 						) : (
-							<AiOutlineEye />
+							<AiOutlineEye title='visualizar senha' />
 						)}
 					</span>
 				</div>
