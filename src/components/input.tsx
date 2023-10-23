@@ -20,6 +20,7 @@ export default function Input({
 	startAdornment,
 	endAdornment,
 	register,
+	onBlur,
 	error,
 	...rest
 }: InputProps) {
@@ -27,7 +28,7 @@ export default function Input({
 		<>
 			<div style={{ margin: '1rem 0' }}>
 				{label && <label htmlFor={label}>{label}</label>}
-				<div className={inputStyles.inputContainer} style={error ? { border: '1px solid tomato' } : {}}>
+				<div className={inputStyles.inputContainer} style={error ? { border: '2px solid tomato' } : {}} onBlur={onBlur}>
 					{startAdornment && <span className={inputStyles.adornment}>{startAdornment}</span>}
 					<input {...rest} id={label} name={name} {...register?.(name)} />
 					{endAdornment && <span className={inputStyles.adornment}>{endAdornment}</span>}

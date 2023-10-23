@@ -36,3 +36,10 @@ export class SessionNotFoundError extends APIError {
 		super(StatusCodes.NOT_FOUND, message);
 	}
 }
+
+
+export class ConflictError extends APIError {
+	public constructor(message?: string) {
+		super(StatusCodes.CONFLICT, message);
+	}
+}

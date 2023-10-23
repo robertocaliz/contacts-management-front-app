@@ -14,6 +14,8 @@ import { User } from '@/types';
 import { SIGNUP_SCHEMA } from '@/constants/validation-schemas';
 import { UsersProvider } from '@/lib/providers/users';
 import PasswordInput from './password-input';
+import { isValidEmail } from '@/functions/is-email';
+import { StatusCodes } from 'http-status-codes';
 
 
 type AccountData = {
@@ -27,6 +29,7 @@ export default function SignUpForm() {
 		register,
 		handleSubmit,
 		reset,
+		setError,
 		formState: { errors }
 	} = useForm<AccountData>({
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,6 +40,32 @@ export default function SignUpForm() {
 	const [runSpinner, setRunSpinner] = useState(false);
 	const [disable, setDisable] = useState(true);
 	const { push } = useRouter();
+
+
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const checkIfEmailExists = async (e: any) => {
+		e.preventDefault();
+		const email = e.target.value;
+		if (isValidEmail(email)) {
+			await UsersProvider
+				.checkIfEmailExists(email)
+				.then(statusCode => {
+					if (statusCode === StatusCodes.CONFLICT) {
+						setError('email', {
+							message: 'Email já existe.'
+						});
+						return;
+					}
+					setError('email', {
+						message: ''
+					});
+				})
+				.catch(() => {
+					Alerts.error('Ocorreu um erro.');
+				});
+		}
+	};
 
 
 	const createAccount: SubmitHandler<AccountData> = async (AccountData) => {
@@ -79,6 +108,7 @@ export default function SignUpForm() {
 						name='email'
 						register={register}
 						error={errors.email?.message}
+						onBlur={checkIfEmailExists}
 					/>
 					<PasswordInput
 						label='Senha:'

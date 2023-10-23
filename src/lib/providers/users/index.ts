@@ -2,6 +2,7 @@
 
 import axiosPublic from '@/lib/axios';
 import { axiosAuth } from '@/lib/axios/auth';
+import { ConflictError } from '@/lib/errors';
 import { Id, User } from '@/types';
 
 
@@ -28,7 +29,23 @@ export const update = async (user: User, userId: Id) => {
 
 
 
+export const checkIfEmailExists = async (email: string) => {
+	try {
+		const { status } = await axiosAuth.post<boolean>('/checkemail', { email });
+		return status;
+	} catch (error) {
+		if (error instanceof ConflictError) { 
+			return error.status;
+		}
+		console.log(error);
+		throw error;
+	}
+};
+
+
+
 export const UsersProvider = {
 	create,
-	update
+	update,
+	checkIfEmailExists
 };

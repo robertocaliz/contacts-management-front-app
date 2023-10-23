@@ -23,6 +23,7 @@ export default function PasswordInput({
 	startAdornment,
 	register,
 	error,
+	onBlur,
 	...rest
 }: InputProps) {
 
@@ -41,7 +42,7 @@ export default function PasswordInput({
 				{label && (
 					<label htmlFor={label}>{label}</label>
 				)}
-				<div className={inputStyles.inputContainer} style={error ? { border: '1px solid tomato' } : {}}>
+				<div className={inputStyles.inputContainer} style={error ? { border: '2px solid tomato' } : {}} onBlur={onBlur}>
 					{startAdornment && <span className={inputStyles.adornment}>{startAdornment}</span>}
 					<input
 						{...rest}
