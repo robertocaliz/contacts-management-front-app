@@ -38,7 +38,7 @@ export default function TableContacts() {
 	}
 
 	const removeContactFromTable = (contactId: Id) => {
-		setContacts(contacts.filter(contact => contact.id !== contactId));
+		setContacts(contacts.filter(contact => contact._id !== contactId));
 	};
 
 
@@ -66,7 +66,6 @@ export default function TableContacts() {
 			<table>
 				<thead>
 					<tr className={tableContactsStyles.headerRow}>
-						<th>ID</th>
 						<th>Nome</th>
 						<th>Email</th>
 						<th>Telefone/Telemóvel</th>
@@ -76,16 +75,15 @@ export default function TableContacts() {
 				</thead>
 				<tbody>
 					{contacts.map(contact => (
-						<tr key={contact.id} onDoubleClick={(e) => handleUpdate(e, contact.id)}>
-							<td>{contact.id}</td>
+						<tr key={contact._id} onDoubleClick={(e) => handleUpdate(e, contact._id)}>
 							<td>{contact.name}</td>
 							<td>{contact.email}</td>
 							<td>{contact.phoneNumber}</td>
 							<td>
-								<DeleteButton handleDelete={(e) => handleDelete(e, contact.id)} />
+								<DeleteButton handleDelete={(e) => handleDelete(e, contact._id)} />
 							</td>
 							<td>
-								<UpdateButton handleUpdate={(e) => handleUpdate(e, contact.id)} />
+								<UpdateButton handleUpdate={(e) => handleUpdate(e, contact._id)} />
 							</td>
 						</tr>
 					))}

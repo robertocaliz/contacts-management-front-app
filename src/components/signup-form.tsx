@@ -74,7 +74,13 @@ export default function SignUpForm() {
 		setDisable(true);
 		await UsersProvider
 			.create(AccountData)
-			.then(() => {
+			.then(statusCode => {
+				if (statusCode === StatusCodes.CONFLICT) {
+					setError('email', {
+						message: 'Email já existe.'
+					});
+					return;
+				}
 				reset();
 				Alerts.success('Conta criada com sucesso.');
 				push('/login');

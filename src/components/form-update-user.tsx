@@ -41,12 +41,13 @@ export default function FormUpdateUser({
 
 
 	const updateUserData: SubmitHandler<User> = async (newUserData) => {
+		console.log(userData);
 		setRunSpinner(true);
 		setDisableButton(true);
 		delete newUserData.accessToken;
 		delete newUserData.refreshToken;
 		await UsersProvider
-			.update(newUserData, userData.id)
+			.update(newUserData, userData._id)
 			.then(async () => {
 				await updateSession(newUserData);
 				setUserData(newUserData);

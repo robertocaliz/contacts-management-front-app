@@ -52,7 +52,7 @@ export const authOptions: NextAuthOptions = {
 				...session,
 				user: {
 					...session.user,
-					id: token.id,
+					_id: token._id,
 					accessToken: token.accessToken,
 					refreshToken: token.refreshToken
 				}

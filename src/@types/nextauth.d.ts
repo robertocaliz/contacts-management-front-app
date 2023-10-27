@@ -1,5 +1,5 @@
-import { User } from "@/types";
-import { DefaultSession } from "next-auth";
+import { User } from '@/types';
+import { DefaultSession } from 'next-auth';
 
 
 
