@@ -35,7 +35,6 @@ type SubmitButtonProps = {
 
 
 type ProfileButtonProps = {
-	userId: number;
 	content: string | ReactNode;
 }
 
@@ -128,8 +127,8 @@ export const LogoutButton = () => {
 };
 
 
-export const ProfileButton = ({ content, userId }: ProfileButtonProps) => {
-	return <Link href={`/users/${userId}/profile`} style={{ fontSize: '2rem' }}>{content}</Link>;
+export const ProfileButton = ({ content }: ProfileButtonProps) => {
+	return <Link href='/profile' style={{ fontSize: '2rem' }}>{content}</Link>;
 };
 
 

@@ -5,14 +5,12 @@ import { useSession } from 'next-auth/react';
 import {
 	ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, ProfileButton
 } from './buttons.component';
-import { User } from '@/types';
 import { BsPersonGear } from 'react-icons/bs';
 
 
 export default function Nav() {
 
 	const { data: session } = useSession();
-	const user = session?.user as User;
 	
 	return (
 		<nav className={navStyles.nav} >
@@ -34,7 +32,7 @@ export default function Nav() {
 					{session ? (
 						<>
 							<li><LogoutButton /></li>
-							<li><ProfileButton userId={user.id} content={<BsPersonGear />} /></li>
+							<li><ProfileButton content={<BsPersonGear />} /></li>
 						</>
 					) : (
 						<>
