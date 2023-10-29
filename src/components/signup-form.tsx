@@ -43,6 +43,20 @@ export default function SignUpForm() {
 
 
 
+	const displayError = () => {
+		setError('email', {
+			message: 'Email já está em uso.'
+		});
+	};
+
+
+	const cleanError = () => {
+		setError('email', {
+			message: ''
+		});
+	};
+
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const checkIfEmailExists = async (e: any) => {
 		e.preventDefault();
@@ -52,14 +66,10 @@ export default function SignUpForm() {
 				.checkIfEmailExists(email)
 				.then(statusCode => {
 					if (statusCode === StatusCodes.CONFLICT) {
-						setError('email', {
-							message: 'Email já existe.'
-						});
+						displayError();
 						return;
 					}
-					setError('email', {
-						message: ''
-					});
+					cleanError();
 				})
 				.catch(() => {
 					Alerts.error('Ocorreu um erro.');
@@ -69,16 +79,13 @@ export default function SignUpForm() {
 
 
 	const createAccount: SubmitHandler<AccountData> = async (AccountData) => {
-		delete AccountData['confirmPassword'];
 		setRunSpinner(true);
 		setDisable(true);
 		await UsersProvider
 			.create(AccountData)
 			.then(statusCode => {
 				if (statusCode === StatusCodes.CONFLICT) {
-					setError('email', {
-						message: 'Email já existe.'
-					});
+					displayError();
 					return;
 				}
 				reset();
