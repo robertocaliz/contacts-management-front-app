@@ -64,7 +64,7 @@ export default function FormAddContact() {
 						error={errors.name?.message}
 					/>
 					<Input
-						type='email'
+						type='text'
 						name='email'
 						label='Email:'
 						register={register}
@@ -77,7 +77,7 @@ export default function FormAddContact() {
 						register={register}
 						error={errors.phoneNumber?.message}
 						startAdornment={'+258'}
-
+						maxLength={9}
 					/>
 					<SubmitButton
 						disable={disable}

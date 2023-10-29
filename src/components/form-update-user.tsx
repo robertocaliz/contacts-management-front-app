@@ -41,7 +41,6 @@ export default function FormUpdateUser({
 
 
 	const updateUserData: SubmitHandler<User> = async (newUserData) => {
-		console.log(userData);
 		setRunSpinner(true);
 		setDisableButton(true);
 		delete newUserData.accessToken;

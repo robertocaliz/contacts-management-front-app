@@ -21,7 +21,7 @@ export const PUBLIC_ROUTES = [
 
 export const RegEx = Object.freeze({
 	app: {
-		EMAIL: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+		EMAIL: /^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})?$/,
 		PHONE_NUMBER: /^(\\+258)?[28]\d{8}$/
 	}
 });

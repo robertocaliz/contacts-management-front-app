@@ -12,12 +12,20 @@ const EMAIL_SCHEMA = object({
 });
 
 
+const EMAIL_SCHEMA_OPTIONAL = object({
+	email: string()
+		.optional()
+		.matches(RegEx.app.EMAIL, 'E-mail inválido.'),
+});
+
+
 const NAME_SCHEMA = object({
 	name: string()
 		.required('Nome é obrigatório.')
 		.min(3, 'Nome deve conter no mínimo 3 caracteres.')
 		.max(60, 'Nome deve conter no máximo 60 caracteres.'),
 });
+
 
 
 export const LOGIN_SCHEMA = EMAIL_SCHEMA.shape({
@@ -41,7 +49,7 @@ export const SIGNUP_SCHEMA = LOGIN_SCHEMA.shape({
 
 
 
-export const CREATE_CONTACT_SCHEMA = NAME_SCHEMA.concat(EMAIL_SCHEMA).shape({
+export const CREATE_CONTACT_SCHEMA = NAME_SCHEMA.concat(EMAIL_SCHEMA_OPTIONAL).shape({
 	phoneNumber: string()
 		.required('Telefone é obrigatório.')
 		.matches(RegEx.app.PHONE_NUMBER, 'Número de telefone inválido.')
