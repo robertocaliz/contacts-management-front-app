@@ -1,10 +1,10 @@
 .inputContainer {
-	border: 2px solid lightgray;
+	border: 3px solid #F2F2F2;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	margin: 1rem 0;
-	background-color: #fff;
+	background-color: #FCFCFC;
 }
 
 .inputContainer,
@@ -19,12 +19,19 @@
 	padding: 0.9rem;
 	border: none;
 	outline: none;
+	background-color: #FCFCFC;
 }
+
 
 
 .inputContainer:focus-within {
 	background-color: #fff;
 	outline: 1px solid lightblue;
+}
+
+
+.inputContainer input:focus {
+	background-color: #fff;
 }
 
 .adornment {
