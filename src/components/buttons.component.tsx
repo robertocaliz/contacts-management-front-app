@@ -98,7 +98,7 @@ const homeButtonStyles: CSSProperties = {
 	flexDirection: 'row',
 	alignItems: 'center',
 	gap: '0.1rem',
-	fontSize: '1.8rem'
+	fontSize: '1.4rem'
 };
 
 export const HomeButton = ({ href = '/' }: HomeButtonProps) => {
