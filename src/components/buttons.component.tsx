@@ -55,7 +55,7 @@ export const SignUpButton = ({ text = 'Cadastrar' }: SignUpButtonProps) => {
 };
 
 
-export const ContactsButton = ({ text = 'Conctatos' }: ContactsButtonProps) => {
+export const ContactsButton = ({ text = 'Contactos' }: ContactsButtonProps) => {
 	return (
 		<Link href='/contacts'>{text}</Link>
 	);
@@ -98,13 +98,12 @@ const homeButtonStyles: CSSProperties = {
 	flexDirection: 'row',
 	alignItems: 'center',
 	gap: '0.1rem',
-	fontSize: '1.4rem'
 };
 
 export const HomeButton = ({ href = '/' }: HomeButtonProps) => {
 	return (
-		<Link href={href}>
-			<h1 style={homeButtonStyles}><TiContacts />ContactsPro</h1>
+		<Link href={href} style={homeButtonStyles}>
+			<TiContacts style={{ fontSize: '1.8rem' }} />ContactsPro
 		</Link>
 	);
 };

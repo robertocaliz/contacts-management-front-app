@@ -23,9 +23,9 @@ li {
 a,
 th,
 td,
-h1,
 label {
     opacity: 0.8;
+	font-size: 0.96rem;
 }
 
 
