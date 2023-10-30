@@ -8,11 +8,14 @@ import { Id, User } from '@/types';
 
 export const create = async (user: User) => {
 	try {
-		const { status } = await axiosAuth.post<Id>('/signup', user);
-		return status;
+		const { status } = await axiosAuth.post('/signup', user);
+		return { status };
 	} catch (error) {
 		if (error instanceof ConflictError) {
-			return error.status;
+			return {
+				status: error.status,
+				errors: error.errors
+			};
 		}
 		console.log(error);
 		throw error;
@@ -34,10 +37,13 @@ export const update = async (user: User, userId: Id) => {
 export const checkIfEmailExists = async (email: string) => {
 	try {
 		const { status } = await axiosAuth.post<boolean>('/checkemail', { email });
-		return status;
+		return { status };
 	} catch (error) {
 		if (error instanceof ConflictError) {
-			return error.status;
+			return {
+				status: error.status,
+				errors: error.errors
+			};
 		}
 		console.log(error);
 		throw error;

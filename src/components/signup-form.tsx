@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -10,12 +11,13 @@ import { SubmitButton } from './buttons.component';
 import Link from 'next/link';
 import Alerts from '@/lib/alerts';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { User } from '@/types';
+import { ConflictErrorT, User } from '@/types';
 import { SIGNUP_SCHEMA } from '@/constants/validation-schemas';
 import { UsersProvider } from '@/lib/providers/users';
 import PasswordInput from './password-input';
 import { isValidEmail } from '@/functions/is-email';
 import { StatusCodes } from 'http-status-codes';
+import { cleanConflictError, displayConflictErrors } from '@/functions/form-errors';
 
 
 type AccountData = {
@@ -32,7 +34,7 @@ export default function SignUpForm() {
 		setError,
 		formState: { errors }
 	} = useForm<AccountData>({
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 		resolver: yupResolver(SIGNUP_SCHEMA) as any
 	});
 
@@ -43,33 +45,18 @@ export default function SignUpForm() {
 
 
 
-	const displayError = () => {
-		setError('email', {
-			message: 'Email já está em uso.'
-		});
-	};
-
-
-	const cleanError = () => {
-		setError('email', {
-			message: ''
-		});
-	};
-
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const checkIfEmailExists = async (e: any) => {
 		e.preventDefault();
 		const email = e.target.value;
 		if (isValidEmail(email)) {
 			await UsersProvider
 				.checkIfEmailExists(email)
-				.then(statusCode => {
-					if (statusCode === StatusCodes.CONFLICT) {
-						displayError();
+				.then(({ status, errors }) => {
+					if (status === StatusCodes.CONFLICT) {
+						displayConflictErrors(errors as Array<ConflictErrorT>, setError);
 						return;
 					}
-					cleanError();
+					cleanConflictError<AccountData>('email', setError);
 				})
 				.catch(() => {
 					Alerts.error('Ocorreu um erro.');
@@ -83,9 +70,9 @@ export default function SignUpForm() {
 		setDisable(true);
 		await UsersProvider
 			.create(AccountData)
-			.then(statusCode => {
-				if (statusCode === StatusCodes.CONFLICT) {
-					displayError();
+			.then(({ status, errors }) => {
+				if (status === StatusCodes.CONFLICT) {
+					displayConflictErrors(errors as Array<ConflictErrorT>, setError);
 					return;
 				}
 				reset();

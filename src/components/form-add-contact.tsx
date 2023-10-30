@@ -12,7 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { CREATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
 import { ContactsProvider } from '@/lib/providers/contacts';
 import { StatusCodes } from 'http-status-codes';
-import { displayConflictErrors } from '@/functions/errors';
+import { displayConflictErrors } from '@/functions/form-errors';
 
 
 export default function FormAddContact() {

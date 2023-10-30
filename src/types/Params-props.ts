@@ -1,6 +1,7 @@
+import { Id } from '.';
 
 export type ParamsProps = {
 	params: {
-		id: number
+		id: Id
 	}
 };

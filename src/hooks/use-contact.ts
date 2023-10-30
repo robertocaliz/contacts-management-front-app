@@ -1,8 +1,8 @@
-import { Contact } from '@/types';
+import { Contact, Id } from '@/types';
 import { useAny } from './use-any';
 
 
-export const useContact = (contactId: number) => {
+export const useContact = (contactId: Id) => {
 	const {
 		obj: contact,
 		isLoading,

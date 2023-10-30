@@ -1,7 +1,7 @@
 'use client';
 
 
-import { Contact } from '@/types';
+import { ConflictErrorT, Contact } from '@/types';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
@@ -15,15 +15,18 @@ import { useContact } from '@/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UPDATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
 import { ContactsProvider } from '@/lib/providers/contacts';
+import { StatusCodes } from 'http-status-codes';
+import { displayConflictErrors } from '@/functions/form-errors';
 
 
-export default function FormUpdateContact({ contactId }: { contactId: number }) {
+export default function FormUpdateContact({ contactId }: { contactId: string }) {
 
 	const {
 		register,
 		handleSubmit,
 		reset,
-		formState: { errors }
+		formState: { errors },
+		setError
 	} = useForm<Contact>({
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		resolver: yupResolver(UPDATE_CONTACT_SCHEMA) as any
@@ -60,7 +63,11 @@ export default function FormUpdateContact({ contactId }: { contactId: number }) 
 		setDisable(true);
 		await ContactsProvider
 			.update(contact, contactId)
-			.then(() => {
+			.then(({ status, errors }) => {
+				if (status === StatusCodes.CONFLICT) {
+					displayConflictErrors(errors as Array<ConflictErrorT>, setError);
+					return;
+				}
 				reset();
 				back();
 				Alerts.success('Contacto actualizado.');
