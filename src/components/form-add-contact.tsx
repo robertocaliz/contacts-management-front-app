@@ -1,7 +1,7 @@
 'use client';
 
 import Alerts from '@/lib/alerts';
-import { Contact } from '@/types';
+import { ConflictErrorT, Contact } from '@/types';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Centralize from './centralize';
@@ -11,6 +11,8 @@ import Input from './input';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CREATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
 import { ContactsProvider } from '@/lib/providers/contacts';
+import { StatusCodes } from 'http-status-codes';
+import { displayConflictErrors } from '@/functions/errors';
 
 
 export default function FormAddContact() {
@@ -24,7 +26,8 @@ export default function FormAddContact() {
 		register,
 		handleSubmit,
 		reset,
-		formState: { errors }
+		formState: { errors },
+		setError
 	} = useForm<Contact>({
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		resolver: yupResolver(CREATE_CONTACT_SCHEMA) as any
@@ -36,7 +39,11 @@ export default function FormAddContact() {
 		setDisable(true);
 		await ContactsProvider
 			.create(contact)
-			.then(() => {
+			.then(({ status, errors }) => {
+				if (status === StatusCodes.CONFLICT) {
+					displayConflictErrors(errors as Array<ConflictErrorT>, setError);
+					return;
+				}
 				reset();
 				Alerts.success('Contacto criado.');
 			})

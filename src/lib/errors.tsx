@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ConflictErrorT } from '@/types';
 import { StatusCodes } from 'http-status-codes';
 
 
@@ -39,7 +41,9 @@ export class SessionNotFoundError extends APIError {
 
 
 export class ConflictError extends APIError {
-	public constructor(message?: string) {
-		super(StatusCodes.CONFLICT, message);
+	public errors: Array<ConflictErrorT>;
+	public constructor(errors: Array<ConflictErrorT>) {
+		super(StatusCodes.CONFLICT, undefined);
+		this.errors = errors;
 	}
 }

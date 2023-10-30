@@ -61,7 +61,9 @@ axiosAuth.interceptors.response.use(
 
 
 		switch (error.response.status) {
-			case StatusCodes.CONFLICT: throw new ConflictError();
+			case StatusCodes.CONFLICT: {
+				throw new ConflictError(error.response.data.errors);
+			}
 		}
 
 		return Promise.reject(error);

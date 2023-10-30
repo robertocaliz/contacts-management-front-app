@@ -35,7 +35,7 @@
 }
 
 .adornment {
-	font-size: 1.4rem;
+	font-size: 1.rem;
 	padding: 0  0.5rem;
 	color: #458B00;
 }
@@ -47,4 +47,6 @@
 	flex-direction: row;
 	align-items: center;
 	gap: 0.6rem;
+	font-weight: bold;
+	font-size: 0.8rem;
 }
