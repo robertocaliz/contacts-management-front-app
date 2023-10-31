@@ -2,6 +2,7 @@ import { Id } from '.';
 
 export type ParamsProps = {
 	params: {
-		id: Id
+		id: Id,
+		email: string
 	}
 };

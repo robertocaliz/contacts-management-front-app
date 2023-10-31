@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+
 type MainProps = {
 	children: ReactNode;
 	margin?: string;
