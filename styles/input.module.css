@@ -5,6 +5,8 @@
 	align-items: center;
 	margin: 1rem 0;
 	background-color: #FCFCFC;
+	transition: border 201ms;
+	outline: 1px solid transparent;
 }
 
 .inputContainer,
@@ -27,6 +29,7 @@
 .inputContainer:focus-within {
 	background-color: #fff;
 	outline: 1px solid lightblue;
+	transition: outline 201ms;
 }
 
 

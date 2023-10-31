@@ -65,11 +65,11 @@ export default function SignUpForm() {
 	};
 
 
-	const createAccount: SubmitHandler<AccountData> = async (AccountData) => {
+	const createAccount: SubmitHandler<AccountData> = async (accountData) => {
 		setRunSpinner(true);
 		setDisable(true);
 		await UsersProvider
-			.create(AccountData)
+			.create(accountData)
 			.then(({ status, errors }) => {
 				if (status === StatusCodes.CONFLICT) {
 					displayConflictErrors(errors as Array<ConflictErrorT>, setError);
