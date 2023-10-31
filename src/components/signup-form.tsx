@@ -48,7 +48,7 @@ export default function SignUpForm() {
 	const checkIfEmailExists = async (e: any) => {
 		e.preventDefault();
 		const email = e.target.value;
-		if (isValidEmail(email)) {
+		if (email && isValidEmail(email)) {
 			await UsersProvider
 				.checkIfEmailExists(email)
 				.then(({ status, errors }) => {

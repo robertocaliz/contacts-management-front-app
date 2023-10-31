@@ -8,6 +8,7 @@ import Image from 'next/image';
 import defaultProfileImage from '@/../public/images/default-profile-image.jpg';
 import { EditFormBackButton, EditUserButton } from './buttons.component';
 import Spinner from './spinner';
+import FormHeader from './form-header';
 
 
 
@@ -46,7 +47,7 @@ export default function UserProfile({
 			<section>
 				{!editUserData ? (
 					<>
-						<h1>Dados do utilizador</h1>
+						<FormHeader text='Dados do utilizador' />
 						<p>
 							<span>Name</span>
 							<span>{userData_?.name}</span>
