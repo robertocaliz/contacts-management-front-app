@@ -70,13 +70,15 @@ export default function SignUpForm() {
 		setDisable(true);
 		await UsersProvider
 			.create(accountData)
-			.then(({ status, errors }) => {
+			.then(({ status, errors, resBody }) => {
 				if (status === StatusCodes.CONFLICT) {
 					displayConflictErrors(errors as Array<ConflictErrorT>, setError);
 					return;
 				}
+				if (!resBody?.emailSend) {
+					return Promise.reject();
+				}
 				reset();
-				// Alerts.success('Conta criada com sucesso.');
 				push(`/signup/confirm/${accountData.email}`);
 			})
 			.catch(() => {

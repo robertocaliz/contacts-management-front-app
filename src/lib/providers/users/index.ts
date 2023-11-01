@@ -5,11 +5,13 @@ import { ConflictError } from '@/lib/errors';
 import { Id, User } from '@/types';
 
 
+type CreateResData = { emailSend: boolean };
+
 
 export const create = async (user: User) => {
 	try {
-		const { status } = await axiosAuth.post('/signup', user);
-		return { status };
+		const { data: resBody, status } = await axiosAuth.post<CreateResData>('/signup', user);
+		return { resBody, status };
 	} catch (error) {
 		if (error instanceof ConflictError) {
 			return {
