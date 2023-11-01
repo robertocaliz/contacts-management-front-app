@@ -76,8 +76,8 @@ export default function SignUpForm() {
 					return;
 				}
 				reset();
-				Alerts.success('Conta criada com sucesso.');
-				push('/signup/confirm');
+				// Alerts.success('Conta criada com sucesso.');
+				push(`/signup/confirm/${accountData.email}`);
 			})
 			.catch(() => {
 				Alerts.error('Ocorreu um erro.');
