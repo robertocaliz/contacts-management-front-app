@@ -126,19 +126,22 @@ export default function SignUpForm() {
 					/>
 				</main>
 				<footer>
-					<section>
+					<div>
 						<input
 							type='checkbox'
 							onChange={() => setDisable(!disable)}
 						/>
 						<span> Li e estou de acordo com os <Link href='/terms-of-use'>Termos de uso.</Link></span>
-					</section>
+					</div>
 					<SubmitButton
 						runSpinner={runSpinner}
 						disable={disable}
 						content='Create account'
 						spinnerText='Creating account...'
 					/>
+					<div style={{textAlign: 'center'}}>
+						<span>Já passue uma conta? <Link href='/login'>Click aqui para acessar.</Link> </span>
+					</div>
 				</footer>
 			</form>
 			<hr />
