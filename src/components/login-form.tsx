@@ -13,6 +13,7 @@ import { UserCredentials } from '@/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/constants/validation-schemas';
 import PasswordInput from './password-input';
+import Link from 'next/link';
 
 
 export default function LoginForm() {
@@ -33,17 +34,24 @@ export default function LoginForm() {
 	const loginUser: SubmitHandler<UserCredentials> = async (credentials) => {
 		setRunSpinner(true);
 		setDisable(true);
-		const response = await signIn('credentials', {
-			...credentials,
-			redirect: false,
-		});
-		setRunSpinner(false);
-		setDisable(false);
-		if (response?.error !== null) {
-			Alerts.error(response?.error as string);
-			return;
-		}
-		push('/dashboard');
+		await signIn('credentials',
+			{
+				...credentials,
+				redirect: false,
+			})
+			.then(response => {
+				if (response?.error !== null) {
+					return Promise.reject(response?.error);
+				}
+				push('/dashboard');
+			})
+			.catch(error => {
+				Alerts.error(error);
+			})
+			.finally(() => {
+				setRunSpinner(false);
+				setDisable(false);
+			});
 	};
 
 	return (
@@ -72,6 +80,19 @@ export default function LoginForm() {
 						content='login'
 						spinnerText='Autenticando...'
 					/>
+					<div style={{
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
+						gap: '0.6rem'
+					}}>
+						<span>
+							Novo no ContactsPro? <Link href='/signup'>Cria sua conta aqui.</Link>
+						</span>
+						<span>
+							Esqueceu sua senha? <Link href='#'>Click aqui.</Link>
+						</span>
+					</div>
 				</footer>
 			</form>
 			<hr />
