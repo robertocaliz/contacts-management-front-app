@@ -25,3 +25,9 @@ export const RegEx = Object.freeze({
 		PHONE_NUMBER: /^(\\+258)?[28]\d{8}$/
 	}
 });
+
+
+
+export const GLOBAL_ERROR_MESSAGE = `Ops, ocorreu um erro! 
+					Tente novamente. Caso o erro persista, 
+						contacte o suporte.`;

@@ -9,7 +9,6 @@ import FormHeader from './form-header';
 import Input from './input';
 import { SubmitButton } from './buttons.component';
 import Link from 'next/link';
-import Alerts from '@/lib/alerts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ConflictErrorT, User } from '@/types';
 import { SIGNUP_SCHEMA } from '@/constants/validation-schemas';
@@ -18,7 +17,9 @@ import PasswordInput from './password-input';
 import { isValidEmail } from '@/functions/is-email';
 import { StatusCodes } from 'http-status-codes';
 import { cleanConflictError, displayConflictErrors } from '@/functions/form-errors';
-
+import useAlert from '@/hooks/use.alert';
+import Alert from 'react-bootstrap/Alert';
+import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 
 type AccountData = {
 	confirmPassword?: string
@@ -34,9 +35,16 @@ export default function SignUpForm() {
 		setError,
 		formState: { errors }
 	} = useForm<AccountData>({
-
 		resolver: yupResolver(SIGNUP_SCHEMA) as any
 	});
+
+
+	const {
+		alertType,
+		alertMessage,
+		showAlert,
+		alert
+	} = useAlert();
 
 
 	const [runSpinner, setRunSpinner] = useState(false);
@@ -59,7 +67,10 @@ export default function SignUpForm() {
 					cleanConflictError<AccountData>('email', setError);
 				})
 				.catch(() => {
-					Alerts.error('Ocorreu um erro.');
+					alert.config({
+						alertType: 'danger',
+						alertMessage: GLOBAL_ERROR_MESSAGE
+					}).show();
 				});
 		}
 	};
@@ -82,18 +93,25 @@ export default function SignUpForm() {
 				push(`/signup/confirm/${accountData.email}`);
 			})
 			.catch(() => {
-				Alerts.error('Ocorreu um erro.');
+				alert.config({
+					alertType: 'danger',
+					alertMessage: GLOBAL_ERROR_MESSAGE
+				}).show();
 			})
 			.finally(() => {
 				setRunSpinner(false);
 				setDisable(false);
 			});
-
 	};
 
 
 	return (
 		<Centralize>
+			<Alert
+				variant={alertType}
+				show={showAlert}>
+				{alertMessage}
+			</Alert>
 			<form onSubmit={handleSubmit(createAccount)}>
 				<FormHeader text='Cadastro' />
 				<main>
@@ -136,10 +154,10 @@ export default function SignUpForm() {
 					<SubmitButton
 						runSpinner={runSpinner}
 						disable={disable}
-						content='Create account'
-						spinnerText='Creating account...'
+						content='Crirar conta'
+						spinnerText='Criando a conta...'
 					/>
-					<div style={{textAlign: 'center'}}>
+					<div style={{ textAlign: 'center' }}>
 						<span>Já passue uma conta? <Link href='/login'>Click aqui para acessar.</Link> </span>
 					</div>
 				</footer>
