@@ -9,6 +9,7 @@ import { User, UserCredentials } from '@/types';
 import { AuthenticationError, ForbiddenError, UnauthorizedError } from '@/lib/errors';
 import { getSignInError } from '@/functions/sign-in-error';
 import { StatusCodes } from 'http-status-codes';
+import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 
 
 export const authOptions: NextAuthOptions = {
@@ -43,9 +44,7 @@ export const authOptions: NextAuthOptions = {
 					console.log(error);
 					throw new AuthenticationError(
 						getSignInError(
-							`Ops, ocorreu um erro! 
-							Tente novamente. Caso o erro persista, 
-							contacte o suporte.`,
+							GLOBAL_ERROR_MESSAGE,
 							StatusCodes.INTERNAL_SERVER_ERROR)
 					);
 				}
