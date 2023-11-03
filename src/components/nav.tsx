@@ -11,37 +11,33 @@ import { BsPersonGear } from 'react-icons/bs';
 export default function Nav() {
 
 	const { data: session } = useSession();
-	
+
 	return (
 		<nav className={navStyles.nav} >
-			<section>
-				<ul>
+			<ul className={navStyles.container}>
+				<li>
+					<HomeButton href={session ? '/dashboard' : undefined} />
+				</li>
+				{session && (
 					<li>
-						<HomeButton href={session ? '/dashboard' : undefined} />
+						<ContactsButton />
 					</li>
-					{session && (
-						<li>
-							<ContactsButton />
-						</li>
-					)}
+				)}
 
-				</ul>
-			</section>
-			<section style={{ paddingRight: '2rem' }}>
-				<ul>
-					{session ? (
-						<>
-							<li><LogoutButton /></li>
-							<li><ProfileButton content={<BsPersonGear />} /></li>
-						</>
-					) : (
-						<>
-							<li><LoginButton /></li>
-							<li><SignUpButton /></li>
-						</>
-					)}
-				</ul>
-			</section>
+			</ul>
+			<ul className={navStyles.container}>
+				{session ? (
+					<>
+						<li><LogoutButton /></li>
+						<li><ProfileButton content={<BsPersonGear />} /></li>
+					</>
+				) : (
+					<>
+						<li><LoginButton /></li>
+						<li><SignUpButton /></li>
+					</>
+				)}
+			</ul>
 		</nav>
 	);
 }

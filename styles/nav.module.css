@@ -2,16 +2,16 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	align-items: center;
 	background-color: #1f1f1f;
 }
 
 
-.nav section ul {
+.container {
 	display: flex;
 	flex-direction: row;
 	gap: 2rem;
 	align-items: center;
+	padding-top: 0.8rem;
 }
 
 .nav ul li a {

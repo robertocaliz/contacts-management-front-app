@@ -7,6 +7,7 @@ import '../../styles/global.css';
 import Footer from '@/components/footer';
 import Main from '@/components/main';
 import ProgressBar from '@/components/progress-bar';
+import 'bootstrap/dist/css/bootstrap.min.css';  
 
 export default function RootLayout({
 	children,

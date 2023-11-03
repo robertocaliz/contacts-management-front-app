@@ -1,6 +1,6 @@
 'use client';
 
-import Alerts from '@/lib/alerts';
+
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -9,11 +9,14 @@ import Centralize from './centralize';
 import FormHeader from './form-header';
 import Input from './input';
 import { SubmitButton } from './buttons.component';
-import { UserCredentials } from '@/types';
+import { SignInResponseError, UserCredentials } from '@/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/constants/validation-schemas';
 import PasswordInput from './password-input';
 import Link from 'next/link';
+import { StatusCodes } from 'http-status-codes';
+import Alert from 'react-bootstrap/Alert';
+import useAlert from '@/hooks/use.alert';
 
 
 export default function LoginForm() {
@@ -31,6 +34,13 @@ export default function LoginForm() {
 	const [disable, setDisable] = useState(false);
 	const { push } = useRouter();
 
+	const {
+		alertType,
+		alertMessage,
+		showAlert,
+		alert
+	} = useAlert();
+
 	const loginUser: SubmitHandler<UserCredentials> = async (credentials) => {
 		setRunSpinner(true);
 		setDisable(true);
@@ -40,13 +50,24 @@ export default function LoginForm() {
 				redirect: false,
 			})
 			.then(response => {
-				if (response?.error !== null) {
-					return Promise.reject(response?.error);
+				if (response?.error) {
+					const error = JSON.parse(response?.error as string) as SignInResponseError;
+					if (error.status !== StatusCodes.INTERNAL_SERVER_ERROR) {
+						alert.config({
+							alertType: 'warning',
+							alertMessage: error.message
+						}).show();
+						return;
+					}
+					return Promise.reject(error);
 				}
 				push('/dashboard');
 			})
 			.catch(error => {
-				Alerts.error(error);
+				alert.config({
+					alertType: 'danger',
+					alertMessage: error.message
+				}).show();
 			})
 			.finally(() => {
 				setRunSpinner(false);
@@ -56,6 +77,11 @@ export default function LoginForm() {
 
 	return (
 		<Centralize>
+			<Alert
+				variant={alertType}
+				show={showAlert}>
+				{alertMessage}
+			</Alert>
 			<form onSubmit={handleSubmit(loginUser)}>
 				<FormHeader text='Login' />
 				<main>
@@ -87,7 +113,7 @@ export default function LoginForm() {
 						gap: '0.6rem'
 					}}>
 						<span>
-							Novo no ContactsPro? <Link href='/signup'>Cria sua conta aqui.</Link>
+							Novo no ContactsPro? <Link href='/signup'>Crie sua conta aqui.</Link>
 						</span>
 						<span>
 							Esqueceu sua senha? <Link href='#'>Click aqui.</Link>

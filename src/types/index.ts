@@ -15,3 +15,11 @@ export type ConflictErrorT = {
 		message: string
 	}
 }
+
+
+
+
+export type SignInResponseError = {
+	message: string
+	status: number
+}

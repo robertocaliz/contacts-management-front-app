@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import NextAuth from 'next-auth/next';
@@ -5,7 +6,9 @@ import axiosPublic from '@/lib/axios';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { User, UserCredentials } from '@/types';
-import { AuthenticationError, UnauthorizedError } from '@/lib/errors';
+import { AuthenticationError, ForbiddenError, UnauthorizedError } from '@/lib/errors';
+import { getSignInError } from '@/functions/sign-in-error';
+import { StatusCodes } from 'http-status-codes';
 
 
 export const authOptions: NextAuthOptions = {
@@ -18,14 +21,33 @@ export const authOptions: NextAuthOptions = {
 					const {
 						data: user,
 					} = await axiosPublic.post<User>('/login', { email, password });
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					return user as any;
 				} catch (error) {
 					if (error instanceof UnauthorizedError) {
-						throw new AuthenticationError('Email ou senha inválida.');
+						throw new UnauthorizedError(
+							getSignInError(
+								`Email ou senha inválida.
+								Verifique as suas credênciais e tente novamente.`,
+								error.status)
+						);
+					}
+					if (error instanceof ForbiddenError) {
+						throw new ForbiddenError(
+							getSignInError(
+								`Sua conta encontra-se inactiva.
+							Acesse o seu e-mail para ativar a sua conta
+							atravez do email que acabamos de enviar.`,
+								error.status)
+						);
 					}
 					console.log(error);
-					throw new AuthenticationError('Erro de autenticação.');
+					throw new AuthenticationError(
+						getSignInError(
+							`Ops, ocorreu um erro! 
+							Tente novamente. Caso o erro persista, 
+							contacte o suporte.`,
+							StatusCodes.INTERNAL_SERVER_ERROR)
+					);
 				}
 			}
 		}),

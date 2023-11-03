@@ -4,8 +4,8 @@ import { StatusCodes } from 'http-status-codes';
 
 
 export class APIError extends Error {
-	public status?: number;
-	public constructor(status?: number, message?: string) {
+	public status: number;
+	public constructor(status: number, message?: string) {
 		super(message);
 		this.status = status;
 	}
@@ -45,5 +45,12 @@ export class ConflictError extends APIError {
 	public constructor(errors: Array<ConflictErrorT>) {
 		super(StatusCodes.CONFLICT, undefined);
 		this.errors = errors;
+	}
+}
+
+
+export class ForbiddenError extends APIError {
+	public constructor(message?: string) {
+		super(StatusCodes.FORBIDDEN, message);
 	}
 }
