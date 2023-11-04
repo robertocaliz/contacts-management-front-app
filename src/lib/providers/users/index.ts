@@ -1,6 +1,6 @@
 'use client';
 
-import { axiosAuth } from '@/lib/axios/auth';
+import { axiosAuth, axiosPublic } from '@/lib/axios/auth';
 import { ConflictError } from '@/lib/errors';
 import { Id, User } from '@/types';
 
@@ -10,7 +10,7 @@ type CreateResData = { emailSend: boolean };
 
 export const create = async (user: User) => {
 	try {
-		const { data: resBody, status } = await axiosAuth.post<CreateResData>('/signup', user);
+		const { data: resBody, status } = await axiosPublic.post<CreateResData>('/signup', user);
 		return { resBody, status };
 	} catch (error) {
 		if (error instanceof ConflictError) {
@@ -38,7 +38,7 @@ export const update = async (user: User, userId: Id) => {
 
 export const checkIfEmailExists = async (email: string) => {
 	try {
-		const { status } = await axiosAuth.post<boolean>('/checkemail', { email });
+		const { status } = await axiosPublic.post<boolean>('/checkemail', { email });
 		return { status };
 	} catch (error) {
 		if (error instanceof ConflictError) {

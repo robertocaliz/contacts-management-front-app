@@ -86,11 +86,12 @@ export default function SignUpForm() {
 					displayConflictErrors(errors as Array<ConflictErrorT>, setError);
 					return;
 				}
-				if (!resBody?.emailSend) {
-					return Promise.reject();
+				if (status === StatusCodes.CREATED && resBody?.emailSend) {
+					reset();
+					push(`/signup/confirm/${accountData.email}`);
+					return;
 				}
-				reset();
-				push(`/signup/confirm/${accountData.email}`);
+				return Promise.reject();
 			})
 			.catch(() => {
 				alert.config({

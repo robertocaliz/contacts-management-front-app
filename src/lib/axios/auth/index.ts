@@ -19,8 +19,17 @@ const axiosAuthConfig = Object.freeze({
 
 
 export const axiosAuth = axios.create(axiosAuthConfig);
-const axiosPublic = axios.create(axiosAuthConfig);
+export const axiosPublic = axios.create(axiosAuthConfig);
 
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getCustomError = (error: any) => {
+	switch (error.response.status) {
+		case StatusCodes.CONFLICT: {
+			return new ConflictError(error.response.data.errors);
+		}
+	}
+};
 
 
 axiosAuth.interceptors.request.use(async request => {
@@ -46,7 +55,7 @@ const refreshAccessToken = async () => {
 axiosAuth.interceptors.response.use(
 	(response) => response,
 	async (error) => {
-
+		
 		const originalRequest = error.config;
 		if ((error.response.status === StatusCodes.UNAUTHORIZED
 			&& !originalRequest._retry)) {
@@ -58,13 +67,21 @@ axiosAuth.interceptors.response.use(
 					return axiosAuth(originalRequest);
 				});
 		}
+		
+		const customError = getCustomError(error);
+		if(customError) throw customError;
+		
+		return Promise.reject(error);
+	}
+);
 
-		switch (error.response.status) {
-			case StatusCodes.CONFLICT: {
-				throw new ConflictError(error.response.data.errors);
-			}
-		}
 
+
+axiosPublic.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		const customError = getCustomError(error);
+		if (customError) throw customError;
 		return Promise.reject(error);
 	}
 );
