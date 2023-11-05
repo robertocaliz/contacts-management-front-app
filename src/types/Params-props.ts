@@ -3,6 +3,7 @@ import { Id } from '.';
 export type ParamsProps = {
 	params: {
 		id: Id,
-		email: string
+		email: string,
+		activationToken: string
 	}
 };

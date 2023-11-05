@@ -36,6 +36,9 @@ const useAlert = () => {
 		},
 		hide: () => {
 			setShowAlert(false);
+		},
+		show(alertType: AlertType, alertMessage: string) {
+			this.config({ alertType, alertMessage }).show();
 		}
 	};
 

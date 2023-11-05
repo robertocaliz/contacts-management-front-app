@@ -8,7 +8,7 @@ import { getSession } from 'next-auth/react';
 import { StatusCodes } from 'http-status-codes';
 import { User } from '@/types';
 import { updateSession } from '@/functions/update-session';
-import { ConflictError } from '@/lib/errors';
+import { BadRequestError, ConflictError } from '@/lib/errors';
 
 
 const axiosAuthConfig = Object.freeze({
@@ -27,6 +27,9 @@ const getCustomError = (error: any) => {
 	switch (error.response.status) {
 		case StatusCodes.CONFLICT: {
 			return new ConflictError(error.response.data.errors);
+		}
+		case StatusCodes.BAD_REQUEST: { 
+			return new BadRequestError();
 		}
 	}
 };
@@ -55,7 +58,7 @@ const refreshAccessToken = async () => {
 axiosAuth.interceptors.response.use(
 	(response) => response,
 	async (error) => {
-		
+
 		const originalRequest = error.config;
 		if ((error.response.status === StatusCodes.UNAUTHORIZED
 			&& !originalRequest._retry)) {
@@ -67,10 +70,10 @@ axiosAuth.interceptors.response.use(
 					return axiosAuth(originalRequest);
 				});
 		}
-		
+
 		const customError = getCustomError(error);
-		if(customError) throw customError;
-		
+		if (customError) throw customError;
+
 		return Promise.reject(error);
 	}
 );

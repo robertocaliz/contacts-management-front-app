@@ -54,3 +54,10 @@ export class ForbiddenError extends APIError {
 		super(StatusCodes.FORBIDDEN, message);
 	}
 }
+
+
+export class BadRequestError extends APIError {
+	constructor(message?: string) {
+		super(StatusCodes.BAD_REQUEST, message);
+	}
+}
