@@ -21,6 +21,7 @@ import useAlert from '@/hooks/use.alert';
 import Alert from 'react-bootstrap/Alert';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 
+
 type AccountData = {
 	confirmPassword?: string
 } & User;
@@ -52,7 +53,6 @@ export default function SignUpForm() {
 	const { push } = useRouter();
 
 
-
 	const checkIfEmailExists = async (e: any) => {
 		e.preventDefault();
 		const email = e.target.value;
@@ -67,10 +67,7 @@ export default function SignUpForm() {
 					cleanConflictError<AccountData>('email', setError);
 				})
 				.catch(() => {
-					alert.config({
-						alertType: 'danger',
-						alertMessage: GLOBAL_ERROR_MESSAGE
-					}).show();
+					alert.show('danger', GLOBAL_ERROR_MESSAGE);
 				});
 		}
 	};
@@ -94,10 +91,7 @@ export default function SignUpForm() {
 				return Promise.reject();
 			})
 			.catch(() => {
-				alert.config({
-					alertType: 'danger',
-					alertMessage: GLOBAL_ERROR_MESSAGE
-				}).show();
+				alert.show('danger', GLOBAL_ERROR_MESSAGE);
 			})
 			.finally(() => {
 				setRunSpinner(false);

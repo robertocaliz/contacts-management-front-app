@@ -53,10 +53,7 @@ export default function LoginForm() {
 				if (response?.error) {
 					const error = JSON.parse(response?.error as string) as SignInResponseError;
 					if (error.status !== StatusCodes.INTERNAL_SERVER_ERROR) {
-						alert.config({
-							alertType: 'warning',
-							alertMessage: error.message
-						}).show();
+						alert.show('warning', error.message);
 						return;
 					}
 					return Promise.reject(error);
@@ -64,10 +61,7 @@ export default function LoginForm() {
 				push('/dashboard');
 			})
 			.catch(error => {
-				alert.config({
-					alertType: 'danger',
-					alertMessage: error.message
-				}).show();
+				alert.show('danger', error.message);
 			})
 			.finally(() => {
 				setRunSpinner(false);
