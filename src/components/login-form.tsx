@@ -110,7 +110,7 @@ export default function LoginForm() {
 							Novo no ContactsPro? <Link href='/signup'>Crie sua conta aqui.</Link>
 						</span>
 						<span>
-							Esqueceu sua senha? <Link href='#'>Click aqui.</Link>
+							Esqueceu sua senha? <Link href='/signup/recover'>Click aqui.</Link>
 						</span>
 					</div>
 				</footer>

@@ -3,7 +3,7 @@ import { RegEx } from '..';
 
 
 
-const EMAIL_SCHEMA = object({
+export const EMAIL_SCHEMA = object({
 	email: string()
 		.required('Email é obrigatório.')
 		.min(8, 'Email deve conter no mínimo 8 caracteres.')
