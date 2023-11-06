@@ -3,21 +3,19 @@
 	flex-direction: row;
 	justify-content: space-between;
 	background-color: #1f1f1f;
-	align-items: center;
+	padding-top: 1rem;
 }
 
 
-.container {
+.nav .container {
 	display: flex;
 	flex-direction: row;
 	gap: 2rem;
 	align-items: center;
-	padding-top: 1rem;
-	padding-right: 2rem;;
-	
+	padding-right: 2rem;
 }
 
-.nav ul li a {
+.nav .container li a {
 	color: #fff;
 	opacity: 1;
 	font-weight: bold;
