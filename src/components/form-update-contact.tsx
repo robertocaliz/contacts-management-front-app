@@ -2,7 +2,7 @@
 
 
 import { ConflictErrorT, Contact } from '@/types';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import Spinner from './spinner';
@@ -11,15 +11,34 @@ import Centralize from './centralize';
 import { ButtonBack, SubmitButton } from './buttons.component';
 import FormHeader from './form-header';
 import Input from './input';
-import { useContact } from '@/hooks';
+import { useContact, useSubmitButton } from '@/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UPDATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
 import { ContactsProvider } from '@/lib/providers/contacts';
 import { StatusCodes } from 'http-status-codes';
 import { displayConflictErrors } from '@/functions/form-errors';
+import Alert from 'react-bootstrap/Alert';
+import useAlert from '@/hooks/use.alert';
+import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 
 
 export default function FormUpdateContact({ contactId }: { contactId: string }) {
+
+	const { back } = useRouter();
+
+	const {
+		spinner: { runSpinner, setRunSpinner },
+		button: { disable, setDisable }
+	} = useSubmitButton();
+
+
+	const {
+		alertType,
+		alertMessage,
+		showAlert,
+		alert
+	} = useAlert();
+
 
 	const {
 		register,
@@ -32,12 +51,6 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 		resolver: yupResolver(UPDATE_CONTACT_SCHEMA) as any
 	});
 
-
-	const [runSpinner, setRunSpinner] = useState(false);
-	const [disable, setDisable] = useState(false);
-	const { back } = useRouter();
-
-
 	const {
 		contact,
 		error,
@@ -47,14 +60,16 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 
 	useEffect(() => {
 		reset(contact);
-	}, [contact, reset]);
+	}, [contact]);
 
 
-	if (isLoading) return <Spinner loading={isLoading} text='Loading contact...' />;
+	if (isLoading) {
+		return <Spinner loading={isLoading} text='Carregando contacto...' />;
+	}
 
 
 	if (error) {
-		return <h1>Error!</h1>;
+		return <Alert variant='danger' show={true}>{GLOBAL_ERROR_MESSAGE}</Alert>;
 	}
 
 
@@ -73,7 +88,7 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 				Alerts.success('Contacto actualizado.');
 			})
 			.catch(() => {
-				Alerts.error('Ocorreu um erro.');
+				alert.show('danger', GLOBAL_ERROR_MESSAGE);
 			})
 			.finally(() => {
 				setRunSpinner(false);
@@ -84,7 +99,7 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 	return (
 		<>
 			<Centralize>
-				<ButtonBack />
+				<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
 				<form onSubmit={handleSubmit(updateContact)}>
 					<FormHeader text={'Actualizar'} />
 					<Input
@@ -116,6 +131,7 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 						content='Actualizar contacto'
 						spinnerText='Actualizando...'
 					/>
+					<ButtonBack />
 				</form>
 				<hr />
 			</Centralize>

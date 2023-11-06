@@ -10,10 +10,12 @@ import { DeleteButton, UpdateButton } from './buttons.component';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
 import { ContactsProvider } from '@/lib/providers/contacts';
-
+import { GLOBAL_ERROR_MESSAGE } from '@/constants';
+import Alert from 'react-bootstrap/Alert';
 
 
 export default function TableContacts() {
+	
 	const { push } = useRouter();
 	const [contacts, setContacts] = useState<Contact[]>([]);
 
@@ -23,18 +25,17 @@ export default function TableContacts() {
 		error
 	} = useFetch<Contact[]>('/contacts');
 
-
 	useEffect(() => {
 		if (data) setContacts(data);
 	}, [data]);
 
 
-	if (error) {
-		return <h1>Error!</h1>;
-	}
-
 	if (isLoading) {
 		return <Spinner loading={isLoading} text='Loading contacts...' />;
+	}
+
+	if (error) {
+		return <Alert variant='danger' show={true}>{GLOBAL_ERROR_MESSAGE}</Alert>;
 	}
 
 	const removeContactFromTable = (contactId: Id) => {
@@ -54,7 +55,6 @@ export default function TableContacts() {
 				Alerts.error('Ocorreu um erro.');
 			});
 	};
-
 
 	const handleUpdate = (e: FormEvent, contactId: Id) => {
 		e.preventDefault();

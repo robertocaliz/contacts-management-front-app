@@ -3,7 +3,7 @@
 
 
 import { useSubmitButton } from '@/hooks';
-import { SubmitButton } from './buttons.component';
+import { ButtonBack, SubmitButton } from './buttons.component';
 import Centralize from './centralize';
 import FormHeader from './form-header';
 import Input from './input';
@@ -59,8 +59,9 @@ export default function FormRecoverSignup() {
 					runSpinner={runSpinner}
 					disable={disable}
 				/>
+				<ButtonBack />
 			</form>
-
+			<hr />
 		</Centralize>
 	);
 

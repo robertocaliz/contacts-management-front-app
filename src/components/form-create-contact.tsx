@@ -2,7 +2,6 @@
 
 import Alerts from '@/lib/alerts';
 import { ConflictErrorT, Contact } from '@/types';
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Centralize from './centralize';
 import { ButtonBack, SubmitButton } from './buttons.component';
@@ -13,13 +12,19 @@ import { CREATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
 import { ContactsProvider } from '@/lib/providers/contacts';
 import { StatusCodes } from 'http-status-codes';
 import { displayConflictErrors } from '@/functions/form-errors';
+import { useSubmitButton } from '@/hooks';
+import Alert from 'react-bootstrap/Alert';
+import useAlert from '@/hooks/use.alert';
+import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 
 
 export default function FormAddContact() {
 
 
-	const [runSpinner, setRunSpinner] = useState(false);
-	const [disable, setDisable] = useState(false);
+	const {
+		spinner: { runSpinner, setRunSpinner },
+		button: { disable, setDisable }
+	} = useSubmitButton();
 
 
 	const {
@@ -32,6 +37,14 @@ export default function FormAddContact() {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		resolver: yupResolver(CREATE_CONTACT_SCHEMA) as any
 	});
+
+
+	const {
+		alertType,
+		alertMessage,
+		showAlert,
+		alert
+	} = useAlert();
 
 
 	const createContact: SubmitHandler<Contact> = async (contact) => {
@@ -48,7 +61,7 @@ export default function FormAddContact() {
 				Alerts.success('Contacto criado.');
 			})
 			.catch(() => {
-				Alerts.error('Ocorreu um erro.');
+				alert.show('danger', GLOBAL_ERROR_MESSAGE);
 			})
 			.finally(() => {
 				setRunSpinner(false);
@@ -60,7 +73,7 @@ export default function FormAddContact() {
 	return (
 		<>
 			<Centralize>
-				<ButtonBack />
+				<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
 				<form onSubmit={handleSubmit(createContact)}>
 					<FormHeader text='Adicionar' />
 					<Input
@@ -92,6 +105,7 @@ export default function FormAddContact() {
 						content='Criar contacto'
 						spinnerText='Criando...'
 					/>
+					<ButtonBack />
 				</form>
 				<hr />
 			</Centralize>

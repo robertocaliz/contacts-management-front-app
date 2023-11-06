@@ -3,7 +3,6 @@
 
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Centralize from './centralize';
 import FormHeader from './form-header';
@@ -17,6 +16,7 @@ import Link from 'next/link';
 import { StatusCodes } from 'http-status-codes';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
+import { useSubmitButton } from '@/hooks';
 
 
 export default function LoginForm() {
@@ -30,8 +30,11 @@ export default function LoginForm() {
 		resolver: yupResolver(LOGIN_SCHEMA) as any
 	});
 
-	const [runSpinner, setRunSpinner] = useState(false);
-	const [disable, setDisable] = useState(false);
+	const {
+		spinner: { runSpinner, setRunSpinner },
+		button: { disable, setDisable }
+	} = useSubmitButton();
+
 	const { push } = useRouter();
 
 	const {

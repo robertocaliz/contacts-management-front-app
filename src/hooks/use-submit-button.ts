@@ -1,10 +1,17 @@
 import { useState } from 'react';
 
 
-export const useSubmitButton = () => {
 
-	const [runSpinner, setRunSpinner] = useState(false);
-	const [disable, setDisable] = useState(false);
+type UseSubmitButtonProps = {
+	disable?: boolean;
+	runSpinner?: boolean;
+}
+
+
+export const useSubmitButton = (params?: UseSubmitButtonProps) => {
+
+	const [runSpinner, setRunSpinner] = useState(params?.runSpinner ?? false);
+	const [disable, setDisable] = useState(params?.disable ?? false);
 
 
 	return {

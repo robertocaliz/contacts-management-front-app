@@ -2,7 +2,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Centralize from './centralize';
 import FormHeader from './form-header';
@@ -20,6 +19,7 @@ import { cleanConflictError, displayConflictErrors } from '@/functions/form-erro
 import useAlert from '@/hooks/use.alert';
 import Alert from 'react-bootstrap/Alert';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
+import { useSubmitButton } from '@/hooks';
 
 
 type AccountData = {
@@ -48,8 +48,14 @@ export default function SignUpForm() {
 	} = useAlert();
 
 
-	const [runSpinner, setRunSpinner] = useState(false);
-	const [disable, setDisable] = useState(true);
+	const {
+		spinner: { runSpinner, setRunSpinner },
+		button: { disable, setDisable }
+	} = useSubmitButton({
+		disable: true
+	});
+
+
 	const { push } = useRouter();
 
 
