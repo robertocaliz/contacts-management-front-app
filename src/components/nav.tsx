@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 import {
 	ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, ProfileButton
 } from './buttons.component';
-import { BsPersonGear } from 'react-icons/bs';
 
 
 export default function Nav() {
@@ -29,7 +28,7 @@ export default function Nav() {
 				{session ? (
 					<>
 						<li><LogoutButton /></li>
-						<li><ProfileButton content={<BsPersonGear />} /></li>
+						<li><ProfileButton content={session.user?.name} /></li>
 					</>
 				) : (
 					<>
