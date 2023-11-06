@@ -10,6 +10,9 @@ export const metadata: Metadata = {
 
 
 export default function ActivateUserAcountPage({ params }: ParamsProps) {
-
-	return <AlertActiveAccount activationToken={params.activationToken} />;
+	return (<>
+		<AlertActiveAccount
+			activationToken={params.activationToken}
+		/>
+	</>);
 }

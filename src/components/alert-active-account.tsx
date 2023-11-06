@@ -9,10 +9,11 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from './spinner';
 
 
-
 export default function AlertActiveAccount({ activationToken }: { activationToken: string }) {
 
+	
 	const [activatingAccount, setActivatingAccount] = useState(true);
+
 
 	const {
 		alertType,
@@ -29,7 +30,7 @@ export default function AlertActiveAccount({ activationToken }: { activationToke
 				if (status === StatusCodes.OK) {
 					alert.show('warning',
 						`A sua conta foi activada com sucesso.
-							Faça o login e comece a utilizar o nosso aplicativo.
+							Faça login e comece a utilizar o nosso aplicativo.
 						`
 					);
 					return;
@@ -50,7 +51,9 @@ export default function AlertActiveAccount({ activationToken }: { activationToke
 	}, []);
 
 
-	if (activatingAccount) return <Spinner loading={activatingAccount} text='Activando a conta...' />;
+	if (activatingAccount) {
+		return <Spinner loading={activatingAccount} text='Activando a conta...' />;
+	}
 
 
 	return <Alert variant={alertType} show={showAlert} >{alertMessage}</Alert>;
