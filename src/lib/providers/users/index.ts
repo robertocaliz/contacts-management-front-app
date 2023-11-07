@@ -1,16 +1,16 @@
 'use client';
 
 import { axiosAuth, axiosPublic } from '@/lib/axios/auth';
-import { BadRequestError, ConflictError } from '@/lib/errors';
+import { BadRequestError, ConflictError, NotFoundError } from '@/lib/errors';
 import { Id, User } from '@/types';
 
 
-type CreateResData = { emailSend: boolean };
+type SendMail = { emailSend: boolean };
 
 
 const create = async (user: User) => {
 	try {
-		const { data: resBody, status } = await axiosPublic.post<CreateResData>('/signup', user);
+		const { data: resBody, status } = await axiosPublic.post<SendMail>('/signup', user);
 		return { resBody, status };
 	} catch (error) {
 		if (error instanceof ConflictError) {
@@ -53,13 +53,28 @@ const checkIfEmailExists = async (email: string) => {
 };
 
 
+const _checkIfEmailExists = async (email: string) => {
+	try {
+		const { data: resBody, status } = await axiosPublic.post<SendMail>('/recover-sinup', { email });
+		return { resBody, status };
+	} catch (error) {
+		if ((error instanceof NotFoundError)) {
+			return {
+				status: error.status
+			};
+		}
+		throw error;
+	}
+};
+
+
 
 const activateAccount = async (activationToken: string) => {
 	try {
 		const { status } = await axiosPublic.patch(`/signup/activate/${activationToken}`);
 		return status;
 	} catch (error) {
-		if (error instanceof BadRequestError) { 
+		if (error instanceof BadRequestError) {
 			return error.status;
 		}
 		console.log(error);
@@ -74,5 +89,6 @@ export const UsersProvider = {
 	create,
 	update,
 	checkIfEmailExists,
-	activateAccount
+	activateAccount,
+	_checkIfEmailExists
 };

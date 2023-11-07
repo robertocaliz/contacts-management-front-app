@@ -118,7 +118,6 @@ export default function LoginForm() {
 					</div>
 				</footer>
 			</form>
-			<hr />
 		</Centralize>
 	);
 }

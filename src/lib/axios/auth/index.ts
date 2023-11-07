@@ -8,7 +8,7 @@ import { getSession } from 'next-auth/react';
 import { StatusCodes } from 'http-status-codes';
 import { User } from '@/types';
 import { updateSession } from '@/functions/update-session';
-import { BadRequestError, ConflictError } from '@/lib/errors';
+import { BadRequestError, ConflictError, NotFoundError } from '@/lib/errors';
 
 
 const axiosAuthConfig = Object.freeze({
@@ -28,8 +28,11 @@ const getCustomError = (error: any) => {
 		case StatusCodes.CONFLICT: {
 			return new ConflictError(error.response.data.errors);
 		}
-		case StatusCodes.BAD_REQUEST: { 
+		case StatusCodes.BAD_REQUEST: {
 			return new BadRequestError();
+		}
+		case StatusCodes.NOT_FOUND: {
+			return new NotFoundError();
 		}
 	}
 };

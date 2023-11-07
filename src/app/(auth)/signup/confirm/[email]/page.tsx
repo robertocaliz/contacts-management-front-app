@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 
 
 export const metadata: Metadata = {
-	title: 'Confirmar seu email'
+	title: 'Confira seu email'
 };
 
 
@@ -13,11 +13,10 @@ export default function ConfirmSignupPage({ params }: ParamsProps) {
 	const { email: userEmail } = params;
 	return (<>
 		<Centralize>
-			<div>
-				<h1>Confirme o seu email: {userEmail.replace('%40', '@')}</h1>
-				<h2>Você receberá um link na sua inbox para confirmar seu cadastro e habilitar a sua conta.</h2>
+			<div style={{textAlign: 'center'}}>
+				<h4>Confira seu email: {userEmail.replace('%40', '@')}</h4>
+				<span>Você receberá um link na sua inbox para confirmar seu cadastro e habilitar a sua conta.</span>
 			</div>
-			<hr />
 		</Centralize>
 	</>);
 }
