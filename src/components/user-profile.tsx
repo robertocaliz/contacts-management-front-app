@@ -8,7 +8,6 @@ import Image from 'next/image';
 import defaultProfileImage from '@/../public/images/default-profile-image.jpg';
 import { EditFormBackButton, EditUserButton } from './buttons.component';
 import Spinner from './spinner';
-import FormHeader from './form-header';
 
 
 
@@ -16,10 +15,9 @@ export default function UserProfile({
 	userData
 }: { userData: User }) {
 
-
-	const [userData_, setUserData] = useState<User>();
-	const [editUserData, setEditUserData] = useState(false);
+	const [userData$, setUserData] = useState<User>();
 	const [loadingUser, setLoadingUser] = useState(true);
+	const [editUserData, setEditUserData] = useState(false);
 
 	useEffect(() => {
 		setUserData(userData);
@@ -28,7 +26,7 @@ export default function UserProfile({
 
 
 	if (loadingUser) {
-		return <Spinner loading={loadingUser} text='loading user...' />;
+		return <Spinner loading={loadingUser} text='Carregando utilizador...' />;
 	}
 
 	return (
@@ -47,14 +45,14 @@ export default function UserProfile({
 			<section>
 				{!editUserData ? (
 					<>
-						<FormHeader text='Dados do utilizador' />
+						<h2>Dados do utilizador</h2>
 						<p>
 							<span>Name</span>
-							<span>{userData_?.name}</span>
+							<span>{userData$?.name}</span>
 						</p>
 						<p>
 							<span>Email</span>
-							<span>{userData_?.email}</span>
+							<span>{userData$?.email}</span>
 						</p>
 						<EditUserButton edit={editUserData} setEdit={setEditUserData} />
 					</>
@@ -62,7 +60,7 @@ export default function UserProfile({
 					<>
 						<EditFormBackButton edit={editUserData} setEdit={setEditUserData} />
 						<FormUpdateUser
-							userData={userData_ as User}
+							userData={userData$ as User}
 							setUserData={setUserData}
 							setEditUserData={setEditUserData}
 						/>

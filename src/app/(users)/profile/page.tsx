@@ -12,5 +12,9 @@ export default async function UserProfilePage() {
 
 	const userData = await getUserData();
 
-	return (<UserProfile userData={userData} />);
+	return (
+		<UserProfile
+			userData={userData}
+		/>
+	);
 }
