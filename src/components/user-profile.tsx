@@ -6,22 +6,24 @@ import { User } from '@/types';
 import FormUpdateUser from './form-update-user';
 import Image from 'next/image';
 import defaultProfileImage from '@/../public/images/default-profile-image.jpg';
-import { EditFormBackButton, EditUserButton } from './buttons.component';
+import { UpdateUserButton, UserProfileBackButton } from './buttons.component';
 import Spinner from './spinner';
 
 
 
 export default function UserProfile({
-	userData
-}: { userData: User }) {
+	_userData
+}: { _userData: User }) {
 
-	const [userData$, setUserData] = useState<User>();
+
+	const [userData, setUserData] = useState<User>();
 	const [loadingUser, setLoadingUser] = useState(true);
-	const [editUserData, setEditUserData] = useState(false);
+	const [showUpdateUserForm, setShowUpdateUserForm] = useState(false);
+
 
 	useEffect(() => {
-		setUserData(userData);
-		setLoadingUser(!loadingUser);
+		setUserData(_userData);
+		setLoadingUser(false);
 	}, [userData]);
 
 
@@ -43,29 +45,32 @@ export default function UserProfile({
 				/>
 			</section>
 			<section>
-				{!editUserData ? (
+				{!showUpdateUserForm ? (
 					<>
 						<h2>Dados do utilizador</h2>
 						<p>
 							<span>Name</span>
-							<span>{userData$?.name}</span>
+							<span>{userData?.name}</span>
 						</p>
 						<p>
 							<span>Email</span>
-							<span>{userData$?.email}</span>
+							<span>{userData?.email}</span>
 						</p>
-						<EditUserButton edit={editUserData} setEdit={setEditUserData} />
+						<UpdateUserButton
+							onClick={() => setShowUpdateUserForm(!showUpdateUserForm)}
+						/>
 					</>
 				) : (
 					<>
-						<EditFormBackButton edit={editUserData} setEdit={setEditUserData} />
+						<UserProfileBackButton
+							onClick={() => setShowUpdateUserForm(!showUpdateUserForm)}
+						/>
 						<FormUpdateUser
-							userData={userData$ as User}
+							userData={userData as User}
 							setUserData={setUserData}
-							setEditUserData={setEditUserData}
+							setShowUpdateUserForm={setShowUpdateUserForm}
 						/>
 					</>
-
 				)}
 			</section>
 		</div>

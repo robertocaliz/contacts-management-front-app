@@ -18,14 +18,13 @@ import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 type FormUpdateUserProps = {
 	userData: User;
 	setUserData: Dispatch<SetStateAction<User | undefined>>;
-	setEditUserData: Dispatch<SetStateAction<boolean>>;
+	setShowUpdateUserForm: Dispatch<SetStateAction<boolean>>;
 };
-
 
 export default function FormUpdateUser({
 	userData,
 	setUserData,
-	setEditUserData
+	setShowUpdateUserForm
 }: FormUpdateUserProps) {
 
 	const {
@@ -51,8 +50,8 @@ export default function FormUpdateUser({
 	});
 
 	useEffect(() => {
-		if (userData) reset(userData);
-	}, [reset, userData]);
+		reset(userData);
+	}, [userData]);
 
 	const updateUserData: SubmitHandler<User> = async (newUserData) => {
 		submitButton.runSpinner();
@@ -62,11 +61,13 @@ export default function FormUpdateUser({
 			.then(async () => {
 				await updateSession(newUserData);
 				setUserData(newUserData);
-				setEditUserData(false);
+				reset();
+				setShowUpdateUserForm(false);
 				Alerts.success('Utilizador actualizado.');
 			})
 			.catch(() => {
-				alert.show('danger', GLOBAL_ERROR_MESSAGE);
+				alert.show('danger',
+					GLOBAL_ERROR_MESSAGE);
 			})
 			.finally(() => {
 				submitButton.interruptSpinner();

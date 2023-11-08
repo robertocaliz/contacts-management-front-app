@@ -3,7 +3,7 @@
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ButtonHTMLAttributes, CSSProperties, Dispatch, FormEvent, ReactNode, SetStateAction } from 'react';
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, CSSProperties, FormEvent, ReactNode } from 'react';
 import utilsStyles from '@/../styles/utils.module.css';
 import Spinner from './spinner';
 import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from '@/constants';
@@ -169,25 +169,27 @@ export const SubmitButton = ({
 
 
 export const ButtonBack = () => {
-	const { back } = useRouter();
+	const router = useRouter();
 	return (
-		<Link href='' onClick={() => back()}>&larr;Voltar</Link>
+		<Link
+			href={''}
+			onClick={() => router.back()}
+		>
+			&larr;Voltar
+		</Link>
 	);
 };
 
 
-type EditUserButtonProps = {
-	edit: boolean;
-	setEdit: Dispatch<SetStateAction<boolean>>
-}
+interface UpdateUserButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> { }
 
 
-export const EditUserButton = ({ edit, setEdit }: EditUserButtonProps) => {
+export const UpdateUserButton = ({ ...rest }: UpdateUserButtonProps) => {
 	return (
 		<Link
 			href={''}
-			onClick={() => setEdit(!edit)}
 			style={{ fontSize: '1.5rem' }}
+			{...rest}
 		>
 			<BsPencil />
 		</Link>
@@ -195,8 +197,17 @@ export const EditUserButton = ({ edit, setEdit }: EditUserButtonProps) => {
 };
 
 
-export const EditFormBackButton = ({ edit, setEdit }: EditUserButtonProps) => {
+
+interface UserProfileBackButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> { }
+
+
+export const UserProfileBackButton = ({ ...rest }: UserProfileBackButtonProps) => {
 	return (
-		<Link href={''} onClick={() => setEdit(!edit)}>&larr;Back</Link>
+		<Link
+			href={''}
+			{...rest}
+		>
+			&larr;Voltar
+		</Link>
 	);
 };
