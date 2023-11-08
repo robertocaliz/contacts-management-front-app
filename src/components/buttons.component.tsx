@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, CSSProperties, FormEvent, ReactNode } from 'react';
 import utilsStyles from '@/../styles/utils.module.css';
 import Spinner from './spinner';
-import { OPACITY_WHILE_LOADING_FALSE, OPACITY_WHILE_LOADING_TRUE } from '@/constants';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { BsPencil } from 'react-icons/bs';
 import { TiContacts } from 'react-icons/ti';
@@ -138,6 +137,10 @@ export const ButtonAdd = ({ href, text = 'Adicionar' }: AddButtons) => {
 			className={utilsStyles.buttonAdd}>{text}</Link>
 	);
 };
+
+
+export const OPACITY_WHILE_LOADING_TRUE = 0.5;
+export const OPACITY_WHILE_LOADING_FALSE = 1;
 
 
 export const SubmitButton = ({
