@@ -27,8 +27,8 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 	const { back } = useRouter();
 
 	const {
-		spinner: { runSpinner, setRunSpinner },
-		button: { disable, setDisable }
+		buttonState: { disable, runSpinner },
+		submitButton
 	} = useSubmitButton();
 
 
@@ -74,8 +74,8 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 
 
 	const updateContact: SubmitHandler<Contact> = async (contact) => {
-		setRunSpinner(true);
-		setDisable(true);
+		submitButton.runSpinner();
+		submitButton.disable();
 		await ContactsProvider
 			.update(contact, contactId)
 			.then(({ status, errors }) => {
@@ -91,8 +91,8 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 				alert.show('danger', GLOBAL_ERROR_MESSAGE);
 			})
 			.finally(() => {
-				setRunSpinner(false);
-				setDisable(false);
+				submitButton.interruptSpinner();
+				submitButton.enable();
 			});
 	};
 
@@ -105,21 +105,21 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 					<Input
 						type='text'
 						name='name'
-						label='Nome:'
+						label='Nome'
 						register={register}
 						error={errors.name?.message}
 					/>
 					<Input
 						type='text'
 						name='email'
-						label='Email:'
+						label='Email'
 						register={register}
 						error={errors.email?.message}
 					/>
 					<Input
 						type='text'
 						name='phoneNumber'
-						label='Phone number:'
+						label='Phone number'
 						register={register}
 						error={errors.phoneNumber?.message}
 						startAdornment={'+258'}
@@ -133,7 +133,6 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 					/>
 					<ButtonBack />
 				</form>
-				<hr />
 			</Centralize>
 		</>
 	);

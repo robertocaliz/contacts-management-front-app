@@ -29,8 +29,8 @@ export default function FormUpdateUser({
 }: FormUpdateUserProps) {
 
 	const {
-		spinner: { runSpinner, setRunSpinner },
-		button: { disable, setDisable }
+		buttonState: { disable, runSpinner },
+		submitButton
 	} = useSubmitButton();
 
 	const {
@@ -55,8 +55,8 @@ export default function FormUpdateUser({
 	}, [reset, userData]);
 
 	const updateUserData: SubmitHandler<User> = async (newUserData) => {
-		setRunSpinner(true);
-		setDisable(true);
+		submitButton.runSpinner();
+		submitButton.disable();
 		await UsersProvider
 			.update(newUserData, userData._id)
 			.then(async () => {
@@ -69,8 +69,8 @@ export default function FormUpdateUser({
 				alert.show('danger', GLOBAL_ERROR_MESSAGE);
 			})
 			.finally(() => {
-				setRunSpinner(false);
-				setDisable(false);
+				submitButton.interruptSpinner();
+				submitButton.enable();
 			});
 	};
 
@@ -82,14 +82,14 @@ export default function FormUpdateUser({
 				<FormHeader text='Actualizar' />
 				<Input
 					type='text'
-					label='Nome:'
+					label='Nome'
 					name='name'
 					register={register}
 					error={errors.name?.message}
 				/>
 				<Input
 					type='text'
-					label='Email:'
+					label='Email'
 					name='email'
 					register={register}
 					error={errors.email?.message}

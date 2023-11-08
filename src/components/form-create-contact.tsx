@@ -22,8 +22,8 @@ export default function FormAddContact() {
 
 
 	const {
-		spinner: { runSpinner, setRunSpinner },
-		button: { disable, setDisable }
+		buttonState: { disable, runSpinner },
+		submitButton
 	} = useSubmitButton();
 
 
@@ -48,8 +48,8 @@ export default function FormAddContact() {
 
 
 	const createContact: SubmitHandler<Contact> = async (contact) => {
-		setRunSpinner(true);
-		setDisable(true);
+		submitButton.runSpinner();
+		submitButton.disable();
 		await ContactsProvider
 			.create(contact)
 			.then(({ status, errors }) => {
@@ -64,8 +64,8 @@ export default function FormAddContact() {
 				alert.show('danger', GLOBAL_ERROR_MESSAGE);
 			})
 			.finally(() => {
-				setRunSpinner(false);
-				setDisable(false);
+				submitButton.interruptSpinner();
+				submitButton.enable();
 			});
 	};
 
@@ -96,8 +96,8 @@ export default function FormAddContact() {
 						label='Telefone/Telemóvel:'
 						register={register}
 						error={errors.phoneNumber?.message}
-						startAdornment={'+258'}
 						maxLength={9}
+						placeholder='+258'
 					/>
 					<SubmitButton
 						disable={disable}
@@ -107,7 +107,6 @@ export default function FormAddContact() {
 					/>
 					<ButtonBack />
 				</form>
-				<hr />
 			</Centralize>
 		</>
 	);
