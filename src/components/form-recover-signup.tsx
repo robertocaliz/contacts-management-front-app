@@ -28,8 +28,8 @@ export default function FormRecoverSignup() {
 	const router = useRouter();
 
 	const {
-		spinner: { runSpinner, setRunSpinner },
-		button: { disable, setDisable }
+		buttonState: { disable, runSpinner },
+		submitButton
 	} = useSubmitButton();
 
 	const {
@@ -50,8 +50,8 @@ export default function FormRecoverSignup() {
 	});
 
 	const checkIfEmailExists: SubmitHandler<ObjEmail> = async (objEmail) => {
-		setRunSpinner(true);
-		setDisable(true);
+		submitButton.runSpinner();
+		submitButton.disable();
 		await UsersProvider
 			._checkIfEmailExists(objEmail.email)
 			.then(({ status, resBody }) => {
@@ -73,8 +73,8 @@ export default function FormRecoverSignup() {
 					GLOBAL_ERROR_MESSAGE);
 			})
 			.finally(() => {
-				setRunSpinner(false);
-				setDisable(false);
+				submitButton.interruptSpinner();
+				submitButton.enable();
 			});
 	};
 

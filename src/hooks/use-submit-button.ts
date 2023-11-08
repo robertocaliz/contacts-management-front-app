@@ -14,15 +14,20 @@ export const useSubmitButton = (params?: UseSubmitButtonProps) => {
 	const [disable, setDisable] = useState(params?.disable ?? false);
 
 
-	return {
-		spinner: {
-			runSpinner,
-			setRunSpinner
+	const submitButton = Object.freeze({
+		buttonState: { runSpinner, disable },
+		submitButton: {
+			runSpinner: () => setRunSpinner(true),
+			interruptSpinner: () => setRunSpinner(false),
+			disable: () => setDisable(true),
+			enable: () => setDisable(false),
 		},
-		button: {
-			disable,
+		stateHandler: {
+			setRunSpinner,
 			setDisable
 		}
-	};
+	});
+
+	return submitButton;
 
 };

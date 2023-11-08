@@ -49,8 +49,9 @@ export default function SignUpForm() {
 
 
 	const {
-		spinner: { runSpinner, setRunSpinner },
-		button: { disable, setDisable }
+		buttonState: { disable, runSpinner },
+		stateHandler: { setDisable },
+		submitButton
 	} = useSubmitButton({
 		disable: true
 	});
@@ -80,8 +81,8 @@ export default function SignUpForm() {
 
 
 	const createAccount: SubmitHandler<AccountData> = async (accountData) => {
-		setRunSpinner(true);
-		setDisable(true);
+		submitButton.runSpinner();
+		submitButton.disable();
 		await UsersProvider
 			.create(accountData)
 			.then(({ status, errors, resBody }) => {
@@ -100,8 +101,8 @@ export default function SignUpForm() {
 				alert.show('danger', GLOBAL_ERROR_MESSAGE);
 			})
 			.finally(() => {
-				setRunSpinner(false);
-				setDisable(false);
+				submitButton.interruptSpinner();
+				submitButton.enable();
 			});
 	};
 

@@ -31,8 +31,8 @@ export default function LoginForm() {
 	});
 
 	const {
-		spinner: { runSpinner, setRunSpinner },
-		button: { disable, setDisable }
+		buttonState: { disable, runSpinner },
+		submitButton
 	} = useSubmitButton();
 
 	const { push } = useRouter();
@@ -45,8 +45,8 @@ export default function LoginForm() {
 	} = useAlert();
 
 	const loginUser: SubmitHandler<UserCredentials> = async (credentials) => {
-		setRunSpinner(true);
-		setDisable(true);
+		submitButton.runSpinner();
+		submitButton.disable();
 		await signIn('credentials',
 			{
 				...credentials,
@@ -67,8 +67,8 @@ export default function LoginForm() {
 				alert.show('danger', error.message);
 			})
 			.finally(() => {
-				setRunSpinner(false);
-				setDisable(false);
+				submitButton.interruptSpinner();
+				submitButton.enable();
 			});
 	};
 
@@ -113,7 +113,7 @@ export default function LoginForm() {
 							Novo no ContactsPro? <Link href='/signup'>Crie sua conta aqui.</Link>
 						</span>
 						<span>
-							Esqueceu sua senha? <Link href='/signup/recover'>Click aqui.</Link>
+							Esqueceu sua senha? <Link href='/signup/recover'>Clique aqui.</Link>
 						</span>
 					</div>
 				</footer>

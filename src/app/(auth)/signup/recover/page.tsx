@@ -1,4 +1,4 @@
-import FormRecoverSignup from '@/components/recover-signup-form';
+import FormRecoverSignup from '@/components/form-recover-signup';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

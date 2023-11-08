@@ -80,7 +80,23 @@ const activateAccount = async (activationToken: string) => {
 		console.log(error);
 		throw error;
 	}
+};
 
+
+
+const changePassword = async ({
+	newPassword, recoveryToken
+}: { recoveryToken: string, newPassword: string }) => {
+	try {
+		const { status } = await axiosPublic.patch(`/users/${recoveryToken}`, { newPassword });
+		return status;
+	} catch (error) {
+		if (error instanceof BadRequestError) { 
+			return error.status;
+		}
+		console.log(error);
+		throw error;
+	}
 };
 
 
@@ -90,5 +106,6 @@ export const UsersProvider = {
 	update,
 	checkIfEmailExists,
 	activateAccount,
-	_checkIfEmailExists
+	_checkIfEmailExists,
+	changePassword
 };
