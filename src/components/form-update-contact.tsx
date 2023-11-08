@@ -122,7 +122,6 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 						label='Phone number'
 						register={register}
 						error={errors.phoneNumber?.message}
-						startAdornment={'+258'}
 						maxLength={9}
 					/>
 					<SubmitButton
