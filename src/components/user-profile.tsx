@@ -10,10 +10,12 @@ import { UpdateUserButton, UserProfileBackButton } from './buttons.component';
 import Spinner from './spinner';
 
 
+type UserProfileProps = {
+	_userData: User
+};
 
-export default function UserProfile({
-	_userData
-}: { _userData: User }) {
+
+export default function UserProfile({ _userData }: UserProfileProps) {
 
 
 	const [userData, setUserData] = useState<User>();
