@@ -28,7 +28,7 @@ const NAME_SCHEMA = object({
 
 
 
-export const LOGIN_SCHEMA = EMAIL_SCHEMA.shape({
+const PASSWORD_SCHEMA = object({
 	password: string()
 		.required('Senha é obrigatória.')
 		.min(8, 'Senha deve conter no mínimo 8 caracteres.')
@@ -36,7 +36,10 @@ export const LOGIN_SCHEMA = EMAIL_SCHEMA.shape({
 });
 
 
-export const SIGNUP_SCHEMA = LOGIN_SCHEMA.shape({
+export const LOGIN_SCHEMA = EMAIL_SCHEMA.concat(PASSWORD_SCHEMA);
+
+
+const CONFIRM_PASSWORD_SCHEMA = object({
 	confirmPassword: string()
 		.required('A senha de confirmação é obrigatória.')
 		.test(
@@ -45,7 +48,16 @@ export const SIGNUP_SCHEMA = LOGIN_SCHEMA.shape({
 			(confirmPassword, textContext) => {
 				return textContext.parent.password === confirmPassword;
 			})
-}).concat(NAME_SCHEMA);
+});
+
+
+export const SIGNUP_SCHEMA = LOGIN_SCHEMA
+	.concat(CONFIRM_PASSWORD_SCHEMA)
+	.concat(NAME_SCHEMA);
+
+
+
+export const UPDATE_PASSWORD_SCHEMA = PASSWORD_SCHEMA.concat(CONFIRM_PASSWORD_SCHEMA);
 
 
 

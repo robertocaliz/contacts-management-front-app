@@ -118,27 +118,27 @@ export default function SignUpForm() {
 				<main>
 					<Input
 						type='text'
-						label='Nome:'
+						label='Nome'
 						name='name'
 						register={register}
 						error={errors.name?.message}
 					/>
 					<Input
 						type='text'
-						label='Email:'
+						label='Email'
 						name='email'
 						register={register}
 						error={errors.email?.message}
 						onBlur={checkIfEmailExists}
 					/>
 					<PasswordInput
-						label='Senha:'
+						label='Senha'
 						name='password'
 						register={register}
 						error={errors.password?.message}
 					/>
 					<PasswordInput
-						label='Confirmar senha:'
+						label='Confirmar senha'
 						name='confirmPassword'
 						register={register}
 						error={errors.confirmPassword?.message}

@@ -84,13 +84,13 @@ export default function LoginForm() {
 				<main>
 					<Input
 						type='email'
-						label='Email:'
+						label='Email'
 						name="email"
 						register={register}
 						error={errors.email?.message}
 					/>
 					<PasswordInput
-						label='Senha:'
+						label='Senha'
 						name='password'
 						register={register}
 						error={errors.password?.message}
