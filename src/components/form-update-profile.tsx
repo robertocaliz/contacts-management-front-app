@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { User } from '@/types';
@@ -5,7 +6,7 @@ import FormHeader from './form-header';
 import Input from './input';
 import { SignupRecoverButton, SubmitButton } from './buttons.component';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UPDATE_USER_SCHEMA } from '@/constants/validation-schemas';
 import Alerts from '@/lib/alerts';
@@ -15,14 +16,17 @@ import { useSubmitButton } from '@/hooks';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
+import { objChanged } from '@/functions/object';
 
 
 type FormUpdateUserProps = {
-	userData: User;
+	userData: Record<string, any>;
 };
 
 
 export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
+
+	const [_userData, _setUserData] = useState<Record<string, any>>({});
 
 	const {
 		buttonState: { disable, runSpinner },
@@ -42,15 +46,28 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 		reset,
 		formState: { errors }
 	} = useForm<User>({
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		resolver: yupResolver(UPDATE_USER_SCHEMA) as any
 	});
 
 	useEffect(() => {
 		reset(userData);
+		_setUserData(userData);
 	}, [userData]);
 
+
+	const profileChanged = (newUserData: Record<string, any>) => {
+		return objChanged({
+			originalObj: _userData,
+			newObj: newUserData
+		});
+	};
+
+
 	const updateUserData: SubmitHandler<User> = async (newUserData) => {
+		if (!profileChanged(newUserData)) {
+			return alert.show('warning',
+				'O perfíl não foi alterado.');
+		}
 		submitButton.runSpinner();
 		submitButton.disable();
 		await UsersProvider
@@ -66,6 +83,7 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 			.finally(() => {
 				submitButton.interruptSpinner();
 				submitButton.enable();
+				_setUserData(newUserData);
 			});
 	};
 
@@ -94,13 +112,13 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 						runSpinner={runSpinner}
 						spinnerText='Actualizando...'
 						disable={disable}
-						content='Actualizar perfíl'
+						content='Actualizar'
 					/>
 				</main>
-				<footer style={{marginTop: '1.3rem'}}>
-					<h4>Senha</h4>
+				<footer style={{ marginTop: '1.3rem' }}>
+					<h6>Senha</h6>
 					<SignupRecoverButton
-						text='Clique aqui para recuperar ou altarar a senha.'
+						text='Clique aqui para recuperar ou alterar a senha.'
 					/>
 				</footer>
 			</form>
