@@ -1,9 +1,11 @@
+'use client';
+
 import { User } from '@/types';
 import FormHeader from './form-header';
 import Input from './input';
-import { SubmitButton } from './buttons.component';
+import { SignupRecoverButton, SubmitButton } from './buttons.component';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UPDATE_USER_SCHEMA } from '@/constants/validation-schemas';
 import Alerts from '@/lib/alerts';
@@ -17,15 +19,10 @@ import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 
 type FormUpdateUserProps = {
 	userData: User;
-	setUserData: Dispatch<SetStateAction<User | undefined>>;
-	setShowUpdateUserForm: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function FormUpdateUser({
-	userData,
-	setUserData,
-	setShowUpdateUserForm
-}: FormUpdateUserProps) {
+
+export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 
 	const {
 		buttonState: { disable, runSpinner },
@@ -60,10 +57,7 @@ export default function FormUpdateUser({
 			.update(newUserData, userData._id)
 			.then(async () => {
 				await updateSession(newUserData);
-				setUserData(newUserData);
-				reset();
-				setShowUpdateUserForm(false);
-				Alerts.success('Utilizador actualizado.');
+				Alerts.success('Perfíl actualizado.');
 			})
 			.catch(() => {
 				alert.show('danger',
@@ -80,27 +74,35 @@ export default function FormUpdateUser({
 		<>
 			<Alert variant={alertType} show={showAlert} >{alertMessage}</Alert>
 			<form onSubmit={handleSubmit(updateUserData)}>
-				<FormHeader text='Actualizar' />
-				<Input
-					type='text'
-					label='Nome'
-					name='name'
-					register={register}
-					error={errors.name?.message}
-				/>
-				<Input
-					type='text'
-					label='Email'
-					name='email'
-					register={register}
-					error={errors.email?.message}
-				/>
-				<SubmitButton
-					runSpinner={runSpinner}
-					spinnerText='Actualizando...'
-					disable={disable}
-					content='Actualizar usuário'
-				/>
+				<FormHeader text='Actualizar Perfíl' />
+				<main>
+					<Input
+						type='text'
+						label='Nome'
+						name='name'
+						register={register}
+						error={errors.name?.message}
+					/>
+					<Input
+						type='text'
+						label='Email'
+						name='email'
+						register={register}
+						error={errors.email?.message}
+					/>
+					<SubmitButton
+						runSpinner={runSpinner}
+						spinnerText='Actualizando...'
+						disable={disable}
+						content='Actualizar perfíl'
+					/>
+				</main>
+				<footer style={{marginTop: '1.3rem'}}>
+					<h4>Senha</h4>
+					<SignupRecoverButton
+						text='Clique aqui para recuperar ou altarar a senha.'
+					/>
+				</footer>
 			</form>
 		</>
 	);

@@ -1,4 +1,5 @@
-import UserProfile from '@/components/user-profile';
+import Centralize from '@/components/centralize';
+import FormUpdateProfile from '@/components/form-update-profile';
 import { getUserData } from '@/functions/session';
 import { Metadata } from 'next';
 
@@ -11,8 +12,10 @@ export const metadata: Metadata = {
 export default async function UserProfilePage() {
 	const userData = await getUserData();
 	return (
-		<UserProfile
-			_userData={userData}
-		/>
+		<Centralize>
+			<FormUpdateProfile
+				userData={userData}
+			/>
+		</Centralize>
 	);
 }

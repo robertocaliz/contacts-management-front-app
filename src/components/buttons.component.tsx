@@ -214,3 +214,16 @@ export const UserProfileBackButton = ({ ...rest }: UserProfileBackButtonProps) =
 		</Link>
 	);
 };
+
+
+
+
+export const SignupRecoverButton = ({ text }: { text: string }) => {
+	return (
+		<Link
+			href='/signup/recover'
+		>
+			{text}
+		</Link>
+	);
+};

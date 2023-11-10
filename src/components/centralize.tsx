@@ -7,7 +7,7 @@ type CentralizeProps = {
 }
 
 
-export default function Centralize({ children, maxWidth = '500px' }: CentralizeProps) {
+export default function Centralize({ children, maxWidth = '600px' }: CentralizeProps) {
 	return (
 		<div style={{
 			maxWidth,

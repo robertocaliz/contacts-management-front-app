@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Centralize from './centralize';
 import FormHeader from './form-header';
 import Input from './input';
-import { SubmitButton } from './buttons.component';
+import { SignupRecoverButton, SubmitButton } from './buttons.component';
 import { SignInResponseError, UserCredentials } from '@/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/constants/validation-schemas';
@@ -113,7 +113,7 @@ export default function LoginForm() {
 							Novo no ContactsPro? <Link href='/signup'>Crie sua conta aqui.</Link>
 						</span>
 						<span>
-							Esqueceu sua senha? <Link href='/signup/recover'>Clique aqui.</Link>
+							Esqueceu sua senha? <SignupRecoverButton text='Clique aqui.' />
 						</span>
 					</div>
 				</footer>
