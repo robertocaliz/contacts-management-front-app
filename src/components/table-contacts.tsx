@@ -2,13 +2,11 @@
 
 
 import tableContactsStyles from '@/../styles/contact-table.module.css';
-import { useFetch } from '@/hooks';
+import { useFetch, useSubmitButton } from '@/hooks';
 import { Contact, Id } from '@/types';
-import Spinner from './spinner';
 import { FormEvent, useEffect, useState } from 'react';
 import { DeleteButton, UpdateButton } from './buttons.component';
 import Alerts from '@/lib/alerts';
-import { useRouter } from 'next/navigation';
 import { ContactsProvider } from '@/lib/providers/contacts';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import Alert from 'react-bootstrap/Alert';
@@ -16,25 +14,24 @@ import Alert from 'react-bootstrap/Alert';
 
 export default function TableContacts() {
 
-	const { push } = useRouter();
+
 	const [contacts, setContacts] = useState<Contact[]>([]);
 
-	const [pageNumber, setPageNumber] = useState(1);
+
+	const {
+		buttonState: { runSpinner },
+		submitButton
+	} = useSubmitButton();
 
 	const {
 		data,
-		isLoading,
 		error
-	} = useFetch<Contact[]>(`/contacts?page=${pageNumber}`);
+	} = useFetch<Contact[]>('/contacts');
 
 	useEffect(() => {
 		if (data) setContacts(data);
 	}, [data]);
 
-
-	// if (isLoading) {
-	// 	return <Spinner loading={isLoading} text='Loading contacts...' />;
-	// }
 
 	if (error) {
 		return <Alert variant='danger' show={true}>{GLOBAL_ERROR_MESSAGE}</Alert>;
@@ -47,6 +44,7 @@ export default function TableContacts() {
 
 	const handleDelete = async (e: FormEvent, contactId: Id) => {
 		e.preventDefault();
+		submitButton.runSpinner();
 		await ContactsProvider
 			.del(contactId)
 			.then(() => {
@@ -55,12 +53,10 @@ export default function TableContacts() {
 			})
 			.catch(() => {
 				Alerts.error('Ocorreu um erro.');
+			})
+			.finally(() => {
+				submitButton.interruptSpinner();
 			});
-	};
-
-	const handleUpdate = (e: FormEvent, contactId: Id) => {
-		e.preventDefault();
-		push(`/contacts/${contactId}/update`);
 	};
 
 	return (
@@ -77,28 +73,28 @@ export default function TableContacts() {
 						</tr>
 					</thead>
 					<tbody>
-						{!isLoading && (
-							contacts.map(contact => (
-								<tr key={contact._id} onDoubleClick={(e) => handleUpdate(e, contact._id)}>
-									<td>{contact.name}</td>
-									<td>{contact.email}</td>
-									<td>{contact.phoneNumber}</td>
-									<td>
-										<DeleteButton handleDelete={(e) => handleDelete(e, contact._id)} />
-									</td>
-									<td>
-										<UpdateButton handleUpdate={(e) => handleUpdate(e, contact._id)} />
-									</td>
-								</tr>
-							))
-						)}
+						{contacts.map(contact => (
+							<tr key={contact._id}>
+								<td>{contact.name}</td>
+								<td>{contact.email}</td>
+								<td>{contact.phoneNumber}</td>
+								<td>
+									<DeleteButton
+										handleDelete={(e) => handleDelete(e, contact._id)}
+										runSpinner={runSpinner}
+									/>
+								</td>
+								<td>
+									<UpdateButton
+										url={`/contacts/${contact._id}/update`}
+									/>
+								</td>
+							</tr>
+						))
+						}
 					</tbody>
 				</table>
 			</div >
-			<div style={{ textAlign: 'center' }}>
-				<button onClick={() => setPageNumber(pageNumber - 1)}>Anterior</button>
-				<button onClick={() => setPageNumber(pageNumber + 1)}>Próxima</button>
-			</div>
 		</>
 	);
 }

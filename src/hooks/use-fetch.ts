@@ -1,6 +1,6 @@
 
 
-import { axiosAuth } from '@/lib/axios/auth';
+import { axiosAuth } from '@/lib/axios/auth/client';
 import useSWR from 'swr';
 
 

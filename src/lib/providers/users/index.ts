@@ -1,6 +1,6 @@
 'use client';
 
-import { axiosAuth, axiosPublic } from '@/lib/axios/auth';
+import { axiosAuth, axiosPublic } from '@/lib/axios/auth/client';
 import { BadRequestError, ConflictError, NotFoundError } from '@/lib/errors';
 import { Id, User } from '@/types';
 

@@ -61,29 +61,32 @@ export const ContactsButton = ({ text = 'Contactos' }: ContactsButtonProps) => {
 };
 
 
-export const DeleteButton = ({
-	handleDelete
-}: { handleDelete: (e: FormEvent) => void }) => {
+type DeleteButtonProps = {
+	handleDelete: (e: FormEvent) => void;
+	runSpinner: boolean
+}
+
+export const DeleteButton = ({ handleDelete, runSpinner }: DeleteButtonProps) => {
+	if (runSpinner) { 
+		return <Spinner loading={runSpinner} />;
+	}
 	return (
-		<Link
+		<a
 			href={''}
 			className={`${utilsStyles.colorRed} ${utilsStyles.tableButtonSize}`}
 			onClick={handleDelete}
 		>
 			<RiDeleteBinLine />
-		</Link >
+		</a >
 	);
 };
 
 
-export const UpdateButton = ({
-	handleUpdate
-}: { handleUpdate: (e: FormEvent) => void }) => {
+export const UpdateButton = ({ url }: { url: string }) => {
 	return (
 		<Link
-			href={''}
+			href={url}
 			className={utilsStyles.tableButtonSize}
-			onClick={handleUpdate}
 		>
 			<BsPencil />
 		</Link>

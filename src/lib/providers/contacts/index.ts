@@ -1,7 +1,9 @@
-'use client';
 
-import { axiosAuth } from '@/lib/axios/auth';
-import { ConflictError } from '@/lib/errors';
+
+
+import { axiosAuth } from '@/lib/axios/auth/client';
+import { axiosAuth as axiosAuthServer } from '@/lib/axios/auth/server';
+import { ConflictError, NotFoundError } from '@/lib/errors';
 import { Contact, Id } from '@/types';
 
 
@@ -22,7 +24,21 @@ const create = async (contact: Contact) => {
 	}
 };
 
+const getById = async (constactId: Id) => {
+	console.log(constactId);
+	try {
+		const { data: contact } = await axiosAuthServer.get(`/contacts/${constactId}`);
+		return contact;
+	} catch (error) {
+		if (error instanceof NotFoundError) {
+			console.log('My error:', error);
+			return;
+		}
 
+		throw error;
+	}
+
+};
 
 export const del = async (contactId: Id) => {
 	try {
@@ -54,5 +70,6 @@ export const update = async (contact: Contact, contactId: Id) => {
 export const ContactsProvider = {
 	create,
 	update,
-	del
+	del,
+	getById
 };

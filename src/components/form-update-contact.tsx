@@ -5,13 +5,12 @@ import { ConflictErrorT, Contact } from '@/types';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
-import Spinner from './spinner';
 import { useRouter } from 'next/navigation';
 import Centralize from './centralize';
 import { ButtonBack, SubmitButton } from './buttons.component';
 import FormHeader from './form-header';
 import Input from './input';
-import { useContact, useSubmitButton } from '@/hooks';
+import { useSubmitButton } from '@/hooks';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UPDATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
 import { ContactsProvider } from '@/lib/providers/contacts';
@@ -22,7 +21,7 @@ import useAlert from '@/hooks/use.alert';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 
 
-export default function FormUpdateContact({ contactId }: { contactId: string }) {
+export default function FormUpdateContact({ contact }: { contact: Contact }) {
 
 	const { back } = useRouter();
 
@@ -51,33 +50,17 @@ export default function FormUpdateContact({ contactId }: { contactId: string }) 
 		resolver: yupResolver(UPDATE_CONTACT_SCHEMA) as any
 	});
 
-	const {
-		contact,
-		error,
-		isLoading
-	} = useContact(contactId);
-
 
 	useEffect(() => {
 		reset(contact);
 	}, [contact]);
 
 
-	if (isLoading) {
-		return <Spinner loading={isLoading} text='Carregando contacto...' />;
-	}
-
-
-	if (error) {
-		return <Alert variant='danger' show={true}>{GLOBAL_ERROR_MESSAGE}</Alert>;
-	}
-
-
 	const updateContact: SubmitHandler<Contact> = async (contact) => {
 		submitButton.runSpinner();
 		submitButton.disable();
 		await ContactsProvider
-			.update(contact, contactId)
+			.update(contact, contact._id)
 			.then(({ status, errors }) => {
 				if (status === StatusCodes.CONFLICT) {
 					displayConflictErrors(errors as Array<ConflictErrorT>, setError);

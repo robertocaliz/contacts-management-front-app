@@ -1,10 +1,9 @@
-import { ForbiddenError, NotFoundError, UnauthorizedError } from '@/lib/errors';
 import axios from 'axios';
-import { StatusCodes } from 'http-status-codes';
+import { getCustomError } from './helper';
 
 
 export const axiosConfig = Object.freeze({
-	baseURL: process.env.BASE_URL,
+	baseURL: process.env.AXIOS_BASE_URL,
 	headers: {
 		'Content-Type': 'application/json'
 	}
@@ -17,11 +16,8 @@ const axiosPublic = axios.create(axiosConfig);
 axiosPublic.interceptors.response.use(
 	(response) => response,
 	error => {
-		switch (error.response?.status) {
-			case StatusCodes.UNAUTHORIZED: throw new UnauthorizedError();
-			case StatusCodes.NOT_FOUND: throw new NotFoundError();
-			case StatusCodes.FORBIDDEN: throw new ForbiddenError();
-		}
+		const customError = getCustomError(error);
+		if (customError) throw customError;
 		return Promise.reject(error);
 	});
 
