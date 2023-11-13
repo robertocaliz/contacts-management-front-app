@@ -1,3 +1,4 @@
+import { User } from '.';
 
 
 export * from './Contact';
@@ -23,3 +24,5 @@ export type SignInResponseError = {
 	message: string
 	status: number
 }
+
+export interface RefreshAccessTokenResBody extends Pick<User, 'accessToken' | 'refreshToken'> { }

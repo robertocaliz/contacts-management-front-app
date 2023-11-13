@@ -11,12 +11,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { UPDATE_USER_SCHEMA } from '@/constants/validation-schemas';
 import Alerts from '@/lib/alerts';
 import { UsersProvider } from '@/lib/providers/users';
-import { updateSession } from '@/functions/update-session';
 import { useSubmitButton } from '@/hooks';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import { objChanged } from '@/functions/object';
+import { updateSession } from '@/functions/session';
 
 
 type FormUpdateUserProps = {

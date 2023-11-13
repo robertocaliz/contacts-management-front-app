@@ -1,6 +1,8 @@
 
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { User } from '@/types';
 import { getServerSession } from 'next-auth';
+import { getCsrfToken, getSession } from 'next-auth/react';
 
 
 
@@ -19,5 +21,22 @@ export const getUserData = async () => {
 export const getAcessToken = async () => {
 	const session = await getServerSession(authOptions);
 	return session?.user?.accessToken;
+};
+
+
+
+
+export const updateSession = async (userDetails: Partial<User>) => {
+	const csrfToken = await getCsrfToken();
+	await getSession({
+		req: {
+			body: {
+				csrfToken,
+				data: {
+					user: { ...userDetails }
+				}
+			}
+		}
+	});
 };
 

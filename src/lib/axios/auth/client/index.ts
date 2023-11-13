@@ -5,10 +5,9 @@ import axios from 'axios';
 
 import { axiosConfig } from '../..';
 import { getSession } from 'next-auth/react';
-import { StatusCodes } from 'http-status-codes';
-import { User } from '@/types';
-import { updateSession } from '@/functions/update-session';
+import { RefreshAccessTokenResBody } from '@/types';
 import { getCustomError } from '../../helper';
+import { refreshAcessToken } from '../../interceptors';
 
 
 const axiosAuthConfig = Object.freeze({
@@ -21,16 +20,15 @@ const axiosAuthConfig = Object.freeze({
 export const axiosAuth = axios.create(axiosAuthConfig);
 export const axiosPublic = axios.create(axiosAuthConfig);
 
+
 axiosAuth.interceptors.request.use(async request => {
-	const session = await getSession();
 	if (!request.headers['Authorization']) {
+		const session = await getSession();
 		request.headers['Authorization'] = `Bearer ${session?.user?.accessToken}`;
 	}
 	return request;
 });
 
-
-interface RefreshAccessTokenResBody extends Pick<User, 'accessToken' | 'refreshToken'> { }
 
 
 const refreshAccessToken = async () => {
@@ -41,29 +39,24 @@ const refreshAccessToken = async () => {
 };
 
 
+
 axiosAuth.interceptors.response.use(
 	(response) => response,
-	async (error) => {
+	refreshAcessToken({
+		axiosObj: axiosAuth,
+		refreshAccessToken
+	})
+);
 
-		const originalRequest = error.config;
-		if ((error.response?.status === StatusCodes.UNAUTHORIZED
-			&& !originalRequest._retry)) {
-			originalRequest._retry = true;
-			return await refreshAccessToken()
-				.then(async (data) => {
-					await updateSession(data);
-					originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
-					return axiosAuth(originalRequest);
-				});
-		}
 
+axiosAuth.interceptors.response.use(
+	(response) => response,
+	(error) => {
 		const customError = getCustomError(error);
 		if (customError) throw customError;
-
 		return Promise.reject(error);
 	}
 );
-
 
 
 axiosPublic.interceptors.response.use(

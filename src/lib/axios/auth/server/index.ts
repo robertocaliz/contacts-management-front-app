@@ -23,11 +23,10 @@ export const axiosAuth = axios.create(axiosAuthConfig);
 export const axiosPublic = axios.create(axiosAuthConfig);
 
 
+
 axiosAuth.interceptors.request.use(async request => {
 	const session = await getServerSession(authOptions);
-	if (!request.headers['Authorization']) {
-		request.headers['Authorization'] = `Bearer ${session?.user?.accessToken}`;
-	}
+	request.headers['Authorization'] = `Bearer ${session?.user?.accessToken}`;
 	return request;
 });
 
@@ -46,7 +45,7 @@ const refreshAccessToken = async () => {
 axiosAuth.interceptors.response.use(
 	(response) => response,
 	async (error) => {
-		console.error(error.response.status);
+
 		const originalRequest = error.config;
 		if ((error.response?.status === StatusCodes.UNAUTHORIZED
 			&& !originalRequest._retry)) {

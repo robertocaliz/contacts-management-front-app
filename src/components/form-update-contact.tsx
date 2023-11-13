@@ -19,6 +19,7 @@ import { displayConflictErrors } from '@/functions/form-errors';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
+import { objChanged } from '@/functions/object';
 
 
 export default function FormUpdateContact({ contact }: { contact: Contact }) {
@@ -56,7 +57,20 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 	}, [contact]);
 
 
+	const contactChnaged = (newContact: Contact) => {
+		return objChanged({
+			newObj: newContact,
+			originalObj: contact
+		});
+	};
+
+
 	const updateContact: SubmitHandler<Contact> = async (contact) => {
+		if (!contactChnaged(contact)) {
+			alert.show('warning',
+				'O contacto não foi alterado.');
+			return;
+		}
 		submitButton.runSpinner();
 		submitButton.disable();
 		await ContactsProvider
