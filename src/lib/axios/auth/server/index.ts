@@ -1,5 +1,4 @@
 
-
 import axios from 'axios';
 
 import { getServerSession } from 'next-auth';
@@ -7,20 +6,18 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { RefreshAccessTokenResBody } from '@/types';
 import { axiosConfig } from '../..';
 import axiosPublic from '../../public';
-import { handleAuthErrorInterceptor, handleResponseInterceptor } from '../../interceptors';
+import { handleAuthErrorInterceptor, handleErrorInterceptor, handleResponseInterceptor } from '../../interceptors';
 
 
 export const axiosAuth = axios.create(axiosConfig);
 
-
 axiosAuth.interceptors.request.use(async request => {
-	const session = await getServerSession(authOptions);
 	if (!request.headers['Authorization']) {
+		const session = await getServerSession(authOptions);
 		request.headers['Authorization'] = `Bearer ${session?.user?.accessToken}`;
 	}
 	return request;
 });
-
 
 const refreshAccessToken = async () => {
 	const session = await getServerSession(authOptions);
@@ -29,11 +26,12 @@ const refreshAccessToken = async () => {
 	return data;
 };
 
+axiosAuth.interceptors.response.use(
+	handleResponseInterceptor(),
+	handleAuthErrorInterceptor({ axiosObj: axiosAuth, refreshAccessToken })
+);
 
 axiosAuth.interceptors.response.use(
 	handleResponseInterceptor(),
-	handleAuthErrorInterceptor({
-		axiosObj: axiosAuth,
-		refreshAccessToken
-	})
+	handleErrorInterceptor()
 );

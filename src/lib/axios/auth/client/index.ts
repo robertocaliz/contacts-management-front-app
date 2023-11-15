@@ -1,4 +1,3 @@
-'use client';
 
 import axios from 'axios';
 
@@ -9,9 +8,7 @@ import { axiosConfig } from '../..';
 import axiosPublic from '../../public';
 
 
-
 export const axiosAuth = axios.create(axiosConfig);
-
 
 axiosAuth.interceptors.request.use(async request => {
 	if (!request.headers['Authorization']) {
@@ -21,8 +18,6 @@ axiosAuth.interceptors.request.use(async request => {
 	return request;
 });
 
-
-
 const refreshAccessToken = async () => {
 	const session = await getSession();
 	const refreshToken = session?.user?.refreshToken;
@@ -30,15 +25,12 @@ const refreshAccessToken = async () => {
 	return data;
 };
 
-
-
 axiosAuth.interceptors.response.use(
 	handleResponseInterceptor(),
 	handleAuthErrorInterceptor({ axiosObj: axiosAuth, refreshAccessToken })
 );
 
-
 axiosAuth.interceptors.response.use(
 	handleResponseInterceptor(),
-	handleErrorInterceptor
+	handleErrorInterceptor()
 );
