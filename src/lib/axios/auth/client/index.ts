@@ -1,12 +1,15 @@
+'use client';
 
 import axios from 'axios';
-
 import { getSession } from 'next-auth/react';
 import { RefreshAccessTokenResBody } from '@/types';
-import { handleErrorInterceptor, handleResponseInterceptor, handleUnauthorizedErrorInterceptor } from '../../interceptors';
+import {
+	handleErrorInterceptor,
+	handleResponseInterceptor,
+	handleUnauthorizedErrorInterceptor
+} from '../../interceptors';
 import { axiosConfig } from '../..';
 import axiosPublic from '../../public';
-
 
 export const axiosAuth = axios.create(axiosConfig);
 
