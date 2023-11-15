@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import NextAuth from 'next-auth/next';
-import axiosPublic from '@/lib/axios';
+import axiosPublic from '@/lib/axios/public';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { User, UserCredentials } from '@/types';

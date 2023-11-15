@@ -1,11 +1,13 @@
-'use client';
 
-import { axiosAuth, axiosPublic } from '@/lib/axios/auth/client';
+import { axiosAuth } from '@/lib/axios/auth/client';
+import axiosPublic from '@/lib/axios/public';
 import { BadRequestError, ConflictError, NotFoundError } from '@/lib/errors';
 import { Id, User } from '@/types';
 
 
-type SendMail = { emailSend: boolean };
+type SendMail = {
+	emailSend: boolean
+};
 
 
 const create = async (user: User) => {
@@ -83,15 +85,18 @@ const activateAccount = async (activationToken: string) => {
 };
 
 
+type ChangePasswordParams = {
+	recoveryToken: string, newPassword: string
+}
 
-const changePassword = async ({
-	newPassword, recoveryToken
-}: { recoveryToken: string, newPassword: string }) => {
+
+const changePassword = async (
+	{ newPassword, recoveryToken }: ChangePasswordParams) => {
 	try {
 		const { status } = await axiosPublic.patch(`/users/${recoveryToken}`, { newPassword });
 		return status;
 	} catch (error) {
-		if (error instanceof BadRequestError) { 
+		if (error instanceof BadRequestError) {
 			return error.status;
 		}
 		console.log(error);

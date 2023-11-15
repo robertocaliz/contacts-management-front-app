@@ -71,44 +71,41 @@ export default function FormAddContact() {
 
 
 	return (
-		<>
-			<Centralize>
-				<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
-				<form onSubmit={handleSubmit(createContact)}>
-					<FormHeader text='Adicionar' />
-					<Input
-						type='text'
-						name='name'
-						label='Nome:'
-						register={register}
-						error={errors.name?.message}
-					/>
-					<Input
-						type='text'
-						name='email'
-						label='Email:'
-						register={register}
-						error={errors.email?.message}
-					/>
-					<Input
-						type='text'
-						name='phoneNumber'
-						label='Telefone/Telemóvel:'
-						register={register}
-						error={errors.phoneNumber?.message}
-						maxLength={9}
-						placeholder='+258'
-					/>
-					<SubmitButton
-						disable={disable}
-						runSpinner={runSpinner}
-						content='Criar contacto'
-						spinnerText='Criando...'
-					/>
-					<ButtonBack />
-				</form>
-			</Centralize>
-		</>
+		<Centralize>
+			<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
+			<form onSubmit={handleSubmit(createContact)}>
+				<FormHeader text='Adicionar' />
+				<Input
+					type='text'
+					name='name'
+					label='Nome:'
+					register={register}
+					error={errors.name?.message}
+				/>
+				<Input
+					type='text'
+					name='email'
+					label='Email:'
+					register={register}
+					error={errors.email?.message}
+				/>
+				<Input
+					type='text'
+					name='phoneNumber'
+					label='Telefone/Telemóvel:'
+					register={register}
+					error={errors.phoneNumber?.message}
+					maxLength={9}
+					placeholder='+258'
+				/>
+				<SubmitButton
+					disable={disable}
+					runSpinner={runSpinner}
+					content='Criar contacto'
+					spinnerText='Criando...'
+				/>
+				<ButtonBack />
+			</form>
+		</Centralize>
 	);
-
 }

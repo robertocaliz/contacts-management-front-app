@@ -67,7 +67,7 @@ type DeleteButtonProps = {
 }
 
 export const DeleteButton = ({ handleDelete, runSpinner }: DeleteButtonProps) => {
-	if (runSpinner) { 
+	if (runSpinner) {
 		return <Spinner loading={runSpinner} />;
 	}
 	return (
@@ -114,8 +114,11 @@ export const HomeButton = ({ href = '/' }: HomeButtonProps) => {
 export const LogoutButton = () => {
 	const { push } = useRouter();
 	const onClick = () => {
-		signOut({ redirect: false })
-			.then(() => push('/login'));
+		const logout = confirm('Sair do sistema?');
+		if (logout) {
+			signOut({ redirect: false })
+				.then(() => push('/login'));
+		}
 	};
 	return (
 		<Link

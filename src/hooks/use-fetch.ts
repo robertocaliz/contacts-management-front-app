@@ -10,7 +10,7 @@ export const useFetch = <Data = unknown>(url: string | null) => {
 		return await res.data;
 	});
 	return {
-		data,
+		data: data ?? [],
 		isLoading,
 		error
 	};

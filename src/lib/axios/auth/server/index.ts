@@ -2,36 +2,24 @@
 
 import axios from 'axios';
 
-
-import { axiosConfig } from '../..';
-import { StatusCodes } from 'http-status-codes';
-import { User } from '@/types';
-import { updateSession } from '@/functions/update-session';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { getCustomError } from '../../helper';
+import { RefreshAccessTokenResBody } from '@/types';
+import { axiosConfig } from '../..';
+import axiosPublic from '../../public';
+import { handleAuthErrorInterceptor, handleResponseInterceptor } from '../../interceptors';
 
 
-const axiosAuthConfig = Object.freeze({
-	...axiosConfig,
-	baseURL: process.env.AXIOS_BASE_URL
-});
-
-
-
-export const axiosAuth = axios.create(axiosAuthConfig);
-export const axiosPublic = axios.create(axiosAuthConfig);
-
+export const axiosAuth = axios.create(axiosConfig);
 
 
 axiosAuth.interceptors.request.use(async request => {
 	const session = await getServerSession(authOptions);
-	request.headers['Authorization'] = `Bearer ${session?.user?.accessToken}`;
+	if (!request.headers['Authorization']) {
+		request.headers['Authorization'] = `Bearer ${session?.user?.accessToken}`;
+	}
 	return request;
 });
-
-
-interface RefreshAccessTokenResBody extends Pick<User, 'accessToken' | 'refreshToken'> { }
 
 
 const refreshAccessToken = async () => {
@@ -43,36 +31,9 @@ const refreshAccessToken = async () => {
 
 
 axiosAuth.interceptors.response.use(
-	(response) => response,
-	async (error) => {
-
-		const originalRequest = error.config;
-		if ((error.response?.status === StatusCodes.UNAUTHORIZED
-			&& !originalRequest._retry)) {
-			originalRequest._retry = true;
-			return await refreshAccessToken()
-				.then(async (data) => {
-					await updateSession(data);
-					originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
-					return axiosAuth(originalRequest);
-				});
-		}
-
-		const customError = getCustomError(error);
-		if (customError) throw customError;
-
-		return Promise.reject(error);
-	}
+	handleResponseInterceptor(),
+	handleAuthErrorInterceptor({
+		axiosObj: axiosAuth,
+		refreshAccessToken
+	})
 );
-
-
-
-axiosPublic.interceptors.response.use(
-	(response) => response,
-	(error) => {
-		const customError = getCustomError(error);
-		if (customError) throw customError;
-		return Promise.reject(error);
-	}
-);
-

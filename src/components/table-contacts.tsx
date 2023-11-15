@@ -10,13 +10,19 @@ import Alerts from '@/lib/alerts';
 import { ContactsProvider } from '@/lib/providers/contacts';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import Alert from 'react-bootstrap/Alert';
+import useAlert from '@/hooks/use.alert';
 
 
 export default function TableContacts() {
 
-
 	const [contacts, setContacts] = useState<Contact[]>([]);
 
+	const {
+		alertType,
+		alertMessage,
+		showAlert,
+		alert
+	} = useAlert();
 
 	const {
 		buttonState: { runSpinner },
@@ -29,9 +35,8 @@ export default function TableContacts() {
 	} = useFetch<Contact[]>('/contacts');
 
 	useEffect(() => {
-		if (data) setContacts(data);
+		setContacts(data);
 	}, [data]);
-
 
 	if (error) {
 		return <Alert variant='danger' show={true}>{GLOBAL_ERROR_MESSAGE}</Alert>;
@@ -40,7 +45,6 @@ export default function TableContacts() {
 	const removeContactFromTable = (contactId: Id) => {
 		setContacts(contacts.filter(contact => contact._id !== contactId));
 	};
-
 
 	const handleDelete = async (e: FormEvent, contactId: Id) => {
 		e.preventDefault();
@@ -52,7 +56,8 @@ export default function TableContacts() {
 				Alerts.success('Contacto apagado.');
 			})
 			.catch(() => {
-				Alerts.error('Ocorreu um erro.');
+				alert.show('danger',
+					GLOBAL_ERROR_MESSAGE);
 			})
 			.finally(() => {
 				submitButton.interruptSpinner();
@@ -61,6 +66,7 @@ export default function TableContacts() {
 
 	return (
 		<>
+			<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
 			<div className={tableContactsStyles.tableContainer}>
 				<table>
 					<thead>
@@ -90,8 +96,7 @@ export default function TableContacts() {
 									/>
 								</td>
 							</tr>
-						))
-						}
+						))}
 					</tbody>
 				</table>
 			</div >

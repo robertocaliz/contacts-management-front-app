@@ -22,7 +22,6 @@ export default function Nav() {
 						<ContactsButton />
 					</li>
 				)}
-
 			</ul>
 			<ul className={navStyles.container}>
 				{session ? (

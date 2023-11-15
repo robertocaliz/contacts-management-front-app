@@ -4,7 +4,7 @@
 import { User } from '@/types';
 import FormHeader from './form-header';
 import Input from './input';
-import { SignupRecoverButton, SubmitButton } from './buttons.component';
+import { ButtonBack, SignupRecoverButton, SubmitButton } from './buttons.component';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,6 +17,7 @@ import useAlert from '@/hooks/use.alert';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import { objChanged } from '@/functions/object';
 import { updateSession } from '@/functions/session';
+import Centralize from './centralize';
 
 
 type FormUpdateUserProps = {
@@ -89,7 +90,7 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 
 
 	return (
-		<>
+		<Centralize>
 			<Alert variant={alertType} show={showAlert} >{alertMessage}</Alert>
 			<form onSubmit={handleSubmit(updateUserData)}>
 				<FormHeader text='Actualizar Perfíl' />
@@ -115,6 +116,7 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 						content='Actualizar'
 					/>
 				</main>
+				<ButtonBack />
 				<footer style={{ marginTop: '1.3rem' }}>
 					<h6>Senha</h6>
 					<SignupRecoverButton
@@ -122,7 +124,7 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 					/>
 				</footer>
 			</form>
-		</>
+		</Centralize>
 	);
 
 }

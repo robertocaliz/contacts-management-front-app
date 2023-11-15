@@ -2,23 +2,15 @@
 
 import axios from 'axios';
 
-
-import { axiosConfig } from '../..';
 import { getSession } from 'next-auth/react';
 import { RefreshAccessTokenResBody } from '@/types';
-import { getCustomError } from '../../helper';
-import { refreshAcessToken } from '../../interceptors';
-
-
-const axiosAuthConfig = Object.freeze({
-	...axiosConfig,
-	baseURL: 'http://localhost:5000'
-});
+import { handleAuthErrorInterceptor, handleErrorInterceptor, handleResponseInterceptor } from '../../interceptors';
+import { axiosConfig } from '../..';
+import axiosPublic from '../../public';
 
 
 
-export const axiosAuth = axios.create(axiosAuthConfig);
-export const axiosPublic = axios.create(axiosAuthConfig);
+export const axiosAuth = axios.create(axiosConfig);
 
 
 axiosAuth.interceptors.request.use(async request => {
@@ -41,30 +33,12 @@ const refreshAccessToken = async () => {
 
 
 axiosAuth.interceptors.response.use(
-	(response) => response,
-	refreshAcessToken({
-		axiosObj: axiosAuth,
-		refreshAccessToken
-	})
+	handleResponseInterceptor(),
+	handleAuthErrorInterceptor({ axiosObj: axiosAuth, refreshAccessToken })
 );
 
 
 axiosAuth.interceptors.response.use(
-	(response) => response,
-	(error) => {
-		const customError = getCustomError(error);
-		if (customError) throw customError;
-		return Promise.reject(error);
-	}
+	handleResponseInterceptor(),
+	handleErrorInterceptor
 );
-
-
-axiosPublic.interceptors.response.use(
-	(response) => response,
-	(error) => {
-		const customError = getCustomError(error);
-		if (customError) throw customError;
-		return Promise.reject(error);
-	}
-);
-

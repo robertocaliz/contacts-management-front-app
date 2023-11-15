@@ -94,42 +94,40 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 	};
 
 	return (
-		<>
-			<Centralize>
-				<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
-				<form onSubmit={handleSubmit(updateContact)}>
-					<FormHeader text={'Actualizar'} />
-					<Input
-						type='text'
-						name='name'
-						label='Nome'
-						register={register}
-						error={errors.name?.message}
-					/>
-					<Input
-						type='text'
-						name='email'
-						label='Email'
-						register={register}
-						error={errors.email?.message}
-					/>
-					<Input
-						type='text'
-						name='phoneNumber'
-						label='Phone number'
-						register={register}
-						error={errors.phoneNumber?.message}
-						maxLength={9}
-					/>
-					<SubmitButton
-						disable={disable}
-						runSpinner={runSpinner}
-						content='Actualizar contacto'
-						spinnerText='Actualizando...'
-					/>
-					<ButtonBack />
-				</form>
-			</Centralize>
-		</>
+		<Centralize>
+			<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
+			<form onSubmit={handleSubmit(updateContact)}>
+				<FormHeader text={'Actualizar'} />
+				<Input
+					type='text'
+					name='name'
+					label='Nome'
+					register={register}
+					error={errors.name?.message}
+				/>
+				<Input
+					type='text'
+					name='email'
+					label='Email'
+					register={register}
+					error={errors.email?.message}
+				/>
+				<Input
+					type='text'
+					name='phoneNumber'
+					label='Phone number'
+					register={register}
+					error={errors.phoneNumber?.message}
+					maxLength={9}
+				/>
+				<SubmitButton
+					disable={disable}
+					runSpinner={runSpinner}
+					content='Actualizar contacto'
+					spinnerText='Actualizando...'
+				/>
+				<ButtonBack />
+			</form>
+		</Centralize>
 	);
 }

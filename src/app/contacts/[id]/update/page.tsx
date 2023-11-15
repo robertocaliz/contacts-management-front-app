@@ -12,7 +12,6 @@ export default async function UpdateContactPage({ params }: ParamsProps) {
 
 	const { id: contactId } = params;
 
-
 	const contact = await ContactsProvider.getById(contactId);
 
 	return (
