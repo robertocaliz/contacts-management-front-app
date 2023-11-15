@@ -6,7 +6,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { RefreshAccessTokenResBody } from '@/types';
 import { axiosConfig } from '../..';
 import axiosPublic from '../../public';
-import { handleAuthErrorInterceptor, handleErrorInterceptor, handleResponseInterceptor } from '../../interceptors';
+import { handleErrorInterceptor, handleResponseInterceptor, handleUnauthorizedErrorInterceptor } from '../../interceptors';
 
 
 export const axiosAuth = axios.create(axiosConfig);
@@ -28,7 +28,7 @@ const refreshAccessToken = async () => {
 
 axiosAuth.interceptors.response.use(
 	handleResponseInterceptor(),
-	handleAuthErrorInterceptor({ axiosObj: axiosAuth, refreshAccessToken })
+	handleUnauthorizedErrorInterceptor({ axiosAuth, refreshAccessToken })
 );
 
 axiosAuth.interceptors.response.use(

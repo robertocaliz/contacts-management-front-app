@@ -1,6 +1,5 @@
 'use client';
 
-
 import tableContactsStyles from '@/../styles/contact-table.module.css';
 import { useFetch, useSubmitButton } from '@/hooks';
 import { Contact, Id } from '@/types';
@@ -48,20 +47,23 @@ export default function TableContacts() {
 
 	const handleDelete = async (e: FormEvent, contactId: Id) => {
 		e.preventDefault();
-		submitButton.runSpinner();
-		await ContactsProvider
-			.del(contactId)
-			.then(() => {
-				removeContactFromTable(contactId);
-				Alerts.success('Contacto apagado.');
-			})
-			.catch(() => {
-				alert.show('danger',
-					GLOBAL_ERROR_MESSAGE);
-			})
-			.finally(() => {
-				submitButton.interruptSpinner();
-			});
+		const delete_ = confirm('Apagar contacto?');
+		if (delete_) {
+			submitButton.runSpinner();
+			await ContactsProvider
+				.del(contactId)
+				.then(() => {
+					removeContactFromTable(contactId);
+					Alerts.success('Contacto apagado.');
+				})
+				.catch(() => {
+					alert.show('danger',
+						GLOBAL_ERROR_MESSAGE);
+				})
+				.finally(() => {
+					submitButton.interruptSpinner();
+				});
+		}
 	};
 
 	return (

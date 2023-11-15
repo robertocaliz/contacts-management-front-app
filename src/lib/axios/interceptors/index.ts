@@ -7,39 +7,32 @@ import { StatusCodes } from 'http-status-codes';
 import { getCustomError } from '../helper';
 
 
-
-type RefreshAccessTokenParams = {
+type handleUnauthorizedErrorInterceptorProps = {
 	refreshAccessToken: () => Promise<RefreshAccessTokenResBody>;
-	axiosObj: (config: AxiosRequestConfig) => Promise<AxiosResponse<any, any>>
+	axiosAuth: (config: AxiosRequestConfig) => Promise<AxiosResponse>
 }
 
-
-export const handleAuthErrorInterceptor = (
-	{ axiosObj, refreshAccessToken }: RefreshAccessTokenParams) => {
+export const handleUnauthorizedErrorInterceptor = (
+	{ axiosAuth, refreshAccessToken }: handleUnauthorizedErrorInterceptorProps) => {
 	return async (error: any) => {
 		const originalRequest = error.config;
-		if ((error.response?.status === StatusCodes.UNAUTHORIZED
-			&& !originalRequest._retry)) {
+		if ((error.response.status === StatusCodes.UNAUTHORIZED)
+			&& (!originalRequest._retry)) {
 			originalRequest._retry = true;
 			return await refreshAccessToken()
 				.then(async (data) => {
 					await updateSession(data);
 					originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
-					return axiosObj(originalRequest);
+					return axiosAuth(originalRequest);
 				});
 		}
-
 		return Promise.reject(error);
 	};
 };
 
-
-
 export function handleResponseInterceptor() {
 	return (response: AxiosResponse) => response;
 }
-
-
 
 export function handleErrorInterceptor() {
 	return (error: any) => {

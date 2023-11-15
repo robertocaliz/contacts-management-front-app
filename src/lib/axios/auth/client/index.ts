@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { getSession } from 'next-auth/react';
 import { RefreshAccessTokenResBody } from '@/types';
-import { handleAuthErrorInterceptor, handleErrorInterceptor, handleResponseInterceptor } from '../../interceptors';
+import { handleErrorInterceptor, handleResponseInterceptor, handleUnauthorizedErrorInterceptor } from '../../interceptors';
 import { axiosConfig } from '../..';
 import axiosPublic from '../../public';
 
@@ -27,7 +27,7 @@ const refreshAccessToken = async () => {
 
 axiosAuth.interceptors.response.use(
 	handleResponseInterceptor(),
-	handleAuthErrorInterceptor({ axiosObj: axiosAuth, refreshAccessToken })
+	handleUnauthorizedErrorInterceptor({ axiosAuth, refreshAccessToken })
 );
 
 axiosAuth.interceptors.response.use(
