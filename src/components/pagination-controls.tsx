@@ -19,6 +19,7 @@ function PaginationControls({ count }: PaginationControlsProps) {
 		<>
 			<div className={paginationControlsStyles.container}>
 				<button
+					className={paginationControlsStyles.control}
 					disabled={page == 1 ? true : false}
 					onClick={() => router.push(`?page=${Number(page) - 1}`)}
 				>
@@ -26,6 +27,7 @@ function PaginationControls({ count }: PaginationControlsProps) {
 				</button>
 				{page} / {pages}
 				<button
+					className={paginationControlsStyles.control}
 					disabled={page == pages ? true : false}
 					onClick={() => router.push(`?page=${Number(page) + 1}`)}
 				>
