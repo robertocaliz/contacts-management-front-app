@@ -26,3 +26,9 @@ export type SignInResponseError = {
 }
 
 export interface RefreshAccessTokenResBody extends Pick<User, 'accessToken' | 'refreshToken'> { }
+
+
+export interface GetAllResBody<T> {
+	count: number;
+	objs: T[];
+}

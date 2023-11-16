@@ -50,6 +50,17 @@ export const del = async (contactId: Id) => {
 };
 
 
+export const getAll = async (url: string) => {
+	try {
+		const { data: contacts } = await axiosAuth.get(url);
+		return contacts;
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+};
+
+
 export const update = async (contact: Contact, contactId: Id) => {
 	try {
 		const { status } = await axiosAuth.put(`/contacts/${contactId}`, contact);
@@ -71,5 +82,6 @@ export const ContactsProvider = {
 	create,
 	update,
 	del,
-	getById
+	getById,
+	getAll
 };

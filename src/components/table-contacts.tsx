@@ -2,7 +2,7 @@
 
 import tableContactsStyles from '@/../styles/contact-table.module.css';
 import { useFetch, useSubmitButton } from '@/hooks';
-import { Contact, Id } from '@/types';
+import { Contact, GetAllResBody, Id } from '@/types';
 import { FormEvent, useEffect, useState } from 'react';
 import { DeleteButton, UpdateButton } from './buttons.component';
 import Alerts from '@/lib/alerts';
@@ -10,11 +10,15 @@ import { ContactsProvider } from '@/lib/providers/contacts';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
+import PaginationControls from './pagination-controls';
+import { useSearchParams } from 'next/navigation';
 
 
 export default function TableContacts() {
 
 	const [contacts, setContacts] = useState<Contact[]>([]);
+	
+	const searchParams = useSearchParams();
 
 	const {
 		alertType,
@@ -28,43 +32,47 @@ export default function TableContacts() {
 		submitButton
 	} = useSubmitButton();
 
+
 	const {
 		data,
-		error
-	} = useFetch<Contact[]>('/contacts');
+		error,
+	} = useFetch<GetAllResBody<Contact>>(`/contacts?page=${searchParams.get('page') ?? 1}`);
+
+
 
 	useEffect(() => {
-		setContacts(data);
+		if (data?.objs) setContacts(data.objs);
 	}, [data]);
+
 
 	if (error) {
 		return <Alert variant='danger' show={true}>{GLOBAL_ERROR_MESSAGE}</Alert>;
 	}
 
+
 	const removeContactFromTable = (contactId: Id) => {
 		setContacts(contacts.filter(contact => contact._id !== contactId));
 	};
 
+
 	const handleDelete = async (e: FormEvent, contactId: Id) => {
 		e.preventDefault();
-		const delete_ = confirm('Apagar contacto?');
-		if (delete_) {
-			submitButton.runSpinner();
-			await ContactsProvider
-				.del(contactId)
-				.then(() => {
-					removeContactFromTable(contactId);
-					Alerts.success('Contacto apagado.');
-				})
-				.catch(() => {
-					alert.show('danger',
-						GLOBAL_ERROR_MESSAGE);
-				})
-				.finally(() => {
-					submitButton.interruptSpinner();
-				});
-		}
+		submitButton.runSpinner();
+		await ContactsProvider
+			.del(contactId)
+			.then(() => {
+				removeContactFromTable(contactId);
+				Alerts.success('Contacto apagado.');
+			})
+			.catch(() => {
+				alert.show('danger',
+					GLOBAL_ERROR_MESSAGE);
+			})
+			.finally(() => {
+				submitButton.interruptSpinner();
+			});
 	};
+
 
 	return (
 		<>
@@ -102,6 +110,7 @@ export default function TableContacts() {
 					</tbody>
 				</table>
 			</div >
+			<PaginationControls count={data?.count as number} />
 		</>
 	);
 }
