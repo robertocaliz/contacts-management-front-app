@@ -28,9 +28,7 @@ label {
 }
 
 
-a,
-th,
-td {
+a {
 	opacity: 0.9;
 }
 
