@@ -10,7 +10,7 @@ type InputProps = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	register?: UseFormRegister<any>,
 	error?: string
-} & InputHTMLAttributes<HTMLInputElement>;
+} & InputHTMLAttributes<HTMLInputElement> & InputHTMLAttributes<HTMLDivElement>;
 
 
 
@@ -26,7 +26,7 @@ export default function Input({
 }: InputProps) {
 	return (
 		<>
-			<div style={{ margin: '1rem 0' }}>
+			<div style={{ margin: '1rem 0' }} {...rest}>
 				{label && <label htmlFor={label}>{label}</label>}
 				<div className={inputStyles.inputContainer} style={error ? { outline: '1px solid tomato' } : {}} onBlur={onBlur}>
 					{startAdornment && <span className={inputStyles.adornment}>{startAdornment}</span>}

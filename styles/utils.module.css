@@ -1,9 +1,9 @@
-.flexSpaceBetween {
+.flexContainer {
 	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
 	align-items: center;
-	gap: 1rem;
+	justify-content: space-between;
+	flex-wrap: wrap-reverse;
+	gap: 2rem;
 }
 
 

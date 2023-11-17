@@ -11,17 +11,16 @@ import { BsPencil } from 'react-icons/bs';
 import { TiContacts } from 'react-icons/ti';
 
 
-type ButtonLinkProps = {
+type HyperlinkButtonProps = {
 	href?: string;
 	text?: string;
 }
 
 
-type SignUpButtonProps = ButtonLinkProps;
-type LoginButtonProps = ButtonLinkProps;
-type ContactsButtonProps = ButtonLinkProps;
-type AddButtons = ButtonLinkProps;
-type HomeButtonProps = ButtonLinkProps;
+type SignUpButtonProps = HyperlinkButtonProps;
+type LoginButtonProps = HyperlinkButtonProps;
+type ContactsButtonProps = HyperlinkButtonProps;
+type HomeButtonProps = HyperlinkButtonProps;
 
 
 type SubmitButtonProps = {
@@ -136,11 +135,22 @@ export const ProfileButton = ({ content }: ProfileButtonProps) => {
 };
 
 
-export const ButtonAdd = ({ href, text = 'Adicionar' }: AddButtons) => {
+
+interface ButtonAddProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+	href: string,
+	text?: string
+}
+
+
+export const ButtonAdd = ({ href, text = 'Adicionar', ...rest }: ButtonAddProps) => {
 	return (
 		<Link
-			href={!href ? ('/contacts/add') : (href)}
-			className={utilsStyles.buttonAdd}>{text}</Link>
+			href={href}
+			className={utilsStyles.buttonAdd}
+			{...rest}
+		>
+			{text}
+		</Link>
 	);
 };
 

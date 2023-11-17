@@ -12,17 +12,23 @@ export const metadata: Metadata = {
 
 
 export default function ContactsPage() {
-
 	return (
 		<>
 			<ButtonBack />
-			<section className={utilsStyles.flexSpaceBetween}>
+			<section className={utilsStyles.flexContainer}>
 				<Input
 					type='search'
 					name='search'
-					startAdornment={<BiSearch />}
+					placeholder='Pesquisar'
+					endAdornment={<BiSearch />}
+					style={{
+						maxWidth: '70rem',
+						flexGrow: 6
+					}}
 				/>
-				<ButtonAdd />
+				<ButtonAdd 
+					href='/contacts/add'
+				/>
 			</section>
 			<section>
 				<TableContacts />
