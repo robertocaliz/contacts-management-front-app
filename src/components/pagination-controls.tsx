@@ -25,7 +25,7 @@ function PaginationControls({ count }: PaginationControlsProps) {
 				>
 					Anterior
 				</button>
-				{page} / {pages}
+				{page} / {pages || 0}
 				<button
 					className={paginationControlsStyles.control}
 					disabled={page == pages ? true : false}
@@ -34,7 +34,6 @@ function PaginationControls({ count }: PaginationControlsProps) {
 					Próximo
 				</button>
 			</div>
-
 		</>
 	);
 }
