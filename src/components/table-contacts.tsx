@@ -49,7 +49,7 @@ export default function TableContacts() {
 
 
 	if (error) {
-		return <Alert variant='danger' show={true}>{GLOBAL_ERROR_MESSAGE}</Alert>;
+		throw error;
 	}
 
 
