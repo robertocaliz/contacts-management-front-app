@@ -9,6 +9,7 @@ import Spinner from './spinner';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { BsPencil } from 'react-icons/bs';
 import { TiContacts } from 'react-icons/ti';
+import { Caveat } from 'next/font/google';
 
 
 type HyperlinkButtonProps = {
@@ -99,11 +100,16 @@ const homeButtonStyles: CSSProperties = {
 	flexDirection: 'row',
 	alignItems: 'center',
 	gap: '0.1rem',
+	fontSize: '1.2rem'
 };
+
+
+const caveat = Caveat({ subsets: ['latin'] });
+
 
 export const HomeButton = ({ href = '/' }: HomeButtonProps) => {
 	return (
-		<Link href={href} style={homeButtonStyles}>
+		<Link href={href} style={homeButtonStyles} className={caveat.className}>
 			<TiContacts style={{ fontSize: '1.8rem' }} />ContactsPro
 		</Link>
 	);
