@@ -19,7 +19,9 @@ export default function TableContacts() {
 	const [contacts, setContacts] = useState<Contact[]>([]);
 
 	const searchParams = useSearchParams();
-
+	const page = searchParams.get('page') ?? 1;
+	const per_page = searchParams.get('per_page') ?? 5;
+	
 	const {
 		alertType,
 		alertMessage,
@@ -37,7 +39,7 @@ export default function TableContacts() {
 		data,
 		error,
 		isLoading
-	} = useFetch<GetAllResBody<Contact>>(`/contacts?page=${searchParams.get('page') ?? 1}`);
+	} = useFetch<GetAllResBody<Contact>>(`/contacts?page=${page}&per_page=${per_page}`);
 
 
 
@@ -112,7 +114,7 @@ export default function TableContacts() {
 				</table>
 			</div >
 			<PaginationControls
-				count={data?.count as number}
+				totalRecords={data?.count as number}
 				pageLoading={isLoading}
 			/>
 		</>

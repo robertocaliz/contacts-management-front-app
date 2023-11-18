@@ -4,18 +4,19 @@ import Spinner from './spinner';
 
 
 type PaginationControlsProps = {
-	count: number;
+	totalRecords: number;
 	pageLoading?: boolean;
 }
 
 
-function PaginationControls({ count, pageLoading }: PaginationControlsProps) {
+function PaginationControls({ totalRecords, pageLoading }: PaginationControlsProps) {
 
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
 	const page = searchParams.get('page') ?? 1;
-	const pages = Math.ceil(count / 5);
+	const per_page = searchParams.get('per_page') ?? 5;
+	const pages = Math.ceil(totalRecords / Number(per_page));
 
 	return (
 		<>
@@ -23,7 +24,7 @@ function PaginationControls({ count, pageLoading }: PaginationControlsProps) {
 				<button
 					className={paginationControlsStyles.control}
 					disabled={page == 1 ? true : false}
-					onClick={() => router.push(`?page=${Number(page) - 1}`)}
+					onClick={() => router.push(`?page=${Number(page) - 1}&per_page=${per_page}`)}
 				>
 					Anterior
 				</button>
@@ -39,7 +40,7 @@ function PaginationControls({ count, pageLoading }: PaginationControlsProps) {
 				<button
 					className={paginationControlsStyles.control}
 					disabled={page == pages ? true : false}
-					onClick={() => router.push(`?page=${Number(page) + 1}`)}
+					onClick={() => router.push(`?page=${Number(page) + 1}&per_page=${per_page}`)}
 				>
 					Próxima
 				</button>
