@@ -17,7 +17,7 @@ import { useSearchParams } from 'next/navigation';
 export default function TableContacts() {
 
 	const [contacts, setContacts] = useState<Contact[]>([]);
-	
+
 	const searchParams = useSearchParams();
 
 	const {
@@ -36,6 +36,7 @@ export default function TableContacts() {
 	const {
 		data,
 		error,
+		isLoading
 	} = useFetch<GetAllResBody<Contact>>(`/contacts?page=${searchParams.get('page') ?? 1}`);
 
 
@@ -110,7 +111,10 @@ export default function TableContacts() {
 					</tbody>
 				</table>
 			</div >
-			<PaginationControls count={data?.count as number} />
+			<PaginationControls
+				count={data?.count as number}
+				pageLoading={isLoading}
+			/>
 		</>
 	);
 }
