@@ -41,7 +41,7 @@ function PaginationControls({ count, pageLoading }: PaginationControlsProps) {
 					disabled={page == pages ? true : false}
 					onClick={() => router.push(`?page=${Number(page) + 1}`)}
 				>
-					Próximo
+					Próxima
 				</button>
 			</div>
 		</>
