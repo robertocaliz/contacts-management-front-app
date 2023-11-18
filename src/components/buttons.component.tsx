@@ -100,7 +100,6 @@ const homeButtonStyles: CSSProperties = {
 	flexDirection: 'row',
 	alignItems: 'center',
 	gap: '0.1rem',
-	fontSize: '1.2rem'
 };
 
 
@@ -109,8 +108,14 @@ const caveat = Caveat({ subsets: ['latin'] });
 
 export const HomeButton = ({ href = '/' }: HomeButtonProps) => {
 	return (
-		<Link href={href} style={homeButtonStyles} className={caveat.className}>
-			<TiContacts style={{ fontSize: '1.8rem' }} />ContactsPro
+		<Link href={href} style={homeButtonStyles}>
+			<TiContacts style={{ fontSize: '1.8rem' }} />
+			<span
+				className={caveat.className}
+				style={{ fontSize: '1.5rem' }}
+			>
+				ContactsPro
+			</span>
 		</Link>
 	);
 };
