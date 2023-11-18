@@ -15,7 +15,13 @@ export default function Nav() {
 		<nav className={navStyles.nav} >
 			<ul className={navStyles.container}>
 				<li>
-					<HomeButton href={session ? '/dashboard' : undefined} />
+					<HomeButton
+						href={session ? (
+							'/dashboard'
+						) : (
+							undefined
+						)}
+					/>
 				</li>
 				{session && (
 					<li>
@@ -26,13 +32,23 @@ export default function Nav() {
 			<ul className={navStyles.container}>
 				{session ? (
 					<>
-						<li><LogoutButton /></li>
-						<li><ProfileButton content={session.user?.name} /></li>
+						<li>
+							<LogoutButton />
+						</li>
+						<li>
+							<ProfileButton
+								content={session.user?.name}
+							/>
+						</li>
 					</>
 				) : (
 					<>
-						<li><LoginButton /></li>
-						<li><SignUpButton /></li>
+						<li>
+							<LoginButton />
+						</li>
+						<li>
+							<SignUpButton />
+						</li>
 					</>
 				)}
 			</ul>
