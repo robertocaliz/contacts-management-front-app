@@ -1,6 +1,7 @@
 import paginationControlsStyles from '@/../styles/pagination-controls.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Spinner from './spinner';
+import { PER_PAGE } from '@/constants';
 
 
 type PaginationControlsProps = {
@@ -15,7 +16,7 @@ function PaginationControls({ totalRecords, pageLoading }: PaginationControlsPro
 	const router = useRouter();
 
 	const page = searchParams.get('page') ?? 1;
-	const per_page = searchParams.get('per_page') ?? 5;
+	const per_page = searchParams.get('per_page') ?? PER_PAGE;
 	const pages = Math.ceil(totalRecords / Number(per_page));
 
 	return (

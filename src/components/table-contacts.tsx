@@ -7,7 +7,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { DeleteButton, UpdateButton } from './buttons.component';
 import Alerts from '@/lib/alerts';
 import { ContactsProvider } from '@/lib/providers/contacts';
-import { GLOBAL_ERROR_MESSAGE } from '@/constants';
+import { GLOBAL_ERROR_MESSAGE, PER_PAGE } from '@/constants';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
 import PaginationControls from './pagination-controls';
@@ -20,8 +20,8 @@ export default function TableContacts() {
 
 	const searchParams = useSearchParams();
 	const page = searchParams.get('page') ?? 1;
-	const per_page = searchParams.get('per_page') ?? 5;
-	
+	const per_page = searchParams.get('per_page') ?? PER_PAGE;
+
 	const {
 		alertType,
 		alertMessage,
