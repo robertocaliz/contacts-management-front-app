@@ -5,23 +5,23 @@
 }
 
 
-.tableContainer table {
+.tableContainer > table {
 	width: 100%;
 	border-collapse: collapse;
-	min-width: 555px;
+	min-width: 800px;
 }
 
 
 .tableContainer table th,
-.tableContainer td {
+.tableContainer table td {
 	padding: 0.6rem;
-	font-weight: normal;
 	text-align: left;
 	border-bottom: 1.5px solid lightgray;
 }
 
 
-.tableContainer .headerRow th {
+.tableContainer table th {
+	font-weight: normal;
 	height: 1.7rem;
 }
 
@@ -30,5 +30,5 @@
 	border: 2px solid #458B00;
 	outline: 0.1rem solid lightgray;
 	cursor: pointer;
-	opacity: 0.8;
+	opacity: 0.9;
 }

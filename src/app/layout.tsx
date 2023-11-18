@@ -9,6 +9,11 @@ import Main from '@/components/main';
 import ProgressBar from '@/components/progress-bar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Centralize from '@/components/centralize';
+import { Inter } from 'next/font/google';
+
+
+const inter = Inter({ subsets: ['latin'], weight: '400' });
+
 
 export default function RootLayout({
 	children,
@@ -17,7 +22,7 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body>
+			<body className={inter.className}>
 				<NextAuthContext>
 					<ProgressBar />
 					<Nav />
