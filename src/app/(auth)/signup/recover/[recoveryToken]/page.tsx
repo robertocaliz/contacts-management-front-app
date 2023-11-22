@@ -1,7 +1,5 @@
 import FormChangePassword from '@/components/form-change-password';
-import { ParamsProps } from '@/types';
 import { Metadata } from 'next';
-
 
 
 export const metadata: Metadata = {
@@ -9,12 +7,10 @@ export const metadata: Metadata = {
 };
 
 
-export default function ChangePasswordPage({ params: { recoveryToken } }: ParamsProps) {
+export default function ChangePasswordPage() {
 
 	return (
-		<FormChangePassword
-			recoveryToken={recoveryToken}
-		/>
+		<FormChangePassword />
 	);
 
 }

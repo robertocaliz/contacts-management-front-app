@@ -2,18 +2,19 @@
 
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import useAlert from '@/hooks/use.alert';
-import { UsersProvider } from '@/lib/providers/users';
 import { StatusCodes } from 'http-status-codes';
 import { useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from './spinner';
+import { useParams } from 'next/navigation';
+import { activateAccount } from '@/app/actions/users';
 
 
-export default function AlertActiveAccount({ activationToken }: { activationToken: string }) {
+export default function AlertActiveAccount() {
 
-	
 	const [activatingAccount, setActivatingAccount] = useState(true);
 
+	const params = useParams();
 
 	const {
 		alertType,
@@ -24,8 +25,7 @@ export default function AlertActiveAccount({ activationToken }: { activationToke
 
 
 	useEffect(() => {
-		UsersProvider
-			.activateAccount(activationToken)
+		activateAccount(params.activationToken as string)
 			.then(status => {
 				if (status === StatusCodes.OK) {
 					alert.show('warning',
@@ -51,11 +51,24 @@ export default function AlertActiveAccount({ activationToken }: { activationToke
 	}, []);
 
 
+
 	if (activatingAccount) {
-		return <Spinner loading={activatingAccount} text='Activando a conta...' />;
+		return (
+			<Spinner
+				loading={activatingAccount}
+				text='Activando a conta...'
+			/>
+		);
 	}
 
 
-	return <Alert variant={alertType} show={showAlert} >{alertMessage}</Alert>;
+	return (
+		<Alert
+			variant={alertType}
+			show={showAlert}
+		>
+			{alertMessage}
+		</Alert>
+	);
 
 }

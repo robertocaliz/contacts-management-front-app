@@ -7,16 +7,16 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Centralize from './centralize';
 import FormHeader from './form-header';
 import Input from './input';
-import { SignupRecoverButton, SubmitButton } from './buttons.component';
 import { SignInResponseError, UserCredentials } from '@/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LOGIN_SCHEMA } from '@/constants/validation-schemas';
 import PasswordInput from './password-input';
-import Link from 'next/link';
 import { StatusCodes } from 'http-status-codes';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
-import { useSubmitButton } from '@/hooks';
+import SubmitButton from './buttons/submit-button';
+import SignUpButton from './buttons/signup';
+import SignupRecoverButton from './buttons/signup-recover';
 
 
 export default function LoginForm() {
@@ -30,12 +30,8 @@ export default function LoginForm() {
 		resolver: yupResolver(LOGIN_SCHEMA) as any
 	});
 
-	const {
-		buttonState: { disable, runSpinner },
-		submitButton
-	} = useSubmitButton();
 
-	const { push } = useRouter();
+	const { replace } = useRouter();
 
 	const {
 		alertType,
@@ -45,8 +41,6 @@ export default function LoginForm() {
 	} = useAlert();
 
 	const loginUser: SubmitHandler<UserCredentials> = async (credentials) => {
-		submitButton.runSpinner();
-		submitButton.disable();
 		await signIn('credentials',
 			{
 				...credentials,
@@ -61,14 +55,10 @@ export default function LoginForm() {
 					}
 					return Promise.reject(error);
 				}
-				push('/dashboard');
+				replace('/');
 			})
 			.catch(error => {
 				alert.show('danger', error.message);
-			})
-			.finally(() => {
-				submitButton.interruptSpinner();
-				submitButton.enable();
 			});
 	};
 
@@ -95,14 +85,12 @@ export default function LoginForm() {
 						register={register}
 						error={errors.password?.message}
 					/>
-				</main>
-				<footer>
 					<SubmitButton
-						disable={disable}
-						runSpinner={runSpinner}
 						content='login'
 						spinnerText='Autenticando...'
 					/>
+				</main>
+				<footer>
 					<div style={{
 						display: 'flex',
 						flexDirection: 'column',
@@ -110,7 +98,7 @@ export default function LoginForm() {
 						gap: '0.6rem'
 					}}>
 						<span>
-							Novo no ContactsPro? <Link href='/signup'>Crie sua conta aqui.</Link>
+							Novo no ContactsPro? <SignUpButton text='Crie sua conta aqui.' />
 						</span>
 						<span>
 							Esqueceu sua senha? <SignupRecoverButton text='Clique aqui.' />

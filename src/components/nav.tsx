@@ -2,9 +2,12 @@
 
 import navStyles from '@/../styles/nav.module.css';
 import { useSession } from 'next-auth/react';
-import {
-	ContactsButton, HomeButton, LoginButton, LogoutButton, SignUpButton, ProfileButton
-} from './buttons.component';
+import HomeButton from './buttons/home';
+import LogoutButton from './buttons/logout';
+import LoginButton from './buttons/login';
+import SignUpButton from './buttons/signup';
+import ContactsButton from './buttons/contacts';
+import UserProfileButton from './buttons/user-profile';
 
 
 export default function Nav() {
@@ -15,13 +18,7 @@ export default function Nav() {
 		<nav className={navStyles.nav} >
 			<ul className={navStyles.container}>
 				<li>
-					<HomeButton
-						href={session ? (
-							'/dashboard'
-						) : (
-							undefined
-						)}
-					/>
+					<HomeButton />
 				</li>
 				{session && (
 					<li>
@@ -36,7 +33,7 @@ export default function Nav() {
 							<LogoutButton />
 						</li>
 						<li>
-							<ProfileButton
+							<UserProfileButton
 								content={session.user?.name}
 							/>
 						</li>

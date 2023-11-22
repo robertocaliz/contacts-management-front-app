@@ -1,79 +1,48 @@
+
 'use client';
 
-import Alerts from '@/lib/alerts';
-import { ConflictErrorT, Contact } from '@/types';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import Centralize from './centralize';
-import { ButtonBack, SubmitButton } from './buttons.component';
+import { ButtonBack } from './buttons.component';
 import FormHeader from './form-header';
 import Input from './input';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { CREATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
-import { ContactsProvider } from '@/lib/providers/contacts';
-import { StatusCodes } from 'http-status-codes';
-import { displayConflictErrors } from '@/functions/form-errors';
-import { useSubmitButton } from '@/hooks';
-import Alert from 'react-bootstrap/Alert';
-import useAlert from '@/hooks/use.alert';
-import { GLOBAL_ERROR_MESSAGE } from '@/constants';
-
+import { useForm } from 'react-hook-form';
+import { Contact } from '@/types';
+import Alerts from '@/lib/alerts';
+import { create } from '@/app/actions/contact';
+import { displayErrors } from '@/functions/form-errors';
+import wait from '@/lib/wait';
+import SubmitButton from './buttons/submit-button';
 
 export default function FormAddContact() {
 
-
-	const {
-		buttonState: { disable, runSpinner },
-		submitButton
-	} = useSubmitButton();
-
-
 	const {
 		register,
-		handleSubmit,
+		getValues,
+		setError,
 		reset,
-		formState: { errors },
-		setError
-	} = useForm<Contact>({
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		resolver: yupResolver(CREATE_CONTACT_SCHEMA) as any
-	});
+		clearErrors,
+		formState: { errors }
+	} = useForm<Contact>();
 
 
-	const {
-		alertType,
-		alertMessage,
-		showAlert,
-		alert
-	} = useAlert();
+	const createContact = async () => {
 
+		await wait(2000);
 
-	const createContact: SubmitHandler<Contact> = async (contact) => {
-		submitButton.runSpinner();
-		submitButton.disable();
-		await ContactsProvider
-			.create(contact)
-			.then(({ status, errors }) => {
-				if (status === StatusCodes.CONFLICT) {
-					displayConflictErrors(errors as Array<ConflictErrorT>, setError);
-					return;
-				}
-				reset();
-				Alerts.success('Contacto criado.');
-			})
-			.catch(() => {
-				alert.show('danger', GLOBAL_ERROR_MESSAGE);
-			})
-			.finally(() => {
-				submitButton.interruptSpinner();
-				submitButton.enable();
-			});
+		clearErrors();
+		const { errors } = await create(getValues());
+		if (errors) {
+			displayErrors(errors, setError);
+			return;
+		}
+		reset();
+		Alerts.success('Contacto criado.');
 	};
 
 
 	return (
 		<Centralize>
-			<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
-			<form onSubmit={handleSubmit(createContact)}>
+			<form action={createContact}>
 				<FormHeader text='Adicionar' />
 				<Input
 					type='text'
@@ -93,19 +62,17 @@ export default function FormAddContact() {
 					type='text'
 					name='phoneNumber'
 					label='Telefone/Telemóvel:'
-					register={register}
-					error={errors.phoneNumber?.message}
 					maxLength={9}
 					placeholder='+258'
+					register={register}
+					error={errors.phoneNumber?.message}
 				/>
 				<SubmitButton
-					disable={disable}
-					runSpinner={runSpinner}
 					content='Criar contacto'
 					spinnerText='Criando...'
 				/>
-				<ButtonBack />
 			</form>
+			<ButtonBack />
 		</Centralize>
 	);
 }

@@ -1,5 +1,5 @@
+import { getById } from '@/app/actions/contact';
 import FormUpdateContact from '@/components/form-update-contact';
-import { ContactsProvider } from '@/lib/providers/contacts';
 import { ParamsProps } from '@/types';
 import { Metadata } from 'next';
 
@@ -12,7 +12,7 @@ export default async function UpdateContactPage({ params }: ParamsProps) {
 
 	const { id: contactId } = params;
 
-	const contact = await ContactsProvider.getById(contactId);
+	const contact = await getById(contactId);
 
 	return (
 		<FormUpdateContact

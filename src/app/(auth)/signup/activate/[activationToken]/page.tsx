@@ -1,5 +1,4 @@
 import AlertActiveAccount from '@/components/alert-active-account';
-import { ParamsProps } from '@/types';
 import { Metadata } from 'next';
 
 
@@ -9,10 +8,8 @@ export const metadata: Metadata = {
 };
 
 
-export default function ActivateUserAcountPage({ params }: ParamsProps) {
-	return (<>
-		<AlertActiveAccount
-			activationToken={params.activationToken}
-		/>
-	</>);
+export default function ActivateUserAcountPage() {
+	return (
+		<AlertActiveAccount />
+	);
 }

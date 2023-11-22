@@ -14,6 +14,7 @@ type SpinnerProps = {
 const spinnerStyles: CSSProperties = {
 	display: 'flex',
 	flexDirection: 'row',
+	justifyContent: 'center',
 	alignItems: 'center',
 	gap: '1rem'
 };

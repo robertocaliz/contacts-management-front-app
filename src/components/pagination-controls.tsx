@@ -1,3 +1,5 @@
+
+
 import paginationControlsStyles from '@/../styles/pagination-controls.module.css';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Spinner from './spinner';
@@ -35,7 +37,7 @@ function PaginationControls({ totalRecords, pageLoading }: PaginationControlsPro
 					/>
 				) : (
 					<span>
-						{page} / {pages}
+						{(totalRecords === 0 ? 0 : page)} / {pages}
 					</span>
 				)}
 				<button

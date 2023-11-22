@@ -5,6 +5,7 @@ import { BiSearch } from 'react-icons/bi';
 import TableContacts from '@/components/table-contacts';
 import { Metadata } from 'next';
 import HeaderH2 from '@/components/header/header-h2';
+import TableProvider from '@/contexts/table-context';
 
 
 export const metadata: Metadata = {
@@ -37,7 +38,9 @@ export default function ContactsPage() {
 				/>
 			</section>
 			<section>
-				<TableContacts />
+				<TableProvider>
+					<TableContacts />
+				</TableProvider>
 			</section>
 		</>
 	);

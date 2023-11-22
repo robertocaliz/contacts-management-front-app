@@ -1,12 +1,13 @@
 
 
-import { axiosAuth } from '@/lib/axios/auth/client';
 import useSWR from 'swr';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Action = (url: string) => Promise<any>
 
-export const useFetch = <Data = unknown>(url: string) => {
+
+export const useFetch = <Data = unknown>(url: string, action: Action) => {
 	return useSWR<Data>(url, async (url: string) => {
-		const res = await axiosAuth.get(url);
-		return res.data;
+		return await action(url);
 	});
 };

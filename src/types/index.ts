@@ -1,3 +1,4 @@
+
 import { User } from '.';
 
 
@@ -10,14 +11,10 @@ export * from './Id';
 
 
 
-export type ConflictErrorT = {
+export type Error = {
 	name: string,
-	options: {
-		message: string
-	}
+	message: string
 }
-
-
 
 
 export type SignInResponseError = {
@@ -25,10 +22,13 @@ export type SignInResponseError = {
 	status: number
 }
 
+
 export interface RefreshAccessTokenResBody extends Pick<User, 'accessToken' | 'refreshToken'> { }
 
 
-export interface GetAllResBody<T> {
+export interface UseFetchData<T> {
 	count: number;
 	objs: T[];
 }
+
+

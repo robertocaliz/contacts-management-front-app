@@ -1,36 +1,26 @@
 'use client';
 
 
-import { ConflictErrorT, Contact } from '@/types';
 import { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
 import Centralize from './centralize';
-import { ButtonBack, SubmitButton } from './buttons.component';
+import { ButtonBack } from './buttons.component';
 import FormHeader from './form-header';
 import Input from './input';
-import { useSubmitButton } from '@/hooks';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { UPDATE_CONTACT_SCHEMA } from '@/constants/validation-schemas';
-import { ContactsProvider } from '@/lib/providers/contacts';
-import { StatusCodes } from 'http-status-codes';
-import { displayConflictErrors } from '@/functions/form-errors';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
-import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import { objChanged } from '@/functions/object';
+import { update } from '@/app/actions/contact';
+import { displayErrors } from '@/functions/form-errors';
+import { Contact } from '@/types';
+import SubmitButton from './buttons/submit-button';
 
 
 export default function FormUpdateContact({ contact }: { contact: Contact }) {
 
 	const { back } = useRouter();
-
-	const {
-		buttonState: { disable, runSpinner },
-		submitButton
-	} = useSubmitButton();
-
 
 	const {
 		alertType,
@@ -42,14 +32,12 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 
 	const {
 		register,
-		handleSubmit,
 		reset,
 		formState: { errors },
-		setError
-	} = useForm<Contact>({
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		resolver: yupResolver(UPDATE_CONTACT_SCHEMA) as any
-	});
+		getValues,
+		setError,
+		clearErrors
+	} = useForm<Contact>();
 
 
 	useEffect(() => {
@@ -65,38 +53,28 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 	};
 
 
-	const updateContact: SubmitHandler<Contact> = async (contact) => {
-		if (!contactChnaged(contact)) {
+	const updateContact = async () => {
+		clearErrors();
+		const newContact = getValues();
+		if (!contactChnaged(newContact)) {
 			alert.show('warning',
 				'O contacto não foi alterado.');
 			return;
 		}
-		submitButton.runSpinner();
-		submitButton.disable();
-		await ContactsProvider
-			.update(contact, contact._id)
-			.then(({ status, errors }) => {
-				if (status === StatusCodes.CONFLICT) {
-					displayConflictErrors(errors as Array<ConflictErrorT>, setError);
-					return;
-				}
-				reset();
-				back();
-				Alerts.success('Contacto actualizado.');
-			})
-			.catch(() => {
-				alert.show('danger', GLOBAL_ERROR_MESSAGE);
-			})
-			.finally(() => {
-				submitButton.interruptSpinner();
-				submitButton.enable();
-			});
+		const { errors } = await update(newContact, contact._id);
+		if (errors) {
+			displayErrors(errors, setError);
+			return;
+		}
+		reset();
+		back();
+		Alerts.success('Contacto actualizado.');
 	};
 
 	return (
 		<Centralize>
 			<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
-			<form onSubmit={handleSubmit(updateContact)}>
+			<form action={updateContact}>
 				<FormHeader text={'Actualizar'} />
 				<Input
 					type='text'
@@ -121,13 +99,11 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 					maxLength={9}
 				/>
 				<SubmitButton
-					disable={disable}
-					runSpinner={runSpinner}
 					content='Actualizar contacto'
 					spinnerText='Actualizando...'
 				/>
-				<ButtonBack />
 			</form>
+			<ButtonBack />
 		</Centralize>
 	);
 }

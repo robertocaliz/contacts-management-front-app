@@ -29,6 +29,5 @@
 .tableContainer table tr:hover:not(.headerRow) {
 	border: 2px solid #458B00;
 	outline: 0.1rem solid lightgray;
-	cursor: pointer;
 	opacity: 0.9;
 }

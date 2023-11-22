@@ -1,19 +1,17 @@
 'use client';
 
-import { useSubmitButton } from '@/hooks';
-import { SubmitButton } from './buttons.component';
+
 import Centralize from './centralize';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
 import PasswordInput from './password-input';
 import FormHeader from './form-header';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { UPDATE_PASSWORD_SCHEMA } from '@/constants/validation-schemas';
-import { UsersProvider } from '@/lib/providers/users';
-import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import { StatusCodes } from 'http-status-codes';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import SubmitButton from './buttons/submit-button';
+import { _changePassword } from '@/app/actions/users';
+import { displayErrors } from '@/functions/form-errors';
 
 
 type FormData = {
@@ -22,14 +20,10 @@ type FormData = {
 };
 
 
-export default function FormChangePassword({ recoveryToken }: { recoveryToken: string }) {
-
-	const {
-		buttonState: { disable, runSpinner },
-		submitButton
-	} = useSubmitButton();
+export default function FormChangePassword() {
 
 	const router = useRouter();
+	const params = useParams();
 
 	const {
 		alertType,
@@ -39,52 +33,40 @@ export default function FormChangePassword({ recoveryToken }: { recoveryToken: s
 	} = useAlert();
 
 	const {
-		handleSubmit,
 		formState: { errors },
 		reset,
-		register
-	} = useForm<FormData>({
-		resolver: yupResolver(UPDATE_PASSWORD_SCHEMA)
-	});
+		register,
+		getValues,
+		setError,
+		clearErrors
+	} = useForm<FormData>();
 
 
-	const changePassword: SubmitHandler<FormData> = async (data) => {
-		submitButton.runSpinner();
-		submitButton.disable();
-		await UsersProvider
-			.changePassword({
-				newPassword: data.password,
-				recoveryToken
-			})
-			.then(status => {
-				if (status === StatusCodes.OK) {
-					reset();
-					router.push('/signup/recover/success');
-					return;
-				}
-				if (status === StatusCodes.BAD_REQUEST) {
-					alert.show('warning',
-						`Token de recuperação expirado ou inválido. 
+	const changePassword = async () => {
+		clearErrors();
+		const { errors, status } = await _changePassword({
+			recoveryToken: params.recoveryToken as string,
+			dada: getValues()
+		});
+		if (errors) {
+			displayErrors(errors, setError);
+			return;
+		}
+		if (status === StatusCodes.BAD_REQUEST) {
+			alert.show('warning',
+				`Token de recuperação expirado ou inválido. 
 						Clique no link "Clique aqui" da página de login, 
 						para obter um novo token de recuperação.`);
-					return;
-				}
-				return Promise.reject();
-			})
-			.catch(() => {
-				alert.show('danger',
-					GLOBAL_ERROR_MESSAGE);
-			})
-			.finally(() => {
-				submitButton.enable();
-				submitButton.interruptSpinner();
-			});
+			return;
+		}
+		reset();
+		router.push('/signup/recover/success');
 	};
 
 	return (
 		<Centralize>
 			<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
-			<form onSubmit={handleSubmit(changePassword)}>
+			<form action={changePassword}>
 				<FormHeader text='Defina uma nova senha' />
 				<PasswordInput
 					type="password"
@@ -102,8 +84,6 @@ export default function FormChangePassword({ recoveryToken }: { recoveryToken: s
 				/>
 				<SubmitButton
 					content='Alterar senha'
-					runSpinner={runSpinner}
-					disable={disable}
 					spinnerText='Alterando...'
 				/>
 			</form>

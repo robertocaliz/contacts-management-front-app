@@ -7,7 +7,6 @@ export default async function AuthMiddleware(req: NextRequest) {
 
 
 	const loginPage = new URL('/login', req.url);
-	const dashboardPage = new URL('/dashboard', req.url);
 
 
 	const isUserAuthenticated = await checkIfUserIsAuthenticated(req);
@@ -20,11 +19,7 @@ export default async function AuthMiddleware(req: NextRequest) {
 		}
 		return NextResponse.redirect(loginPage);
 	}
-
-	if (isUserAuthenticated && isPublicRoute(route)) {
-		return NextResponse.redirect(dashboardPage);
-	}
-
+	
 	return NextResponse.next();
 }
 

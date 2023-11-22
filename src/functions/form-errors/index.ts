@@ -1,15 +1,15 @@
-import { ConflictErrorT } from '@/types';
+
+import { Error } from '@/types';
 import { Path, UseFormSetError } from 'react-hook-form';
 
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const displayConflictErrors = <T extends Record<string, any>>(errors: Array<ConflictErrorT>, handler: UseFormSetError<T>) => {
+export const displayErrors = <T extends Record<string, any>>(errors: Error[], handler: UseFormSetError<T>) => {
 	errors.forEach(error => {
-		handler(error.name as Path<T>, error.options);
+		handler(error.name as Path<T>, { message: error.message });
 	});
 };
-
 
 
 export const cleanConflictError = <T extends object>(name: Path<T>, handler: UseFormSetError<T>) => {

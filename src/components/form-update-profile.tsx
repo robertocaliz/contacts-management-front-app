@@ -4,36 +4,28 @@
 import { User } from '@/types';
 import FormHeader from './form-header';
 import Input from './input';
-import { ButtonBack, SignupRecoverButton, SubmitButton } from './buttons.component';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { UPDATE_USER_SCHEMA } from '@/constants/validation-schemas';
 import Alerts from '@/lib/alerts';
-import { UsersProvider } from '@/lib/providers/users';
-import { useSubmitButton } from '@/hooks';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
-import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import { objChanged } from '@/functions/object';
 import { updateSession } from '@/functions/session';
 import Centralize from './centralize';
+import SubmitButton from './buttons/submit-button';
+import { update } from '@/app/actions/users';
+import { displayErrors } from '@/functions/form-errors';
+import SignupRecoverButton from './buttons/signup-recover';
 
 
 type FormUpdateUserProps = {
 	userData: Record<string, any>;
 };
 
-
 export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 
 	const [_userData, _setUserData] = useState<Record<string, any>>({});
-
-	const {
-		buttonState: { disable, runSpinner },
-		submitButton
-	} = useSubmitButton();
-
+	
 	const {
 		alertType,
 		alertMessage,
@@ -43,12 +35,13 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 
 	const {
 		register,
-		handleSubmit,
 		reset,
-		formState: { errors }
-	} = useForm<User>({
-		resolver: yupResolver(UPDATE_USER_SCHEMA) as any
-	});
+		formState: { errors },
+		getValues,
+		clearErrors,
+		setError
+	} = useForm<User>();
+
 
 	useEffect(() => {
 		reset(userData);
@@ -64,35 +57,37 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 	};
 
 
-	const updateUserData: SubmitHandler<User> = async (newUserData) => {
+	const updateUserData = async () => {
+		clearErrors();
+		const newUserData = getValues();
 		if (!profileChanged(newUserData)) {
 			return alert.show('warning',
 				'O perfíl não foi alterado.');
 		}
-		submitButton.runSpinner();
-		submitButton.disable();
-		await UsersProvider
-			.update(newUserData, userData._id)
-			.then(async () => {
-				await updateSession(newUserData);
-				Alerts.success('Perfíl actualizado.');
-			})
-			.catch(() => {
-				alert.show('danger',
-					GLOBAL_ERROR_MESSAGE);
-			})
-			.finally(() => {
-				submitButton.interruptSpinner();
-				submitButton.enable();
-				_setUserData(newUserData);
-			});
+
+		const { errors } = await update(newUserData, _userData._id);
+
+		if (errors) {
+			displayErrors(errors, setError);
+			return;
+		}
+
+		await updateSession(newUserData);
+		Alerts.success('Perfíl actualizado.');
+
+		_setUserData(newUserData);
 	};
 
 
 	return (
 		<Centralize>
-			<Alert variant={alertType} show={showAlert} >{alertMessage}</Alert>
-			<form onSubmit={handleSubmit(updateUserData)}>
+			<Alert
+				variant={alertType}
+				show={showAlert}
+			>
+				{alertMessage}
+			</Alert>
+			<form action={updateUserData}>
 				<FormHeader text='Actualizar Perfíl' />
 				<main>
 					<Input
@@ -110,13 +105,10 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 						error={errors.email?.message}
 					/>
 					<SubmitButton
-						runSpinner={runSpinner}
 						spinnerText='Actualizando...'
-						disable={disable}
 						content='Actualizar'
 					/>
 				</main>
-				<ButtonBack />
 				<footer style={{ marginTop: '1.3rem' }}>
 					<h6>Senha</h6>
 					<SignupRecoverButton

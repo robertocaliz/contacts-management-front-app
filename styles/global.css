@@ -37,7 +37,8 @@ input {
 
 
 h1,
-h2 {
+h2,
+h6 {
 	color: #1f1f1f;
 	font-weight: bolder;
 }

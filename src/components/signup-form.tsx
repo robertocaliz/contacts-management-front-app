@@ -1,25 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { redirect } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import Centralize from './centralize';
 import FormHeader from './form-header';
 import Input from './input';
-import { SubmitButton } from './buttons.component';
 import Link from 'next/link';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { ConflictErrorT, User } from '@/types';
-import { SIGNUP_SCHEMA } from '@/constants/validation-schemas';
-import { UsersProvider } from '@/lib/providers/users';
+import { User } from '@/types';
 import PasswordInput from './password-input';
-import { isValidEmail } from '@/functions/is-email';
-import { StatusCodes } from 'http-status-codes';
-import { cleanConflictError, displayConflictErrors } from '@/functions/form-errors';
-import useAlert from '@/hooks/use.alert';
-import Alert from 'react-bootstrap/Alert';
-import { GLOBAL_ERROR_MESSAGE } from '@/constants';
-import { useSubmitButton } from '@/hooks';
+import { create } from '@/app/actions/users';
+import { displayErrors } from '@/functions/form-errors';
+import { useState } from 'react';
+import SubmitButton from './buttons/submit-button';
+import LoginButton from './buttons/login';
 
 
 type AccountData = {
@@ -29,92 +23,34 @@ type AccountData = {
 
 export default function SignUpForm() {
 
+	const [disable, setDisable] = useState(true);
+
 	const {
 		register,
-		handleSubmit,
 		reset,
 		setError,
-		formState: { errors }
-	} = useForm<AccountData>({
-		resolver: yupResolver(SIGNUP_SCHEMA) as any
-	});
+		formState: { errors },
+		getValues,
+		clearErrors
+	} = useForm<AccountData>();
 
 
-	const {
-		alertType,
-		alertMessage,
-		showAlert,
-		alert
-	} = useAlert();
-
-
-	const {
-		buttonState: { disable, runSpinner },
-		stateHandler: { setDisable },
-		submitButton
-	} = useSubmitButton({
-		disable: true
-	});
-
-
-	const { push } = useRouter();
-
-
-	const checkIfEmailExists = async (e: any) => {
-		e.preventDefault();
-		const email = e.target.value;
-		if (email && isValidEmail(email)) {
-			await UsersProvider
-				.checkIfEmailExists(email)
-				.then(({ status, errors }) => {
-					if (status === StatusCodes.CONFLICT) {
-						displayConflictErrors(errors as Array<ConflictErrorT>, setError);
-						return;
-					}
-					cleanConflictError<AccountData>('email', setError);
-				})
-				.catch(() => {
-					alert.show('danger', GLOBAL_ERROR_MESSAGE);
-				});
+	const createAccount = async () => {
+		clearErrors();
+		const accountData = getValues();
+		const { errors } = await create(accountData);
+		if (errors) {
+			displayErrors(errors, setError);
+			return;
 		}
-	};
-
-
-	const createAccount: SubmitHandler<AccountData> = async (accountData) => {
-		submitButton.runSpinner();
-		submitButton.disable();
-		await UsersProvider
-			.create(accountData)
-			.then(({ status, errors, resBody }) => {
-				if (status === StatusCodes.CONFLICT) {
-					displayConflictErrors(errors as Array<ConflictErrorT>, setError);
-					return;
-				}
-				if (status === StatusCodes.CREATED && resBody?.emailSend) {
-					reset();
-					push(`/signup/confirm/${accountData.email}`);
-					return;
-				}
-				return Promise.reject();
-			})
-			.catch(() => {
-				alert.show('danger', GLOBAL_ERROR_MESSAGE);
-			})
-			.finally(() => {
-				submitButton.interruptSpinner();
-				submitButton.enable();
-			});
+		reset();
+		redirect(`/signup/confirm/${accountData.email}`);
 	};
 
 
 	return (
 		<Centralize>
-			<Alert
-				variant={alertType}
-				show={showAlert}>
-				{alertMessage}
-			</Alert>
-			<form onSubmit={handleSubmit(createAccount)}>
+			<form action={createAccount}>
 				<FormHeader text='Cadastro' />
 				<main>
 					<Input
@@ -130,7 +66,6 @@ export default function SignUpForm() {
 						name='email'
 						register={register}
 						error={errors.email?.message}
-						onBlur={checkIfEmailExists}
 					/>
 					<PasswordInput
 						label='Senha'
@@ -154,13 +89,12 @@ export default function SignUpForm() {
 						<span> Li e estou de acordo com os <Link href='/terms-of-use'>Termos de uso.</Link></span>
 					</div>
 					<SubmitButton
-						runSpinner={runSpinner}
-						disable={disable}
 						content='Crirar conta'
 						spinnerText='Criando a conta...'
+						disabled={disable}
 					/>
 					<div style={{ textAlign: 'center' }}>
-						<span>Já passue uma conta? <Link href='/login'>Click aqui para acessar.</Link> </span>
+						<span>Já passue uma conta? <LoginButton text='Click aqui para acessar.'/> </span>
 					</div>
 				</footer>
 			</form>
