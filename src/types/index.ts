@@ -17,7 +17,7 @@ export type Error = {
 }
 
 
-export type SignInResponseError = {
+export type SignInError = {
 	message: string
 	status: number
 }

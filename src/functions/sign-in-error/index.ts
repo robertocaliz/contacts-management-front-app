@@ -1,6 +1,6 @@
 
 
 
-export const getSignInError = (message: string, status: number) => {
+export const getErrorMessage = (message: string, status: number) => {
 	return JSON.stringify({ message, status });
 };

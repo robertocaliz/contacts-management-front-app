@@ -3,13 +3,11 @@
 
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Centralize from './centralize';
 import FormHeader from './form-header';
 import Input from './input';
-import { SignInResponseError, UserCredentials } from '@/types';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { LOGIN_SCHEMA } from '@/constants/validation-schemas';
+import { Error, SignInError, UserCredentials } from '@/types';
 import PasswordInput from './password-input';
 import { StatusCodes } from 'http-status-codes';
 import Alert from 'react-bootstrap/Alert';
@@ -17,19 +15,18 @@ import useAlert from '@/hooks/use.alert';
 import SubmitButton from './buttons/submit-button';
 import SignUpButton from './buttons/signup';
 import SignupRecoverButton from './buttons/signup-recover';
+import { displayErrors } from '@/functions/form-errors';
 
 
 export default function LoginForm() {
 
 	const {
 		register,
-		handleSubmit,
-		formState: { errors }
-	} = useForm<UserCredentials>({
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		resolver: yupResolver(LOGIN_SCHEMA) as any
-	});
-
+		formState: { errors },
+		getValues,
+		setError,
+		clearErrors
+	} = useForm<UserCredentials>();
 
 	const { replace } = useRouter();
 
@@ -37,10 +34,13 @@ export default function LoginForm() {
 		alertType,
 		alertMessage,
 		showAlert,
-		alert
+		alert,
 	} = useAlert();
+	
 
-	const loginUser: SubmitHandler<UserCredentials> = async (credentials) => {
+	const loginUser = async () => {
+		clearErrors();
+		const credentials = getValues();
 		await signIn('credentials',
 			{
 				...credentials,
@@ -48,17 +48,18 @@ export default function LoginForm() {
 			})
 			.then(response => {
 				if (response?.error) {
-					const error = JSON.parse(response?.error as string) as SignInResponseError;
-					if (error.status !== StatusCodes.INTERNAL_SERVER_ERROR) {
+					const error = JSON.parse(response?.error as string) as SignInError;
+					if (error.status === StatusCodes.BAD_REQUEST) {
+						displayErrors(JSON.parse(error.message) as Error[], setError);
+						return;
+					}
+					if (error.status === StatusCodes.FORBIDDEN) {
 						alert.show('warning', error.message);
 						return;
 					}
 					return Promise.reject(error);
 				}
 				replace('/');
-			})
-			.catch(error => {
-				alert.show('danger', error.message);
 			});
 	};
 
@@ -69,7 +70,7 @@ export default function LoginForm() {
 				show={showAlert}>
 				{alertMessage}
 			</Alert>
-			<form onSubmit={handleSubmit(loginUser)}>
+			<form action={loginUser}>
 				<FormHeader text='Login' />
 				<main>
 					<Input
