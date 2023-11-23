@@ -36,7 +36,7 @@ export default function LoginForm() {
 		showAlert,
 		alert,
 	} = useAlert();
-	
+
 
 	const loginUser = async () => {
 		clearErrors();
@@ -53,7 +53,7 @@ export default function LoginForm() {
 						displayErrors(JSON.parse(error.message) as Error[], setError);
 						return;
 					}
-					if (error.status === StatusCodes.FORBIDDEN) {
+					if (error.status === StatusCodes.FORBIDDEN || StatusCodes.UNAUTHORIZED) {
 						alert.show('warning', error.message);
 						return;
 					}
