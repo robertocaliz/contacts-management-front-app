@@ -1,20 +1,6 @@
 import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { CSSProperties } from 'react';
-import { AiOutlineLogout } from 'react-icons/ai';
-
-
-
-const LogoutButtonStyles: CSSProperties = {
-	backgroundColor: 'transparent',
-	color: '#F08080',
-	border: '0',
-	fontWeight: 'bold',
-	display: 'flex',
-	flexDirection: 'row',
-	alignItems: 'center',
-	gap: '0.2rem'
-};
 
 
 
@@ -25,13 +11,12 @@ const LogoutButton = () => {
 			.then(() => replace('/login'));
 	};
 	return (
-		<button
+		<Link
+			href=''
 			onClick={onClick}
-			style={LogoutButtonStyles}
 		>
 			<span>Logout</span>
-			<AiOutlineLogout style={{ fontSize: '1.2rem' }} />
-		</button>
+		</Link>
 	);
 };
 
