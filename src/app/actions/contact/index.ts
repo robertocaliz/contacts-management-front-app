@@ -66,7 +66,6 @@ export async function getById(constactId: string) {
 
 export async function getAll(url: string) {
 	const { data } = await axiosAuth.get<Contact[]>(url);
-	console.log(data);
 	return data;
 }
 

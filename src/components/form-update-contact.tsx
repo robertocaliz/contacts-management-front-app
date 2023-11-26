@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
 import Centralize from './centralize';
-import { ButtonBack } from './buttons.component';
 import FormHeader from './form-header';
 import Input from './input';
 import Alert from 'react-bootstrap/Alert';
@@ -16,6 +15,7 @@ import { update } from '@/app/actions/contact';
 import { displayErrors } from '@/functions/form-errors';
 import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';
+import BackButton from './buttons/back';
 
 
 export default function FormUpdateContact({ contact }: { contact: Contact }) {
@@ -103,7 +103,7 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 					spinnerText='Actualizando...'
 				/>
 			</form>
-			<ButtonBack />
+			<BackButton />
 		</Centralize>
 	);
 }

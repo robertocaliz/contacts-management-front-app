@@ -11,7 +11,7 @@ import { displayErrors } from '@/functions/form-errors';
 import { StatusCodes } from 'http-status-codes';
 import { useForm } from 'react-hook-form';
 import SubmitButton from './buttons/submit';
-import ButtonBack from './buttons/back-button';
+import BackButton from './buttons/back';
 
 
 export default function FormRecoverSignup() {
@@ -62,7 +62,7 @@ export default function FormRecoverSignup() {
 					spinnerText='Recuperando...'
 				/>
 			</form>
-			<ButtonBack />
+			<BackButton />
 		</Centralize>
 	);
 

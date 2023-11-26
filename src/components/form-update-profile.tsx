@@ -64,17 +64,13 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 			return alert.show('warning',
 				'O perfíl não foi alterado.');
 		}
-
 		const { errors } = await update(newUserData, _userData._id);
-
 		if (errors) {
 			displayErrors(errors, setError);
 			return;
 		}
-
 		await updateSession(newUserData);
 		Alerts.success('Perfíl actualizado.');
-
 		_setUserData(newUserData);
 	};
 

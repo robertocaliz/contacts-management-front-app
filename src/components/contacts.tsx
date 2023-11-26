@@ -2,7 +2,7 @@ import { deleteById, getAll } from '@/app/actions/contact';
 import { PER_PAGE } from '@/constants';
 import { useFetch } from '@/hooks';
 import { Contact, UseFetchData } from '@/types';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useContext, useEffect, useState } from 'react';
 import Alerts from '@/lib/alerts';
 import DeleteButton from './buttons/table/delete';
@@ -17,6 +17,9 @@ function Contacts() {
 
 
 	const [contacts, setContacts] = useState<Contact[]>([]);
+
+
+	const { push } = useRouter();
 
 
 	const searchParams = useSearchParams();
@@ -35,7 +38,6 @@ function Contacts() {
 
 	useEffect(() => {
 		if (data) {
-			console.log(data);
 			setLoadingPage(!loadingPage);
 			setTotalRecords(data.count);
 			setContacts(data.objs);
@@ -64,7 +66,14 @@ function Contacts() {
 			{contacts.map(contact => (
 				<tr key={contact._id}>
 					<td>{contact.name}</td>
-					<td>{contact.email}</td>
+					<td>
+						<a
+							href=''
+							onClick={() => push(`mailto:${contact.email}`)}
+						>
+							{contact.email}
+						</a>
+					</td>
 					<td>{contact.phoneNumber}</td>
 					<td>
 						<DeleteButton
@@ -77,8 +86,9 @@ function Contacts() {
 							url={`/contacts/${contact._id}/update`}
 						/>
 					</td>
-				</tr>
-			))}
+				</tr >
+			))
+			}
 		</>
 	);
 }

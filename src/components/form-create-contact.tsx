@@ -2,7 +2,6 @@
 'use client';
 
 import Centralize from './centralize';
-import { ButtonBack } from './buttons.component';
 import FormHeader from './form-header';
 import Input from './input';
 import { useForm } from 'react-hook-form';
@@ -10,11 +9,12 @@ import { Contact } from '@/types';
 import Alerts from '@/lib/alerts';
 import { create } from '@/app/actions/contact';
 import { displayErrors } from '@/functions/form-errors';
-import wait from '@/lib/wait';
 import SubmitButton from './buttons/submit';
+import BackButton from './buttons/back';
 
 export default function FormAddContact() {
 
+	
 	const {
 		register,
 		getValues,
@@ -26,11 +26,9 @@ export default function FormAddContact() {
 
 
 	const createContact = async () => {
-
-		await wait(2000);
-
 		clearErrors();
-		const { errors } = await create(getValues());
+		const contact = getValues();
+		const { errors } = await create(contact);
 		if (errors) {
 			displayErrors(errors, setError);
 			return;
@@ -72,7 +70,7 @@ export default function FormAddContact() {
 					spinnerText='Criando...'
 				/>
 			</form>
-			<ButtonBack />
+			<BackButton />
 		</Centralize>
 	);
 }
