@@ -13,7 +13,7 @@ import UpdateButton from './buttons/table/update';
 function Contacts() {
 
 
-	const { setTotalRecords, setLoadingPage, loadingPage } = useContext(TableContext);
+	const { setTotalRecords, setLoadingPage } = useContext(TableContext);
 
 
 	const [contacts, setContacts] = useState<Contact[]>([]);
@@ -38,7 +38,7 @@ function Contacts() {
 
 	useEffect(() => {
 		if (data) {
-			setLoadingPage(!loadingPage);
+			setLoadingPage(false);
 			setTotalRecords(data.count);
 			setContacts(data.objs);
 		}

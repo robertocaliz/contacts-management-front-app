@@ -7,11 +7,9 @@ import { useContext } from 'react';
 import { TableContext } from '@/contexts/table-context';
 
 export default function TableContacts() {
-
 	
 	const { totalRecords, loadingPage } = useContext(TableContext);
 
-	
 	return (
 		<>
 			<div className={tableContactsStyles.tableContainer}>
