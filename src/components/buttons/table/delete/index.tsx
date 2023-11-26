@@ -11,7 +11,7 @@ type DeleteButtonProps = {
 }
 
 const buttonDeleteStyles: CSSProperties = {
-	color: 'red',
+	color: '#F08080',
 	fontSize: '1.5rem',
 	border: 'none',
 	backgroundColor: '#fff',

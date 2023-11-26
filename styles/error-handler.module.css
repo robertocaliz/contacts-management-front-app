@@ -30,7 +30,15 @@
 	border-radius: 0.4rem;
 	outline: 1px solid lightgray;
 	max-width: 10rem;
-	flex-grow: 7;
+	flex-grow: 8;
+	transition: opacity 500ms;
+}
+
+
+
+.contentContainer>section:last-child button:hover {
+	opacity: 0.6;
+	outline-width: 1rem;
 }
 
 

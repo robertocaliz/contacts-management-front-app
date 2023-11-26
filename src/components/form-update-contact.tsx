@@ -15,7 +15,7 @@ import { objChanged } from '@/functions/object';
 import { update } from '@/app/actions/contact';
 import { displayErrors } from '@/functions/form-errors';
 import { Contact } from '@/types';
-import SubmitButton from './buttons/submit-button';
+import SubmitButton from './buttons/submit';
 
 
 export default function FormUpdateContact({ contact }: { contact: Contact }) {

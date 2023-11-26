@@ -9,7 +9,7 @@ import PasswordInput from './password-input';
 import FormHeader from './form-header';
 import { StatusCodes } from 'http-status-codes';
 import { useParams, useRouter } from 'next/navigation';
-import SubmitButton from './buttons/submit-button';
+import SubmitButton from './buttons/submit';
 import { _changePassword } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form-errors';
 

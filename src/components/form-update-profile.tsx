@@ -12,7 +12,7 @@ import useAlert from '@/hooks/use.alert';
 import { objChanged } from '@/functions/object';
 import { updateSession } from '@/functions/session';
 import Centralize from './centralize';
-import SubmitButton from './buttons/submit-button';
+import SubmitButton from './buttons/submit';
 import { update } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form-errors';
 import SignupRecoverButton from './buttons/signup-recover';

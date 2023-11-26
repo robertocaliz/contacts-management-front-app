@@ -12,7 +12,7 @@ import PasswordInput from './password-input';
 import { create } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form-errors';
 import { useState } from 'react';
-import SubmitButton from './buttons/submit-button';
+import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
 
 

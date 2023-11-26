@@ -16,7 +16,7 @@ export const handleUnauthorizedErrorInterceptor = (
 	{ axiosAuth, refreshAccessToken }: handleUnauthorizedErrorInterceptorProps) => {
 	return async (error: any) => {
 		const originalRequest = error.config;
-		if ((error.response.status === StatusCodes.UNAUTHORIZED)
+		if ((error.response?.status === StatusCodes.UNAUTHORIZED)
 			&& (!originalRequest._retry)) {
 			originalRequest._retry = true;
 			return await refreshAccessToken()

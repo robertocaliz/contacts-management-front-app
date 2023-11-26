@@ -11,7 +11,7 @@ import Alerts from '@/lib/alerts';
 import { create } from '@/app/actions/contact';
 import { displayErrors } from '@/functions/form-errors';
 import wait from '@/lib/wait';
-import SubmitButton from './buttons/submit-button';
+import SubmitButton from './buttons/submit';
 
 export default function FormAddContact() {
 

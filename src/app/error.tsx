@@ -34,9 +34,9 @@ function ErrorHandler({ error, reset }: ErrorHandlerProps) {
 						Tente novamente
 					</button>
 					<button
-						onClick={() => push('/dashboard')}
+						onClick={() => push('/')}
 					>
-						&larr; Voltar
+						&larr; Ir para página principal
 					</button>
 				</section>
 			</main>

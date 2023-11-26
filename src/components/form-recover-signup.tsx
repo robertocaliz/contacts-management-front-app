@@ -10,7 +10,7 @@ import { findEmail } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form-errors';
 import { StatusCodes } from 'http-status-codes';
 import { useForm } from 'react-hook-form';
-import SubmitButton from './buttons/submit-button';
+import SubmitButton from './buttons/submit';
 import ButtonBack from './buttons/back-button';
 
 
