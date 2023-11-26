@@ -14,11 +14,7 @@ function Contacts() {
 
 
 	const { setTotalRecords, setLoadingPage } = useContext(TableContext);
-
-
 	const [contacts, setContacts] = useState<Contact[]>([]);
-
-
 	const { push } = useRouter();
 
 
@@ -29,7 +25,8 @@ function Contacts() {
 
 	const {
 		data,
-		error
+		error,
+		mutate
 	} = useFetch<UseFetchData<Contact>>(
 		`/contacts?page=${page}&per_page=${per_page}`,
 		getAll
@@ -49,15 +46,26 @@ function Contacts() {
 		throw error;
 	}
 
+	const migrateToPrevPage = () => {
+		if ((contacts.length - 1) === 0 && Number(page) > 1) {
+			push(`?page=${Number(page) - 1}&per_page${per_page}`);
+			return true;
+		}
+		false;
+	};
+
 
 	const removeContactFromTable = (contactId: string) => {
 		setContacts(contacts.filter(contact => contact._id !== contactId));
 	};
 
-
 	const handleDelete = async (contactId: string) => {
 		await deleteById(contactId);
 		removeContactFromTable(contactId);
+		const migrate = migrateToPrevPage();
+		if (!migrate) {
+			mutate();
+		}
 		Alerts.success('Contacto apagado.');
 	};
 
