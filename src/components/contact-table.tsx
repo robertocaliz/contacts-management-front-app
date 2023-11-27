@@ -2,14 +2,11 @@
 
 import tableContactsStyles from '@/../styles/contact-table.module.css';
 import PaginationControls from './pagination-controls';
-import Contacts from './contacts';
-import { useContext } from 'react';
-import { TableContext } from '@/contexts/table-context';
+import ContactPage from './contact-page';
 
-export default function TableContacts() {
-	
-	const { totalRecords, loadingPage } = useContext(TableContext);
 
+
+export default function ContactTable() {
 	return (
 		<>
 			<div className={tableContactsStyles.tableContainer}>
@@ -24,15 +21,11 @@ export default function TableContacts() {
 						</tr>
 					</thead>
 					<tbody>
-						<Contacts />
+						<ContactPage />
 					</tbody>
 				</table>
 			</div >
-			<PaginationControls
-				totalRecords={totalRecords}
-				pageLoading={loadingPage}
-			/>
+			<PaginationControls />
 		</>
 	);
-
 }

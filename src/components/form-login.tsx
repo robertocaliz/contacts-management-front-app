@@ -28,7 +28,7 @@ export default function LoginForm() {
 		clearErrors
 	} = useForm<UserCredentials>();
 
-	const { replace } = useRouter();
+	const router = useRouter();
 
 	const {
 		alertType,
@@ -59,7 +59,7 @@ export default function LoginForm() {
 					}
 					return Promise.reject(error);
 				}
-				replace('/');
+				router.replace('/');
 			});
 	};
 

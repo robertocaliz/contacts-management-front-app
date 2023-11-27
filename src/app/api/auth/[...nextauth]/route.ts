@@ -6,7 +6,7 @@ import axiosPublic from '@/lib/axios/public';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { User, UserCredentials } from '@/types';
-import { BadRequestError, ForbiddenError, UnauthorizedError } from '@/lib/errors';
+import { AuthError, BadRequestError, ForbiddenError, UnauthorizedError } from '@/lib/errors';
 import { getErrorMessage } from '@/functions/sign-in-error';
 import { StatusCodes } from 'http-status-codes';
 import { validate } from '@/functions/validation';
@@ -57,7 +57,12 @@ export const authOptions: NextAuthOptions = {
 							)
 						);
 					}
-					throw error;
+					throw new AuthError(
+						getErrorMessage(
+							(error as AuthError).message,
+							StatusCodes.INTERNAL_SERVER_ERROR
+						)
+					);
 				}
 			}
 		})

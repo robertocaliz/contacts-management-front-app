@@ -4,16 +4,16 @@ import paginationControlsStyles from '@/../styles/pagination-controls.module.css
 import { useRouter, useSearchParams } from 'next/navigation';
 import Spinner from './spinner';
 import { PER_PAGE } from '@/constants';
+import { useContext } from 'react';
+import { TableContext } from '@/contexts/table-context';
 
 
-type PaginationControlsProps = {
-	totalRecords: number;
-	pageLoading?: boolean;
-}
 
 
-function PaginationControls({ totalRecords, pageLoading }: PaginationControlsProps) {
+function PaginationControls() {
 
+	const { totalRecords, loadingPage } = useContext(TableContext);
+   
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
@@ -31,9 +31,9 @@ function PaginationControls({ totalRecords, pageLoading }: PaginationControlsPro
 				>
 					Anterior
 				</button>
-				{pageLoading ? (
+				{loadingPage ? (
 					<Spinner
-						loading={pageLoading}
+						loading={loadingPage}
 					/>
 				) : (
 					<span>

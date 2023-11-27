@@ -10,7 +10,7 @@ import { TableContext } from '@/contexts/table-context';
 import UpdateButton from './buttons/table/update';
 
 
-function Contacts() {
+function ContactPage() {
 
 
 	const { setTotalRecords, setLoadingPage } = useContext(TableContext);
@@ -101,4 +101,4 @@ function Contacts() {
 	);
 }
 
-export default Contacts;
+export default ContactPage;

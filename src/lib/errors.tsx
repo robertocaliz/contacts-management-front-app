@@ -12,7 +12,7 @@ export class APIError extends Error {
 	}
 }
 
-export class AuthenticationError extends APIError {
+export class AuthError extends APIError {
 	public constructor(message?: string) {
 		super(StatusCodes.INTERNAL_SERVER_ERROR, message);
 	}
