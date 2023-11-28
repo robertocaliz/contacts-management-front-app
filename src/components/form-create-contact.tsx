@@ -11,10 +11,10 @@ import { create } from '@/app/actions/contact';
 import { displayErrors } from '@/functions/form-errors';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
+import Form from './form';
 
 export default function FormAddContact() {
 
-	
 	const {
 		register,
 		getValues,
@@ -23,7 +23,6 @@ export default function FormAddContact() {
 		clearErrors,
 		formState: { errors }
 	} = useForm<Contact>();
-
 
 	const createContact = async () => {
 		clearErrors();
@@ -37,10 +36,9 @@ export default function FormAddContact() {
 		Alerts.success('Contacto criado.');
 	};
 
-
 	return (
 		<Centralize>
-			<form action={createContact}>
+			<Form action={createContact}>
 				<FormHeader text='Adicionar' />
 				<Input
 					type='text'
@@ -69,7 +67,7 @@ export default function FormAddContact() {
 					content='Criar contacto'
 					spinnerText='Criando...'
 				/>
-			</form>
+			</Form>
 			<BackButton />
 		</Centralize>
 	);

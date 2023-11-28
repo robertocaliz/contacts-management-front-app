@@ -12,6 +12,7 @@ import { StatusCodes } from 'http-status-codes';
 import { useForm } from 'react-hook-form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
+import Form from './form';
 
 
 export default function FormRecoverSignup() {
@@ -48,7 +49,7 @@ export default function FormRecoverSignup() {
 
 	return (
 		<Centralize>
-			<form action={checkIfEmailExists}>
+			<Form action={checkIfEmailExists}>
 				<FormHeader text='Recuperação de senha' />
 				<Input
 					type='text'
@@ -61,7 +62,7 @@ export default function FormRecoverSignup() {
 					content='Recuperar'
 					spinnerText='Recuperando...'
 				/>
-			</form>
+			</Form>
 			<BackButton />
 		</Centralize>
 	);

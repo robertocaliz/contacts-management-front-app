@@ -23,8 +23,14 @@ const spinnerStyles: CSSProperties = {
 export default function Spinner({ loading, text }: SpinnerProps) {
 	return (
 		<div style={spinnerStyles}>
-			<ClipLoader color=" #0070f3" size={20} loading={loading} />
-			{text && <span>{text}</span>}
+			<ClipLoader
+				color=" #0070f3"
+				size={20}
+				loading={loading}
+			/>
+			{text && (
+				<span>{text}</span>
+			)}
 		</div>
 	);
 }

@@ -16,6 +16,7 @@ import SubmitButton from './buttons/submit';
 import SignUpButton from './buttons/signup';
 import SignupRecoverButton from './buttons/signup-recover';
 import { displayErrors } from '@/functions/form-errors';
+import Form from './form';
 
 
 export default function LoginForm() {
@@ -70,7 +71,7 @@ export default function LoginForm() {
 				show={showAlert}>
 				{alertMessage}
 			</Alert>
-			<form action={loginUser}>
+			<Form action={loginUser}>
 				<FormHeader text='Login' />
 				<main>
 					<Input
@@ -106,7 +107,7 @@ export default function LoginForm() {
 						</span>
 					</div>
 				</footer>
-			</form>
+			</Form>
 		</Centralize>
 	);
 }

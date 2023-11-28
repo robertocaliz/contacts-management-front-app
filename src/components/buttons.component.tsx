@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import {
 	AnchorHTMLAttributes
 } from 'react';
@@ -22,17 +21,5 @@ export const ButtonAdd = ({ href, text = 'Adicionar', ...rest }: ButtonAddProps)
 		>
 			{text}
 		</Link>
-	);
-};
-
-
-export const ButtonBack = () => {
-	const router = useRouter();
-	return (
-		<button
-			onClick={() => router.back()}
-		>
-			&larr;Voltar
-		</button>
 	);
 };

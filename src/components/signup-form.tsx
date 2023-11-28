@@ -14,6 +14,7 @@ import { displayErrors } from '@/functions/form-errors';
 import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
+import Form from './form';
 
 
 type AccountData = {
@@ -50,7 +51,7 @@ export default function SignUpForm() {
 
 	return (
 		<Centralize>
-			<form action={createAccount}>
+			<Form action={createAccount}>
 				<FormHeader text='Cadastro' />
 				<main>
 					<Input
@@ -94,10 +95,10 @@ export default function SignUpForm() {
 						disabled={disable}
 					/>
 					<div style={{ textAlign: 'center' }}>
-						<span>Já passue uma conta? <LoginButton text='Click aqui para acessar.'/> </span>
+						<span>Já passue uma conta? <LoginButton text='Click aqui para acessar.' /> </span>
 					</div>
 				</footer>
-			</form>
+			</Form>
 		</Centralize>
 	);
 }

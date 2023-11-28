@@ -12,6 +12,7 @@ import { useParams, useRouter } from 'next/navigation';
 import SubmitButton from './buttons/submit';
 import { _changePassword } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form-errors';
+import Form from './form';
 
 
 type FormData = {
@@ -66,7 +67,7 @@ export default function FormChangePassword() {
 	return (
 		<Centralize>
 			<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
-			<form action={changePassword}>
+			<Form action={changePassword}>
 				<FormHeader text='Defina uma nova senha' />
 				<PasswordInput
 					type="password"
@@ -86,7 +87,7 @@ export default function FormChangePassword() {
 					content='Alterar senha'
 					spinnerText='Alterando...'
 				/>
-			</form>
+			</Form>
 		</Centralize>
 	);
 

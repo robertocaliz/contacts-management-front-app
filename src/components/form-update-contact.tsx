@@ -16,6 +16,7 @@ import { displayErrors } from '@/functions/form-errors';
 import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
+import Form from './form';
 
 
 export default function FormUpdateContact({ contact }: { contact: Contact }) {
@@ -29,7 +30,6 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 		alert
 	} = useAlert();
 
-
 	const {
 		register,
 		reset,
@@ -39,11 +39,9 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 		clearErrors
 	} = useForm<Contact>();
 
-
 	useEffect(() => {
 		reset(contact);
 	}, [contact]);
-
 
 	const contactChnaged = (newContact: Contact) => {
 		return objChanged({
@@ -51,7 +49,6 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 			originalObj: contact
 		});
 	};
-
 
 	const updateContact = async () => {
 		clearErrors();
@@ -73,8 +70,12 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 
 	return (
 		<Centralize>
-			<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
-			<form action={updateContact}>
+			<Alert
+				variant={alertType}
+				show={showAlert}>
+				{alertMessage}
+			</Alert>
+			<Form action={updateContact}>
 				<FormHeader text={'Actualizar'} />
 				<Input
 					type='text'
@@ -102,7 +103,7 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 					content='Actualizar contacto'
 					spinnerText='Actualizando...'
 				/>
-			</form>
+			</Form>
 			<BackButton />
 		</Centralize>
 	);

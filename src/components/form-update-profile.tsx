@@ -16,6 +16,7 @@ import SubmitButton from './buttons/submit';
 import { update } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form-errors';
 import SignupRecoverButton from './buttons/signup-recover';
+import Form from './form';
 
 
 type FormUpdateUserProps = {
@@ -25,7 +26,7 @@ type FormUpdateUserProps = {
 export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 
 	const [_userData, _setUserData] = useState<Record<string, any>>({});
-	
+
 	const {
 		alertType,
 		alertMessage,
@@ -74,16 +75,14 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 		_setUserData(newUserData);
 	};
 
-
 	return (
 		<Centralize>
 			<Alert
 				variant={alertType}
-				show={showAlert}
-			>
+				show={showAlert}>
 				{alertMessage}
 			</Alert>
-			<form action={updateUserData}>
+			<Form action={updateUserData}>
 				<FormHeader text='Actualizar Perfíl' />
 				<main>
 					<Input
@@ -111,7 +110,7 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 						text='Clique aqui para recuperar ou alterar a senha.'
 					/>
 				</footer>
-			</form>
+			</Form>
 		</Centralize>
 	);
 
