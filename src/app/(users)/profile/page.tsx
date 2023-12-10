@@ -11,10 +11,8 @@ export const metadata: Metadata = {
 export default async function UserProfilePage() {
 
 	const userData = await getUserData();
-	
+
 	return (
-		<FormUpdateProfile
-			userData={userData}
-		/>
+		<FormUpdateProfile data={userData} />
 	);
 }

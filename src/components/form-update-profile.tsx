@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import { User } from '@/types';
@@ -10,22 +10,34 @@ import Alerts from '@/lib/alerts';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
 import { objChanged } from '@/functions/object';
-import { updateSession } from '@/functions/session';
 import Centralize from './centralize';
 import SubmitButton from './buttons/submit';
-import { update } from '@/app/actions/users';
-import { displayErrors } from '@/functions/form-errors';
+import { update as updateProfile } from '@/app/actions/users';
+import { displayErrors } from '@/functions/form';
 import SignupRecoverButton from './buttons/signup-recover';
 import Form from './form';
+import { useRouter } from 'next/navigation';
+import { updateSession } from '@/functions/session';
 
 
-type FormUpdateUserProps = {
-	userData: Record<string, any>;
+
+type FormUpdateProfileProps = {
+	data: Partial<User>;
 };
 
-export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 
-	const [_userData, _setUserData] = useState<Record<string, any>>({});
+export default function FormUpdateProfile({ data }: FormUpdateProfileProps) {
+
+	
+	const router = useRouter();
+	const [userData, setUserData] = useState<Partial<User>>({});
+
+
+	useEffect(() => {
+		reset(data);
+		setUserData(data);
+	}, [data]);
+
 
 	const {
 		alertType,
@@ -34,6 +46,7 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 		alert
 	} = useAlert();
 
+
 	const {
 		register,
 		reset,
@@ -41,39 +54,49 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 		getValues,
 		clearErrors,
 		setError
-	} = useForm<User>();
+	} = useForm<Partial<User>>();
 
 
-	useEffect(() => {
-		reset(userData);
-		_setUserData(userData);
-	}, [userData]);
 
-
-	const profileChanged = (newUserData: Record<string, any>) => {
+	const profileChanged = (newUserData: Partial<User>) => {
 		return objChanged({
-			originalObj: _userData,
+			originalObj: userData,
 			newObj: newUserData
 		});
 	};
 
 
-	const updateUserData = async () => {
+	const handleUpdateProfile = async () => {
 		clearErrors();
-		const newUserData = getValues();
+		
+		let newUserData = getValues();
+		
 		if (!profileChanged(newUserData)) {
-			return alert.show('warning',
-				'O perfíl não foi alterado.');
+			return alert.show('warning', 'O perfíl não foi alterado.');
 		}
-		const { errors } = await update(newUserData, _userData._id);
+
+		newUserData = (newUserData.email === userData.email) ?
+			({
+				name: getValues().name
+			}) : (
+				newUserData
+			);
+
+		const errors = await updateProfile(newUserData, String(userData._id));
 		if (errors) {
 			displayErrors(errors, setError);
 			return;
 		}
+
+
 		await updateSession(newUserData);
+		router.refresh();
 		Alerts.success('Perfíl actualizado.');
-		_setUserData(newUserData);
+		setUserData(newUserData);
+
+
 	};
+
 
 	return (
 		<Centralize>
@@ -82,7 +105,7 @@ export default function FormUpdateProfile({ userData }: FormUpdateUserProps) {
 				show={showAlert}>
 				{alertMessage}
 			</Alert>
-			<Form action={updateUserData}>
+			<Form action={handleUpdateProfile}>
 				<FormHeader text='Actualizar Perfíl' />
 				<main>
 					<Input

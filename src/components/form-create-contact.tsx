@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { Contact } from '@/types';
 import Alerts from '@/lib/alerts';
 import { create } from '@/app/actions/contact';
-import { displayErrors } from '@/functions/form-errors';
+import { displayErrors } from '@/functions/form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form from './form';

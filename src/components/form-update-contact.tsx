@@ -12,7 +12,7 @@ import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
 import { objChanged } from '@/functions/object';
 import { update } from '@/app/actions/contact';
-import { displayErrors } from '@/functions/form-errors';
+import { displayErrors } from '@/functions/form';
 import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';

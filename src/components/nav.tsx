@@ -8,6 +8,8 @@ import LoginButton from './buttons/login';
 import SignUpButton from './buttons/signup';
 import ContactsButton from './buttons/contacts';
 import UserProfileButton from './buttons/user-profile';
+import NavBar from './nav-bar';
+import List from './list';
 
 
 export default function Nav() {
@@ -15,8 +17,8 @@ export default function Nav() {
 	const { data: session } = useSession();
 
 	return (
-		<nav className={navStyles.nav} >
-			<ul className={navStyles.container}>
+		<NavBar className={navStyles.nav} >
+			<List className={navStyles.container}>
 				<li>
 					<HomeButton />
 				</li>
@@ -25,8 +27,8 @@ export default function Nav() {
 						<ContactsButton />
 					</li>
 				)}
-			</ul>
-			<ul className={navStyles.container}>
+			</List>
+			<List className={navStyles.container}>
 				{session ? (
 					<>
 						<li>
@@ -48,7 +50,7 @@ export default function Nav() {
 						</li>
 					</>
 				)}
-			</ul>
-		</nav>
+			</List>
+		</NavBar>
 	);
 }

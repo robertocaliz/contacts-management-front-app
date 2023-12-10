@@ -26,14 +26,14 @@ export const getAcessToken = async () => {
 
 
 
-export const updateSession = async (userDetails: Partial<User>) => {
+export const updateSession = async (userData: Partial<User>) => {
 	const csrfToken = await getCsrfToken();
 	await getSession({
 		req: {
 			body: {
 				csrfToken,
 				data: {
-					user: { ...userDetails }
+					user: { ...userData }
 				}
 			}
 		}

@@ -15,7 +15,7 @@ import useAlert from '@/hooks/use.alert';
 import SubmitButton from './buttons/submit';
 import SignUpButton from './buttons/signup';
 import SignupRecoverButton from './buttons/signup-recover';
-import { displayErrors } from '@/functions/form-errors';
+import { displayErrors } from '@/functions/form';
 import Form from './form';
 
 

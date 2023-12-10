@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { User } from '@/types';
 import PasswordInput from './password-input';
 import { create } from '@/app/actions/users';
-import { displayErrors } from '@/functions/form-errors';
+import { displayErrors } from '@/functions/form';
 import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';

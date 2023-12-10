@@ -59,6 +59,7 @@ export async function update(contact: Contact, contactId: string): Promise<Creat
 
 
 export async function getById(constactId: string) {
+	console.log('running...');
 	const { data: contact } = await axiosAuth.get(`/contacts/${constactId}`);
 	return contact;
 }

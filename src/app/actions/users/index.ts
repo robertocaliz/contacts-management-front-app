@@ -123,14 +123,19 @@ export const activateAccount = async (activationToken: string) => {
 
 
 
-export const update = async (user: User, userId: string) => {
+export const update = async (user: Partial<User>, userId: string) => {
 	const errors = await validate({
 		obj: user,
 		schema: UPDATE_USER_SCHEMA
 	});
 	if (errors) {
-		return { errors };
+		return errors;
 	}
-	const { status } = await axiosAuth.put(`/users/${userId}`, user);
-	return { status };
+	try {
+		await axiosAuth.put(`/users/${userId}`, user);
+	} catch (error) {
+		if (error instanceof ConflictError) {
+			return error.errors;
+		} 
+	}
 };

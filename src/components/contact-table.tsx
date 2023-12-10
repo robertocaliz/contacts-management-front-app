@@ -23,7 +23,6 @@ export default function ContactTable() {
 							<TableHeader content='Telefone/Telemóvel' />
 							<TableHeader />
 							<TableHeader />
-							<TableHeader />
 						</TableRow>
 					</TableHead>
 					<TableBody>

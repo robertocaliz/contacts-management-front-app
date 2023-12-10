@@ -7,7 +7,7 @@ import Input from './input';
 import { User } from '@/types';
 import { useRouter } from 'next/navigation';
 import { findEmail } from '@/app/actions/users';
-import { displayErrors } from '@/functions/form-errors';
+import { displayErrors } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
 import { useForm } from 'react-hook-form';
 import SubmitButton from './buttons/submit';
