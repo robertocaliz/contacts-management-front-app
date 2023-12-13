@@ -122,20 +122,36 @@ export const activateAccount = async (activationToken: string) => {
 };
 
 
+type UpdateUserAction = {
+	errors?: Array<Error>;
+	emailSend?: boolean;
 
-export const update = async (user: Partial<User>, userId: string) => {
+}
+
+
+export const update = async (user: Partial<User>, userId: string): Promise<UpdateUserAction> => {
 	const errors = await validate({
 		obj: user,
 		schema: UPDATE_USER_SCHEMA
 	});
 	if (errors) {
-		return errors;
+		return {
+			errors
+		};
 	}
 	try {
-		await axiosAuth.put(`/users/${userId}`, user);
+		const {
+			data: { emailSend }
+		} = await axiosAuth.put<UpdateUserAction>(`/users/${userId}`, user);
+		return {
+			emailSend: !!emailSend
+		};
 	} catch (error) {
 		if (error instanceof ConflictError) {
-			return error.errors;
-		} 
+			return {
+				errors: error.errors
+			};
+		}
+		throw error;
 	}
 };

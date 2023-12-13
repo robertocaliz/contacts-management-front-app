@@ -6,7 +6,6 @@ import FormHeader from './form-header';
 import Input from './input';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import Alerts from '@/lib/alerts';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
 import { objChanged } from '@/functions/object';
@@ -16,9 +15,8 @@ import { update as updateProfile } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form';
 import SignupRecoverButton from './buttons/signup-recover';
 import Form from './form';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { updateSession } from '@/functions/session';
-
 
 
 type FormUpdateProfileProps = {
@@ -28,10 +26,9 @@ type FormUpdateProfileProps = {
 
 export default function FormUpdateProfile({ data }: FormUpdateProfileProps) {
 
-	
-	const router = useRouter();
 	const [userData, setUserData] = useState<Partial<User>>({});
-
+	const { data: session, update: updateSession } = useSession();
+	const router = useRouter();
 
 	useEffect(() => {
 		reset(data);
@@ -67,33 +64,59 @@ export default function FormUpdateProfile({ data }: FormUpdateProfileProps) {
 
 
 	const handleUpdateProfile = async () => {
+
 		clearErrors();
-		
+
 		let newUserData = getValues();
-		
+
 		if (!profileChanged(newUserData)) {
-			return alert.show('warning', 'O perfíl não foi alterado.');
+			return alert.show(
+				'warning',
+				'O perfíl não foi alterado.'
+			);
 		}
 
 		newUserData = (newUserData.email === userData.email) ?
-			({
-				name: getValues().name
-			}) : (
+			(
+				{ name: getValues().name }
+			) : (
 				newUserData
 			);
 
-		const errors = await updateProfile(newUserData, String(userData._id));
+
+		const { errors, emailSend } = await updateProfile(newUserData, String(userData._id));
+
+
 		if (errors) {
 			displayErrors(errors, setError);
 			return;
 		}
 
+		await updateSession(
+			{
+				...session,
+				user: {
+					...session?.user,
+					name: newUserData.name
+				}
+			})
+			.then(() => updateSession());
 
-		await updateSession(newUserData);
+
+		if (emailSend) {
+			return alert.show(
+				'warning',
+				`Clique no link que enviamos, 
+				para confirmar a alteração do seu email.`
+			);
+		}
+
 		router.refresh();
-		Alerts.success('Perfíl actualizado.');
-		setUserData(newUserData);
-
+		
+		alert.show(
+			'success',
+			'Perfíl actualizado!'
+		);
 
 	};
 
