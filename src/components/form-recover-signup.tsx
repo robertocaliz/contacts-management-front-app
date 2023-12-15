@@ -6,7 +6,7 @@ import FormHeader from './form-header';
 import Input from './input';
 import { User } from '@/types';
 import { useRouter } from 'next/navigation';
-import { findEmail } from '@/app/actions/users';
+import { recoverSignup } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
 import { useForm } from 'react-hook-form';
@@ -28,11 +28,9 @@ export default function FormRecoverSignup() {
 		clearErrors
 	} = useForm<Pick<User, 'email'>>();
 
-
-
-	const checkIfEmailExists = async () => {
+	const handleRecoverSignup = async () => {
 		clearErrors();
-		const { errors, status } = await findEmail(getValues().email);
+		const { errors, status } = await recoverSignup(getValues().email);
 		if (errors) {
 			displayErrors(errors, setError);
 			return;
@@ -49,7 +47,7 @@ export default function FormRecoverSignup() {
 
 	return (
 		<Centralize>
-			<Form action={checkIfEmailExists}>
+			<Form action={handleRecoverSignup}>
 				<FormHeader text='Recuperação de senha' />
 				<Input
 					type='text'

@@ -49,7 +49,7 @@ export async function create(user: User): Promise<CreateUserReturn> {
 
 
 
-export async function findEmail(email: string) {
+export async function recoverSignup(email: string) {
 	const errors = await validate({
 		obj: { email },
 		schema: EMAIL_SCHEMA
