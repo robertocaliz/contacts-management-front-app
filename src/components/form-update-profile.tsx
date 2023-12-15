@@ -28,7 +28,6 @@ export default function FormUpdateProfile() {
 		updateSessionUser
 	} = useUpdateSessionUser();
 
-
 	const {
 		alertType,
 		alertMessage,
@@ -61,47 +60,39 @@ export default function FormUpdateProfile() {
 	};
 
 	const handleUpdateProfile = async () => {
-		
 		clearErrors();
-		
-		let newUserData = getValues();
-		
+		const newUserData = getValues();
 		if (!profileChanged(newUserData)) {
 			return alert.show(
 				'warning',
 				'O perfíl não foi alterado.'
 			);
 		}
-		
-		newUserData = (newUserData.email === userData.email) ?
-			(
-				{ name: newUserData.name }
-			) : (
-				newUserData
-			);
-
-		const { errors, emailSend } = await updateProfile(newUserData, String(userData._id));
-
+		if (newUserData.email === userData.email) { 
+			delete newUserData['email'];
+		}
+		const { errors, emailSend } = await updateProfile(
+			newUserData,
+			userData._id as string
+		);
 		if (errors) {
 			displayErrors(errors, setError);
 			return;
 		}
-
-		await updateSessionUser({ name: newUserData.name });
-
-		if (emailSend) {
-			return alert.show(
-				'warning',
-				`Clique no link que enviamos, 
-				para confirmar a alteração do seu email.`
-			);
-		}
-
-		alert.show(
-			'success',
-			'Perfíl actualizado!'
-		);
-
+		await updateSessionUser({ name: newUserData.name })
+			.then(() => {
+				if (emailSend) {
+					return alert.show(
+						'warning',
+						`Clique no link que enviamos, 
+						para confirmar a alteração do seu email.`
+					);
+				}
+				alert.show(
+					'success',
+					'Perfíl actualizado!'
+				);
+			});
 	};
 
 
