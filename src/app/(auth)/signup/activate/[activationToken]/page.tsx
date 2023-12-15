@@ -1,4 +1,5 @@
-import AlertActiveAccount from '@/components/alert-active-account';
+
+import SinupActivationControl from '@/components/signup-activation-control';
 import { Metadata } from 'next';
 
 
@@ -10,6 +11,6 @@ export const metadata: Metadata = {
 
 export default function ActivateUserAcountPage() {
 	return (
-		<AlertActiveAccount />
+		<SinupActivationControl />
 	);
 }

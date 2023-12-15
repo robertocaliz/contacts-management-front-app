@@ -25,8 +25,7 @@ export const getAcessToken = async () => {
 
 
 
-
-export const updateSession = async (userData: Partial<User>) => {
+export const updateSessionUser = async (userData: Partial<User>) => {
 	const csrfToken = await getCsrfToken();
 	await getSession({
 		req: {

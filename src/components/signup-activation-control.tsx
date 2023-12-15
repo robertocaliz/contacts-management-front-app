@@ -1,25 +1,23 @@
 'use client';
 
-import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import useAlert from '@/hooks/use.alert';
 import { StatusCodes } from 'http-status-codes';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import Spinner from './spinner';
 import { useParams } from 'next/navigation';
 import { activateAccount } from '@/app/actions/users';
+import Container from './container';
+import Centralize from './centralize';
 
 
-export default function AlertActiveAccount() {
+export default function SinupActivationControl() {
 
-	const [activatingAccount, setActivatingAccount] = useState(true);
 
 	const params = useParams();
 
 	const {
 		alertType,
 		alertMessage,
-		showAlert,
 		alert
 	} = useAlert();
 
@@ -28,7 +26,7 @@ export default function AlertActiveAccount() {
 		activateAccount(params.activationToken as string)
 			.then(status => {
 				if (status === StatusCodes.OK) {
-					alert.show('warning',
+					alert.show('success',
 						`A sua conta foi activada com sucesso.
 							Faça login e comece a utilizar o nosso aplicativo.
 						`
@@ -41,34 +39,20 @@ export default function AlertActiveAccount() {
 					`
 				);
 			})
-			.catch(() => {
-				alert.show('danger',
-					GLOBAL_ERROR_MESSAGE);
-			})
-			.finally(() => {
-				setActivatingAccount(!activatingAccount);
+			.catch(error => {
+				console.log(error);
 			});
 	}, []);
 
 
-
-	if (activatingAccount) {
-		return (
-			<Spinner
-				loading={activatingAccount}
-				text='Activando a conta...'
-			/>
-		);
-	}
-
-
 	return (
-		<Alert
-			variant={alertType}
-			show={showAlert}
-		>
-			{alertMessage}
-		</Alert>
+		<Container>
+			<Centralize>
+				<Alert variant={alertType}>
+					{alertMessage ?? 'Analizando o token de activação...'}
+				</Alert>
+			</Centralize>
+		</Container>
 	);
 
 }

@@ -15,25 +15,18 @@ import { update as updateProfile } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form';
 import SignupRecoverButton from './buttons/signup-recover';
 import Form from './form';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useUpdateSessionUser } from '@/hooks';
 
 
-type FormUpdateProfileProps = {
-	data: Partial<User>;
-};
 
-
-export default function FormUpdateProfile({ data }: FormUpdateProfileProps) {
+export default function FormUpdateProfile() {
 
 	const [userData, setUserData] = useState<Partial<User>>({});
-	const { data: session, update: updateSession } = useSession();
-	const router = useRouter();
 
-	useEffect(() => {
-		reset(data);
-		setUserData(data);
-	}, [data]);
+	const {
+		session,
+		updateSessionUser
+	} = useUpdateSessionUser();
 
 
 	const {
@@ -54,6 +47,11 @@ export default function FormUpdateProfile({ data }: FormUpdateProfileProps) {
 	} = useForm<Partial<User>>();
 
 
+	useEffect(() => {
+		reset(session?.user);
+		setUserData(session?.user as Partial<User>);
+	}, [session]);
+
 
 	const profileChanged = (newUserData: Partial<User>) => {
 		return objChanged({
@@ -62,46 +60,34 @@ export default function FormUpdateProfile({ data }: FormUpdateProfileProps) {
 		});
 	};
 
-
 	const handleUpdateProfile = async () => {
-
+		
 		clearErrors();
-
+		
 		let newUserData = getValues();
-
+		
 		if (!profileChanged(newUserData)) {
 			return alert.show(
 				'warning',
 				'O perfíl não foi alterado.'
 			);
 		}
-
+		
 		newUserData = (newUserData.email === userData.email) ?
 			(
-				{ name: getValues().name }
+				{ name: newUserData.name }
 			) : (
 				newUserData
 			);
 
-
 		const { errors, emailSend } = await updateProfile(newUserData, String(userData._id));
-
 
 		if (errors) {
 			displayErrors(errors, setError);
 			return;
 		}
 
-		await updateSession(
-			{
-				...session,
-				user: {
-					...session?.user,
-					name: newUserData.name
-				}
-			})
-			.then(() => updateSession());
-
+		await updateSessionUser({ name: newUserData.name });
 
 		if (emailSend) {
 			return alert.show(
@@ -111,8 +97,6 @@ export default function FormUpdateProfile({ data }: FormUpdateProfileProps) {
 			);
 		}
 
-		router.refresh();
-		
 		alert.show(
 			'success',
 			'Perfíl actualizado!'

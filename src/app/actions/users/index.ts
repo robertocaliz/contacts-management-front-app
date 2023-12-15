@@ -109,6 +109,9 @@ export const _changePassword = async (param: ChangePasswordProps) => {
 };
 
 
+
+
+
 export const activateAccount = async (activationToken: string) => {
 	try {
 		const { status } = await axiosPublic.patch(`/signup/activate/${activationToken}`);
@@ -129,7 +132,7 @@ type UpdateUserAction = {
 }
 
 
-export const update = async (user: Partial<User>, userId: string): Promise<UpdateUserAction> => {
+export const update = async (user: Partial<User>, userId: string) => {
 	const errors = await validate({
 		obj: user,
 		schema: UPDATE_USER_SCHEMA
@@ -150,6 +153,32 @@ export const update = async (user: Partial<User>, userId: string): Promise<Updat
 		if (error instanceof ConflictError) {
 			return {
 				errors: error.errors
+			};
+		}
+		throw error;
+	}
+};
+
+
+
+type UpdateEmailResponse = {
+	newEmail: string
+}
+
+
+export const updateEmail = async (alterationToken: string) => {
+	try {
+		const { data: { newEmail }, status } = await axiosPublic.patch<UpdateEmailResponse>(
+			`/update_email/${alterationToken}`
+		);
+		return {
+			status,
+			newEmail
+		};
+	} catch (error) {
+		if (error instanceof BadRequestError) {
+			return {
+				status: error.status
 			};
 		}
 		throw error;

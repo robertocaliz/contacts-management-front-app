@@ -35,3 +35,8 @@ export const AXIOS_BASE_URL = 'http://localhost:5000';
 
 
 export const PER_PAGE = 5;
+
+
+
+
+export const TWENTY_SECONDS = 20;
