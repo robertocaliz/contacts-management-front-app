@@ -10,7 +10,7 @@ import FormHeader from './form-header';
 import { StatusCodes } from 'http-status-codes';
 import { useParams, useRouter } from 'next/navigation';
 import SubmitButton from './buttons/submit';
-import { _changePassword } from '@/app/actions/users';
+import { updatePassword } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form';
 import Form from './form';
 
@@ -42,10 +42,9 @@ export default function FormChangePassword() {
 		clearErrors
 	} = useForm<FormData>();
 
-
-	const changePassword = async () => {
+	const handleUpdatePassword = async () => {
 		clearErrors();
-		const { errors, status } = await _changePassword({
+		const { errors, status } = await updatePassword({
 			recoveryToken: params.recoveryToken as string,
 			dada: getValues()
 		});
@@ -67,7 +66,7 @@ export default function FormChangePassword() {
 	return (
 		<Centralize>
 			<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
-			<Form action={changePassword}>
+			<Form action={handleUpdatePassword}>
 				<FormHeader text='Defina uma nova senha' />
 				<PasswordInput
 					type="password"

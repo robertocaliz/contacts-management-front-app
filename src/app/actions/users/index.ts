@@ -82,7 +82,7 @@ type ChangePasswordProps = {
 }
 
 
-export const _changePassword = async (param: ChangePasswordProps) => {
+export const updatePassword = async (param: ChangePasswordProps) => {
 	const errors = await validate({
 		obj: param.dada,
 		schema: UPDATE_PASSWORD_SCHEMA
