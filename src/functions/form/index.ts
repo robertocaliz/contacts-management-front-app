@@ -10,10 +10,3 @@ export const displayErrors = <T extends Record<string, any>>(errors: Error[], ha
 		handler(error.name as Path<T>, { message: error.message });
 	});
 };
-
-
-export const cleanConflictError = <T extends object>(name: Path<T>, handler: UseFormSetError<T>) => {
-	handler(name, {
-		message: ''
-	});
-};

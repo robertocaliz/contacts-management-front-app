@@ -172,3 +172,17 @@ export const updateEmail = async (alterationToken: string) => {
 		throw error;
 	}
 };
+
+
+
+export const checkIfEmailExists = async (email: string) => {
+	try {
+		const { status } = await axiosPublic.post('/check_email', { email });
+		return status;
+	} catch (error) {
+		if (error instanceof ConflictError) { 
+			return error.status;
+		}
+		throw error;
+	}
+};

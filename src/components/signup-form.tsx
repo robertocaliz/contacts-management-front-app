@@ -9,12 +9,13 @@ import Input from './input';
 import Link from 'next/link';
 import { User } from '@/types';
 import PasswordInput from './password-input';
-import { createAccount } from '@/app/actions/users';
+import { checkIfEmailExists, createAccount } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form';
 import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
 import Form from './form';
+import { StatusCodes } from 'http-status-codes';
 
 
 type AccountData = {
@@ -35,6 +36,24 @@ export default function SignUpForm() {
 		clearErrors
 	} = useForm<AccountData>();
 
+
+	const handleCheckIfEmailExists = async (e: any) => {
+		const email = e.target.value;
+		await checkIfEmailExists(email)
+			.then(status => {
+				if (!(status === StatusCodes.OK)) {
+					setError('email', {
+						message: 'Email já está em uso.'
+					});
+					return;
+				}
+				setError('email', {
+					message: ''
+				});
+			});
+	};
+
+
 	const handlecreateAccount = async () => {
 		clearErrors();
 		const accountData = getValues();
@@ -46,6 +65,7 @@ export default function SignUpForm() {
 		reset();
 		redirect(`/signup/confirm/${accountData.email}`);
 	};
+
 
 	return (
 		<Centralize>
@@ -65,6 +85,7 @@ export default function SignUpForm() {
 						name='email'
 						register={register}
 						error={errors.email?.message}
+						onBlur={handleCheckIfEmailExists}
 					/>
 					<PasswordInput
 						label='Senha'
