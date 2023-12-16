@@ -9,7 +9,7 @@ import Input from './input';
 import Link from 'next/link';
 import { User } from '@/types';
 import PasswordInput from './password-input';
-import { create } from '@/app/actions/users';
+import { createAccount } from '@/app/actions/users';
 import { displayErrors } from '@/functions/form';
 import { useState } from 'react';
 import SubmitButton from './buttons/submit';
@@ -35,11 +35,10 @@ export default function SignUpForm() {
 		clearErrors
 	} = useForm<AccountData>();
 
-
-	const createAccount = async () => {
+	const handlecreateAccount = async () => {
 		clearErrors();
 		const accountData = getValues();
-		const { errors } = await create(accountData);
+		const { errors } = await createAccount(accountData);
 		if (errors) {
 			displayErrors(errors, setError);
 			return;
@@ -48,10 +47,9 @@ export default function SignUpForm() {
 		redirect(`/signup/confirm/${accountData.email}`);
 	};
 
-
 	return (
 		<Centralize>
-			<Form action={createAccount}>
+			<Form action={handlecreateAccount}>
 				<FormHeader text='Cadastro' />
 				<main>
 					<Input

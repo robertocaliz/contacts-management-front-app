@@ -5,37 +5,31 @@ import { validate } from '@/functions/validation';
 import { axiosAuth } from '@/lib/axios/auth/server';
 import axiosPublic from '@/lib/axios/public';
 import { BadRequestError, ConflictError, NotFoundError } from '@/lib/errors';
-import { Error, User } from '@/types';
-import { StatusCodes } from 'http-status-codes';
+import { User } from '@/types';
 
 
-type Mail = {
-	send: boolean
-};
-
-type CreateUserReturn = {
-	errors?: Error[];
-	status?: StatusCodes
-	email?: Mail
+type Email = {
+	emailSend?: boolean;
 }
 
 
-export async function create(user: User): Promise<CreateUserReturn> {
+interface CreateAccountResBody extends Email { }
 
+
+export async function createAccount(user: User) {
 	const errors = await validate({
 		obj: user,
 		schema: SIGNUP_SCHEMA
 	});
-
-
 	if (errors) {
 		return {
 			errors
 		};
 	}
-
 	try {
-		const { data: email, status } = await axiosPublic.post<Mail>('/signup', user);
+		const {
+			data: email, status
+		} = await axiosPublic.post<CreateAccountResBody>('/signup', user);
 		return { email, status };
 	} catch (error) {
 		if (error instanceof ConflictError) {
@@ -46,7 +40,6 @@ export async function create(user: User): Promise<CreateUserReturn> {
 		throw error;
 	}
 }
-
 
 
 export async function recoverSignup(email: string) {
@@ -109,9 +102,6 @@ export const updatePassword = async (param: ChangePasswordProps) => {
 };
 
 
-
-
-
 export const activateAccount = async (activationToken: string) => {
 	try {
 		const { status } = await axiosPublic.patch(`/signup/activate/${activationToken}`);
@@ -125,11 +115,7 @@ export const activateAccount = async (activationToken: string) => {
 };
 
 
-type UpdateUserAction = {
-	errors?: Array<Error>;
-	emailSend?: boolean;
-
-}
+interface UpdateUserResBody extends Email { }
 
 
 export const update = async (user: Partial<User>, userId: string) => {
@@ -145,7 +131,7 @@ export const update = async (user: Partial<User>, userId: string) => {
 	try {
 		const {
 			data: { emailSend }
-		} = await axiosAuth.put<UpdateUserAction>(`/users/${userId}`, user);
+		} = await axiosAuth.put<UpdateUserResBody>(`/users/${userId}`, user);
 		return {
 			emailSend: !!emailSend
 		};
@@ -160,15 +146,17 @@ export const update = async (user: Partial<User>, userId: string) => {
 };
 
 
-
-type UpdateEmailResponse = {
+type UpdateEmailResBody = {
 	newEmail: string
 }
 
 
 export const updateEmail = async (alterationToken: string) => {
 	try {
-		const { data: { newEmail }, status } = await axiosPublic.patch<UpdateEmailResponse>(
+		const {
+			data: { newEmail },
+			status
+		} = await axiosPublic.patch<UpdateEmailResBody>(
 			`/update_email/${alterationToken}`
 		);
 		return {
