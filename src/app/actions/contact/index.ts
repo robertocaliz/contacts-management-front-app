@@ -65,8 +65,14 @@ export async function getById(constactId: string) {
 }
 
 
+export type GetAllResponse = {
+	count: number;
+	contacts: Array<Contact>
+}
+
+
 export async function getAll(url: string) {
-	const { data } = await axiosAuth.get<Contact[]>(url);
+	const { data } = await axiosAuth.get<GetAllResponse>(url);
 	return data;
 }
 

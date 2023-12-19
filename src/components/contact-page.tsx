@@ -1,7 +1,7 @@
-import { deleteById, getAll } from '@/app/actions/contact';
+import { GetAllResponse, deleteById, getAll } from '@/app/actions/contact';
 import { PER_PAGE } from '@/constants';
 import { useFetch } from '@/hooks';
-import { Contact, UseFetchData } from '@/types';
+import { Contact } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useContext, useEffect, useState } from 'react';
 import Alerts from '@/lib/alerts';
@@ -15,6 +15,7 @@ import { Link } from './hyper-link';
 
 function ContactPage() {
 
+	
 	const { setTotalRecords, setLoadingPage } = useContext(TableContext);
 	const [contacts, setContacts] = useState<Contact[]>([]);
 	const { push } = useRouter();
@@ -23,26 +24,30 @@ function ContactPage() {
 	const page = searchParams.get('page') ?? 1;
 	const per_page = searchParams.get('per_page') ?? PER_PAGE;
 
+
 	const {
 		data,
 		error,
 		mutate
-	} = useFetch<UseFetchData<Contact>>(
+	} = useFetch<GetAllResponse>(
 		`/contacts?page=${page}&per_page=${per_page}`,
 		getAll
 	);
+
 
 	useEffect(() => {
 		if (data) {
 			setLoadingPage(false);
 			setTotalRecords(data.count);
-			setContacts(data.objs);
+			setContacts(data.contacts);
 		}
 	}, [data]);
+
 
 	if (error) {
 		throw error;
 	}
+
 
 	const migrateToPrevPage = () => {
 		if ((contacts.length - 1) === 0 && Number(page) > 1) {
@@ -52,9 +57,12 @@ function ContactPage() {
 		false;
 	};
 
+
 	const removeContactFromTable = (contactId: string) => {
 		setContacts(contacts.filter(contact => contact._id !== contactId));
 	};
+
+
 
 	const handleDelete = async (contactId: string) => {
 		await deleteById(contactId);
@@ -65,6 +73,8 @@ function ContactPage() {
 		}
 		Alerts.success('Contacto apagado.');
 	};
+
+
 
 	return (
 		<>

@@ -24,11 +24,3 @@ export type SignInError = {
 
 
 export interface RefreshAccessTokenResBody extends Pick<User, 'accessToken' | 'refreshToken'> { }
-
-
-export interface UseFetchData<T> {
-	count: number;
-	objs: T[];
-}
-
-
