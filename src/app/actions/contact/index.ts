@@ -72,6 +72,7 @@ export type GetAllResponse = {
 
 
 export async function getAll(url: string) {
+	console.log(url);
 	const { data } = await axiosAuth.get<GetAllResponse>(url);
 	return data;
 }

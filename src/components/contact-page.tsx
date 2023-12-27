@@ -1,8 +1,7 @@
 import { GetAllResponse, deleteById, getAll } from '@/app/actions/contact';
-import { PER_PAGE } from '@/constants';
 import { useFetch } from '@/hooks';
 import { Contact } from '@/types';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useContext, useEffect, useState } from 'react';
 import Alerts from '@/lib/alerts';
 import DeleteButton from './buttons/table/delete';
@@ -11,18 +10,25 @@ import UpdateButton from './buttons/table/update';
 import TableData from './table/data';
 import TableRow from './table/row';
 import { Link } from './hyper-link';
+import { useTableSearchParams } from '@/hooks/useTableSearchParams';
 
 
 function ContactPage() {
 
-	
-	const { setTotalRecords, setLoadingPage } = useContext(TableContext);
-	const [contacts, setContacts] = useState<Contact[]>([]);
-	const { push } = useRouter();
 
-	const searchParams = useSearchParams();
-	const page = searchParams.get('page') ?? 1;
-	const per_page = searchParams.get('per_page') ?? PER_PAGE;
+	const router = useRouter();
+	const [contacts, setContacts] = useState<Contact[]>([]);
+	const { setTotalRecords, setLoadingPage } = useContext(TableContext);
+	
+	
+
+	const {
+		currentTableSearchParams,
+		values: {
+			page,
+			per_page
+		}
+	} = useTableSearchParams();
 
 
 	const {
@@ -30,7 +36,7 @@ function ContactPage() {
 		error,
 		mutate
 	} = useFetch<GetAllResponse>(
-		`/contacts?page=${page}&per_page=${per_page}`,
+		`/contacts?${currentTableSearchParams({})}`,
 		getAll
 	);
 
@@ -44,18 +50,20 @@ function ContactPage() {
 	}, [data]);
 
 
+
 	if (error) {
 		throw error;
 	}
 
 
 	const migrateToPrevPage = () => {
-		if ((contacts.length - 1) === 0 && Number(page) > 1) {
-			push(`?page=${Number(page) - 1}&per_page${per_page}`);
+		if ((contacts.length - 1) === 0 && page > 1) {
+			router.push(`?page=${Number(page) - 1}&per_page${per_page}`);
 			return true;
 		}
 		false;
 	};
+
 
 
 	const removeContactFromTable = (contactId: string) => {
@@ -85,7 +93,7 @@ function ContactPage() {
 					</TableData>
 					<TableData>
 						<Link
-							onClick={() => push(`mailto:${contact.email}`)}>
+							onClick={() => router.push(`mailto:${contact.email}`)}>
 							{contact.email}
 						</Link>
 					</TableData>
