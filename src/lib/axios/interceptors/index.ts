@@ -6,25 +6,27 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import { getCustomError } from '../helper';
 
-
 type handleUnauthorizedErrorInterceptorProps = {
 	refreshAccessToken: () => Promise<RefreshAccessTokenResBody>;
-	axiosAuth: (config: AxiosRequestConfig) => Promise<AxiosResponse>
-}
+	axiosAuth: (config: AxiosRequestConfig) => Promise<AxiosResponse>;
+};
 
-export const handleUnauthorizedErrorInterceptor = (
-	{ axiosAuth, refreshAccessToken }: handleUnauthorizedErrorInterceptorProps) => {
+export const handleUnauthorizedErrorInterceptor = ({
+	axiosAuth,
+	refreshAccessToken,
+}: handleUnauthorizedErrorInterceptorProps) => {
 	return async (error: any) => {
 		const originalRequest = error.config;
-		if ((error.response?.status === StatusCodes.UNAUTHORIZED)
-			&& (!originalRequest._retry)) {
+		if (
+			error.response?.status === StatusCodes.UNAUTHORIZED &&
+			!originalRequest._retry
+		) {
 			originalRequest._retry = true;
-			return await refreshAccessToken()
-				.then(async (data) => {
-					await updateSessionUser(data);
-					originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
-					return axiosAuth(originalRequest);
-				});
+			return await refreshAccessToken().then(async (data) => {
+				await updateSessionUser(data);
+				originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`;
+				return axiosAuth(originalRequest);
+			});
 		}
 		return Promise.reject(error);
 	};

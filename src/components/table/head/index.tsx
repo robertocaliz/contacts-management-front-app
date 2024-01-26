@@ -1,12 +1,11 @@
-import { ReactNode } from 'react';
-
+import { ReactNode, TableHTMLAttributes } from 'react';
 
 type TableHead = {
-	children: ReactNode
-}
+	children: ReactNode;
+} & TableHTMLAttributes<HTMLTableSectionElement>;
 
-function TableHead({ children }: TableHead) {
-	return <thead>{children}</thead>;
+function TableHead({ children, ...rest }: TableHead) {
+	return <thead {...rest}>{children}</thead>;
 }
 
 export default TableHead;

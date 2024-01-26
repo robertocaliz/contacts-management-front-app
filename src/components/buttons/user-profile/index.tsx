@@ -1,18 +1,16 @@
 import Link from 'next/link';
-import { ReactNode } from 'react';
-
+import { AnchorHTMLAttributes, ReactNode } from 'react';
 
 type ProfileButtonProps = {
-	content: string | ReactNode;
-}
+	_content: string | ReactNode;
+} & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const UserProfileButton = ({ content }: ProfileButtonProps) => {
+const UserProfileButton = ({ _content, ...rest }: ProfileButtonProps) => {
 	return (
-		<Link href='/profile'>
-			{content}
+		<Link href='/profile' {...rest}>
+			{_content}
 		</Link>
 	);
 };
-
 
 export default UserProfileButton;

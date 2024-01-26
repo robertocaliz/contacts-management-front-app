@@ -1,4 +1,4 @@
-import FormUpdateProfile from '@/components/form-update-profile';
+import FormUpdateProfile from '@/components/profile-form';
 import { Metadata } from 'next';
 
 

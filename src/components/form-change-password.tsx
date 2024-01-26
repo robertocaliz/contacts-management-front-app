@@ -1,6 +1,5 @@
 'use client';
 
-
 import Centralize from './centralize';
 import { useForm } from 'react-hook-form';
 import Alert from 'react-bootstrap/Alert';
@@ -11,27 +10,19 @@ import { StatusCodes } from 'http-status-codes';
 import { useParams, useRouter } from 'next/navigation';
 import SubmitButton from './buttons/submit';
 import { updatePassword } from '@/app/actions/users';
-import { displayErrors } from '@/functions/form';
+import { displayMessages } from '@/functions/form';
 import Form from './form';
-
 
 type FormData = {
 	password: string;
 	confirmPassword: string;
 };
 
-
 export default function FormChangePassword() {
-
 	const router = useRouter();
 	const params = useParams();
 
-	const {
-		alertType,
-		alertMessage,
-		showAlert,
-		alert
-	} = useAlert();
+	const { alertType, alertMessage, showAlert, alert } = useAlert();
 
 	const {
 		formState: { errors },
@@ -39,24 +30,26 @@ export default function FormChangePassword() {
 		register,
 		getValues,
 		setError,
-		clearErrors
+		clearErrors,
 	} = useForm<FormData>();
 
 	const handleUpdatePassword = async () => {
 		clearErrors();
 		const { errors, status } = await updatePassword({
 			recoveryToken: params.recoveryToken as string,
-			dada: getValues()
+			dada: getValues(),
 		});
 		if (errors) {
-			displayErrors(errors, setError);
+			displayMessages(errors, setError);
 			return;
 		}
 		if (status === StatusCodes.BAD_REQUEST) {
-			alert.show('warning',
+			alert.show(
+				'warning',
 				`Token de recuperação expirado ou inválido. 
 						Clique no link "Clique aqui" da página de login, 
-						para obter um novo token de recuperação.`);
+						para obter um novo token de recuperação.`,
+			);
 			return;
 		}
 		reset();
@@ -65,29 +58,25 @@ export default function FormChangePassword() {
 
 	return (
 		<Centralize>
-			<Alert variant={alertType} show={showAlert}>{alertMessage}</Alert>
+			<Alert variant={alertType} show={showAlert}>
+				{alertMessage}
+			</Alert>
 			<Form action={handleUpdatePassword}>
 				<FormHeader text='Defina uma nova senha' />
 				<PasswordInput
-					type="password"
-					label="Senha"
-					name='password'
-					register={register}
-					error={errors.password?.message}
+					type='password'
+					label='Senha'
+					{...register('password')}
+					errMessage={errors.password?.message}
 				/>
 				<PasswordInput
 					type='password'
 					label='Repita a senha'
-					register={register}
-					name='confirmPassword'
-					error={errors.confirmPassword?.message}
+					{...register('confirmPassword')}
+					errMessage={errors.confirmPassword?.message}
 				/>
-				<SubmitButton
-					content='Alterar senha'
-					spinnerText='Alterando...'
-				/>
+				<SubmitButton content='Alterar senha' spinnerText='Alterando...' />
 			</Form>
 		</Centralize>
 	);
-
 }

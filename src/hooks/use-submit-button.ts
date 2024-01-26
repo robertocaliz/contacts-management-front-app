@@ -1,18 +1,13 @@
 import { useState } from 'react';
 
-
-
 type UseSubmitButtonProps = {
 	disable?: boolean;
 	runSpinner?: boolean;
-}
-
+};
 
 export const useSubmitButton = (params?: UseSubmitButtonProps) => {
-
 	const [runSpinner, setRunSpinner] = useState(params?.runSpinner ?? false);
 	const [disable, setDisable] = useState(params?.disable ?? false);
-
 
 	const submitButton = Object.freeze({
 		buttonState: { runSpinner, disable },
@@ -24,10 +19,9 @@ export const useSubmitButton = (params?: UseSubmitButtonProps) => {
 		},
 		stateHandler: {
 			setRunSpinner,
-			setDisable
-		}
+			setDisable,
+		},
 	});
 
 	return submitButton;
-
 };

@@ -7,31 +7,19 @@ import Footer from '@/components/footer';
 import Main from '@/components/main';
 import ProgressBar from '@/components/progress-bar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Centralize from '@/components/centralize';
-import { Inter } from 'next/font/google';
+import { Nunito_Sans } from 'next/font/google';
 import NextAuthSessionProvider from '@/contexts/NextAuthContext';
 
+const nunito_Sans = Nunito_Sans({ subsets: ['latin'], weight: '500' });
 
-const inter = Inter({ subsets: ['latin'], weight: '400' });
-
-
-export default function RootLayout({
-	children,
-}: {
-	children: ReactNode
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
-		<html lang="en">
-			<body className={inter.className}>
-				<NextAuthSessionProvider >
+		<html lang='en'>
+			<body className={nunito_Sans.className}>
+				<NextAuthSessionProvider>
 					<ProgressBar />
 					<Nav />
-					<Main>
-						{children}
-						<Centralize>
-							<hr />
-						</Centralize>
-					</Main>
+					<Main>{children}</Main>
 					<Footer />
 					<ToastContainer />
 				</NextAuthSessionProvider>

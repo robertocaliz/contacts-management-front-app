@@ -1,48 +1,48 @@
-import { InputHTMLAttributes, ReactNode } from 'react';
-import inputStyles from '@/../styles/input.module.css';
-import { UseFormRegister } from 'react-hook-form';
-import { TbInfoTriangle } from 'react-icons/tb';
+import { forwardRef } from 'react';
 
-type InputProps = {
-	startAdornment?: ReactNode | string;
-	endAdornment?: ReactNode | string;
-	label?: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	register?: UseFormRegister<any>,
-	error?: string
-} & InputHTMLAttributes<HTMLInputElement> & InputHTMLAttributes<HTMLDivElement>;
+import clsx from 'clsx';
+import ErrMessageContainer from './err-message-container';
+import { InputProps } from '@/types/form';
+import Label from './label';
 
-
-
-export default function Input({
-	name = 'submit',
-	label,
-	startAdornment,
-	endAdornment,
-	register,
-	onBlur,
-	error,
-	...rest
-}: InputProps) {
-	return (
-		<>
-			<div style={{ margin: '1rem 0' }} {...rest}>
-				{label && <label htmlFor={label}>{label}</label>}
-				<div className={inputStyles.inputContainer} style={error ? { outline: '1px solid tomato' } : {}} onBlur={onBlur}>
-					{startAdornment && <span className={inputStyles.adornment}>{startAdornment}</span>}
-					<input {...rest} id={label} name={name} {...register?.(name)} />
-					{endAdornment && <span className={inputStyles.adornment}>{endAdornment}</span>}
-				</div>
-				<span className={inputStyles.errorContainer}>
-					{error && (
-						<>
-							<TbInfoTriangle />
-							{error}
-						</>
+const Input = forwardRef<HTMLInputElement, InputProps>(
+	(
+		{ label, startAdornment, endAdornment, errMessage, type = 'text', ...rest },
+		ref,
+	) => {
+		return (
+			<div>
+				{label && (
+					<Label htmlFor={label} className='text-gray-800'>
+						{label}
+					</Label>
+				)}
+				<div
+					className={clsx(
+						'mb-3 mt-3 flex h-12 items-center gap-2 overflow-hidden rounded-lg border-[0.13rem] focus-within:border-[0.13rem] focus-within:border-sky-500 focus-within:transition-all',
+						{
+							'border-[0.10rem] border-red-600': errMessage,
+						},
 					)}
-				</span>
+				>
+					{startAdornment && (
+						<span className='ml-5  text-xl'>{startAdornment}</span>
+					)}
+					<input
+						{...rest}
+						className='h-12 w-full pl-2 pr-2 outline-none'
+						id={label}
+						type={type}
+						ref={ref}
+					/>
+					{endAdornment && <span className='mx-2 text-xl'>{endAdornment}</span>}
+				</div>
+				<ErrMessageContainer errMessage={errMessage} />
+			</div>
+		);
+	},
+);
 
-			</div >
-		</>
-	);
-}
+Input.displayName = 'Input';
+
+export default Input;

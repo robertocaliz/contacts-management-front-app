@@ -1,14 +1,5 @@
-
-
-type FormHeaderProps = {
-	text: string;
-};
-
-
-export default function FormHeader({ text }: FormHeaderProps) {
+export default function FormHeader({ text }: { text: string }) {
 	return (
-		<header>
-			<h2 style={{ color: '#1f1f1f' }}>{text}</h2>
-		</header>
+		<header className='py-4 text-3xl font-bold text-gray-900'>{text}</header>
 	);
 }

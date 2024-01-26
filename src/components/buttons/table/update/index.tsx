@@ -1,26 +1,17 @@
 import Link from 'next/link';
 
-
 import { BsPencil } from 'react-icons/bs';
 
-
 type UpdateButtonProps = {
-	url: string,
-	size?: string
-}
+	url: string;
+};
 
-
-const UpdateButton = ({ url, size = '1.5rem' }: UpdateButtonProps) => {
+const UpdateButton = ({ url }: UpdateButtonProps) => {
 	return (
-		<Link
-			href={url}
-			style={{ fontSize: size }}
-		>
+		<Link className='text-[1.3rem]' href={url}>
 			<BsPencil />
 		</Link>
 	);
 };
-
-
 
 export default UpdateButton;

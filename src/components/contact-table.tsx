@@ -1,82 +1,46 @@
 'use client';
 
-import tableContactsStyles from '@/../styles/contact-table.module.css';
 import PaginationControls from './pagination-controls';
-import ContactPage from './contact-page';
 import TableRow from './table/row';
 import Table from './table';
 import TableHeader from './table/header';
 import TableHead from './table/head';
 import TableBody from './table/body';
-import Container from './container';
-import Input from './input';
-import { ButtonAdd } from './buttons.component';
-import utilsStyles from '@/../styles/utils.module.css';
-import { BiSearch } from 'react-icons/bi';
-import { ChangeEvent, useContext } from 'react';
-import { useRouter } from 'next/navigation';
-import { useTableSearchParams } from '@/hooks/useTableSearchParams';
-import wait from '@/lib/wait';
-import { TableContext } from '@/contexts/table-context';
-import { ONE_SECOND } from '@/constants';
-
+import Div from './div';
+import SearchBar from './SearchBar';
+import ButtonAdd from './button-add';
+import ContactPage from './contact-page';
+import { FaPhone } from 'react-icons/fa';
 
 export default function ContactTable() {
-
-
-	const router = useRouter();
-
-
-	const { currentTableSearchParams } = useTableSearchParams();
-	const { setLoadingPage } = useContext(TableContext);
-
-
-
-	const searchContacts = async (e: ChangeEvent<HTMLInputElement>) => {
-		setLoadingPage(true);
-		await wait(ONE_SECOND)
-			.then(() => {
-				router.replace(`?${currentTableSearchParams({
-					_filter: e.target.value
-				})}`);
-			});
-	};
-
-
 	return (
 		<>
-			<Container className={utilsStyles.flexContainer}>
-				<Input
-					type='search'
-					name='search'
-					placeholder='Pesquisar contacto'
-					endAdornment={<BiSearch />}
-					onChange={(e) => searchContacts(e as ChangeEvent<HTMLInputElement>)}
-					style={{
-						maxWidth: '70rem',
-						flexGrow: 6
-					}}
-				/>
+			<Div className='flex flex-wrap-reverse items-center justify-between gap-3'>
+				<SearchBar />
 				<ButtonAdd
+					className='rounded-full bg-green-500 px-5 py-[0.8rem] font-bold text-white hover:bg-green-600 focus:border-[0.6rem] focus:border-green-100'
 					href='/contacts/add'
 				/>
-			</Container>
-			<Container className={tableContactsStyles.tableContainer}>
-				<Table>
+			</Div>
+			<Div className='mt-4 overflow-auto rounded-lg border-[0.13rem]'>
+				<Table className='border-collaps h-full w-full min-w-[50rem] text-left'>
 					<TableHead>
-						<TableRow className={tableContactsStyles.headerRow} >
-							<TableHeader content='Nome' />
-							<TableHeader content='Email' />
-							<TableHeader content='Telefone/Telemóvel' />
-							<TableHeader />
-							<TableHeader />
+						<TableRow>
+							<TableHeader className='p-4 text-gray-800'>Nome</TableHeader>
+							<TableHeader className='p-4 text-gray-800'>Email</TableHeader>
+							<TableHeader className='flex items-center gap-2 p-4 text-gray-800'>
+								<span>Telefone</span>
+								<FaPhone />
+							</TableHeader>
+							<TableHeader className='p-3 text-gray-800' />
+							<TableHeader className='p-3 text-gray-800' />
 						</TableRow>
 					</TableHead>
 					<TableBody>
 						<ContactPage />
 					</TableBody>
 				</Table>
-			</Container >
+			</Div>
 			<PaginationControls />
 		</>
 	);

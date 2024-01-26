@@ -1,10 +1,9 @@
 import { TableHTMLAttributes } from 'react';
 
-
-interface TableDataProps extends TableHTMLAttributes<HTMLTableCellElement> { }
+interface TableDataProps extends TableHTMLAttributes<HTMLTableCellElement> {}
 
 function TableData({ ...rest }: TableDataProps) {
-	return <td {...rest}></td>;
+	return <td {...rest} />;
 }
 
 export default TableData;

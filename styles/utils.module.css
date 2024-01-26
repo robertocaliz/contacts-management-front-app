@@ -28,22 +28,6 @@
 }
 
 
-.buttonSubmit {
-	width: 100%;
-	padding: 0.8rem;
-	box-sizing: border-box;
-	margin: 1rem 0;
-	border-radius: 0.4rem;
-	height: 3.2rem;
-	background-color: #458B00;
-	color: #fff;
-	border: 1px solid;
-	font-size: 0.9rem;
-	font-weight: bold;
-	margin-top: 1rem;
-	cursor: pointer;
-}
-
 .colorDarkBlue {
 	color: #0070f3;
 }

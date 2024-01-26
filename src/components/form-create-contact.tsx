@@ -1,4 +1,3 @@
-
 'use client';
 
 import Centralize from './centralize';
@@ -8,20 +7,19 @@ import { useForm } from 'react-hook-form';
 import { Contact } from '@/types';
 import Alerts from '@/lib/alerts';
 import { create } from '@/app/actions/contact';
-import { displayErrors } from '@/functions/form';
+import { displayMessages } from '@/functions/form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form from './form';
 
 export default function FormAddContact() {
-
 	const {
 		register,
 		getValues,
 		setError,
 		reset,
 		clearErrors,
-		formState: { errors }
+		formState: { errors },
 	} = useForm<Contact>();
 
 	const createContact = async () => {
@@ -29,7 +27,7 @@ export default function FormAddContact() {
 		const contact = getValues();
 		const { errors } = await create(contact);
 		if (errors) {
-			displayErrors(errors, setError);
+			displayMessages(errors, setError);
 			return;
 		}
 		reset();
@@ -41,32 +39,23 @@ export default function FormAddContact() {
 			<Form action={createContact}>
 				<FormHeader text='Adicionar' />
 				<Input
-					type='text'
-					name='name'
-					label='Nome:'
-					register={register}
-					error={errors.name?.message}
+					label='Nome'
+					{...register('name')}
+					errMessage={errors.name?.message}
 				/>
 				<Input
-					type='text'
-					name='email'
-					label='Email:'
-					register={register}
-					error={errors.email?.message}
+					label='Email'
+					{...register('email')}
+					errMessage={errors.email?.message}
 				/>
 				<Input
-					type='text'
-					name='phoneNumber'
 					label='Telefone/Telemóvel:'
+					{...register('phoneNumber')}
 					maxLength={9}
 					placeholder='+258'
-					register={register}
-					error={errors.phoneNumber?.message}
+					errMessage={errors.phoneNumber?.message}
 				/>
-				<SubmitButton
-					content='Criar contacto'
-					spinnerText='Criando...'
-				/>
+				<SubmitButton content='Criar contacto' spinnerText='Criando...' />
 			</Form>
 			<BackButton />
 		</Centralize>

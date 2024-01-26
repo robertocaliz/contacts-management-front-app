@@ -1,24 +1,20 @@
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { AnchorHTMLAttributes } from 'react';
 
+type LoginButtonProps = AnchorHTMLAttributes<HTMLAnchorElement>;
 
-
-const LogoutButton = () => {
+const LogoutButton = ({ ...rest }: LoginButtonProps) => {
 	const { replace } = useRouter();
-	const onClick = () => {
-		signOut({ redirect: false })
-			.then(() => replace('/login'));
+	const handleClick = () => {
+		signOut({ redirect: false }).then(() => replace('/login'));
 	};
 	return (
-		<Link
-			href=''
-			onClick={onClick}
-		>
-			<span>Logout</span>
+		<Link href='' onClick={handleClick} {...rest}>
+			Logout
 		</Link>
 	);
 };
-
 
 export default LogoutButton;

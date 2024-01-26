@@ -1,4 +1,3 @@
-
 'use client';
 
 import { User } from '@/types';
@@ -12,29 +11,17 @@ import { objChanged } from '@/functions/object';
 import Centralize from './centralize';
 import SubmitButton from './buttons/submit';
 import { update as updateProfile } from '@/app/actions/users';
-import { displayErrors } from '@/functions/form';
 import SignupRecoverButton from './buttons/signup-recover';
 import Form from './form';
 import { useUpdateSessionUser } from '@/hooks';
-
-
+import { displayMessages } from '@/functions/form';
 
 export default function FormUpdateProfile() {
-
 	const [userData, setUserData] = useState<Partial<User>>({});
 
-	const {
-		session,
-		updateSessionUser
-	} = useUpdateSessionUser();
+	const { session, updateSessionUser } = useUpdateSessionUser();
 
-	const {
-		alertType,
-		alertMessage,
-		showAlert,
-		alert
-	} = useAlert();
-
+	const { alertType, alertMessage, showAlert, alert } = useAlert();
 
 	const {
 		register,
@@ -42,20 +29,18 @@ export default function FormUpdateProfile() {
 		formState: { errors },
 		getValues,
 		clearErrors,
-		setError
+		setError,
 	} = useForm<Partial<User>>();
-
 
 	useEffect(() => {
 		reset(session?.user);
 		setUserData(session?.user as Partial<User>);
 	}, [session]);
 
-
 	const profileChanged = (newUserData: Partial<User>) => {
 		return objChanged({
 			originalObj: userData,
-			newObj: newUserData
+			newObj: newUserData,
 		});
 	};
 
@@ -63,76 +48,55 @@ export default function FormUpdateProfile() {
 		clearErrors();
 		const newUserData = getValues();
 		if (!profileChanged(newUserData)) {
-			return alert.show(
-				'warning',
-				'O perfíl não foi alterado.'
-			);
+			return alert.show('warning', 'O perfíl não foi alterado.');
 		}
-		if (newUserData.email === userData.email) { 
+		if (newUserData.email === userData.email) {
 			delete newUserData['email'];
 		}
 		const { errors, emailSend } = await updateProfile(
 			newUserData,
-			userData._id as string
+			userData._id as string,
 		);
 		if (errors) {
-			displayErrors(errors, setError);
+			displayMessages(errors, setError);
 			return;
 		}
-		await updateSessionUser({ name: newUserData.name })
-			.then(() => {
-				if (emailSend) {
-					return alert.show(
-						'warning',
-						`Clique no link que enviamos, 
-						para confirmar a alteração do seu email.`
-					);
-				}
-				alert.show(
-					'success',
-					'Perfíl actualizado!'
+		await updateSessionUser({ name: newUserData.name }).then(() => {
+			if (emailSend) {
+				return alert.show(
+					'warning',
+					`Clique no link que enviamos, 
+						para confirmar a alteração do seu email.`,
 				);
-			});
+			}
+			alert.show('success', 'Perfíl actualizado!');
+		});
 	};
-
 
 	return (
 		<Centralize>
-			<Alert
-				variant={alertType}
-				show={showAlert}>
+			<Alert variant={alertType} show={showAlert}>
 				{alertMessage}
 			</Alert>
 			<Form action={handleUpdateProfile}>
 				<FormHeader text='Actualizar Perfíl' />
 				<main>
 					<Input
-						type='text'
 						label='Nome'
-						name='name'
-						register={register}
-						error={errors.name?.message}
+						{...register('name')}
+						errMessage={errors.name?.message}
 					/>
 					<Input
-						type='text'
 						label='Email'
-						name='email'
-						register={register}
-						error={errors.email?.message}
+						{...register('email')}
+						errMessage={errors.email?.message}
 					/>
-					<SubmitButton
-						spinnerText='Actualizando...'
-						content='Actualizar'
-					/>
+					<SubmitButton spinnerText='Actualizando...' content='Actualizar' />
 				</main>
-				<footer style={{ marginTop: '1.3rem' }}>
-					<h6>Senha</h6>
-					<SignupRecoverButton
-						text='Clique aqui para recuperar ou alterar a senha.'
-					/>
+				<footer>
+					<SignupRecoverButton text='Clique aqui para recuperar ou alterar a senha.' />
 				</footer>
 			</Form>
 		</Centralize>
 	);
-
 }

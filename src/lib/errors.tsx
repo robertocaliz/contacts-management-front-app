@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Error as CustomError } from '@/types';
+import { FieldError } from '@/types';
 import { StatusCodes } from 'http-status-codes';
-
 
 export class APIError extends Error {
 	public status: number;
@@ -18,13 +17,11 @@ export class AuthError extends APIError {
 	}
 }
 
-
 export class UnauthorizedError extends APIError {
 	public constructor(message?: string) {
 		super(StatusCodes.UNAUTHORIZED, message);
 	}
 }
-
 
 export class NotFoundError extends APIError {
 	public constructor(message?: string) {
@@ -32,30 +29,25 @@ export class NotFoundError extends APIError {
 	}
 }
 
-
-
 export class SessionNotFoundError extends APIError {
 	public constructor(message?: string) {
 		super(StatusCodes.NOT_FOUND, message);
 	}
 }
 
-
 export class ConflictError extends APIError {
-	public errors: Array<CustomError>;
-	public constructor(errors: Array<CustomError>) {
+	public errors: Array<FieldError>;
+	public constructor(errors: Array<FieldError>) {
 		super(StatusCodes.CONFLICT, undefined);
 		this.errors = errors;
 	}
 }
-
 
 export class ForbiddenError extends APIError {
 	public constructor(message?: string) {
 		super(StatusCodes.FORBIDDEN, message);
 	}
 }
-
 
 export class BadRequestError extends APIError {
 	constructor(message?: string) {

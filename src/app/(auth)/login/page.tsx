@@ -1,14 +1,10 @@
-import LoginForm from '@/components/form-login';
+import LoginForm from '@/components/login-form';
 import { Metadata } from 'next';
 
-
 export const metadata: Metadata = {
-	title: 'Login'
+	title: 'Login',
 };
 
 export default function LoginPage() {
-	return (
-		<LoginForm
-		/>
-	);
+	return <LoginForm />;
 }

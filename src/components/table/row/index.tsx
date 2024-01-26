@@ -1,11 +1,9 @@
 import { TableHTMLAttributes } from 'react';
 
-
-interface TableRowProps extends TableHTMLAttributes<HTMLTableRowElement> { }
+type TableRowProps = TableHTMLAttributes<HTMLTableRowElement>;
 
 function TableRow({ ...rest }: TableRowProps) {
-	return <tr {...rest}></tr>;
-
+	return <tr {...rest} />;
 }
 
 export default TableRow;

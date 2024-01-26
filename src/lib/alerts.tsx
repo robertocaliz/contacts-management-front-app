@@ -1,6 +1,5 @@
 import { ToastOptions, toast } from 'react-toastify';
 
-
 const toastOptions: ToastOptions = {
 	position: 'top-right',
 	autoClose: 5000,
@@ -11,25 +10,23 @@ const toastOptions: ToastOptions = {
 	progress: undefined,
 };
 
-
 function success(message: string) {
 	return toast.success(message, {
 		theme: 'light',
-		...toastOptions
+		...toastOptions,
 	});
 }
-
 
 function error(message: string) {
 	return toast.error(message, {
 		theme: 'colored',
-		...toastOptions
+		...toastOptions,
 	});
 }
 
 const Alerts = {
 	success,
-	error
+	error,
 };
 
-export default Alerts; 
+export default Alerts;

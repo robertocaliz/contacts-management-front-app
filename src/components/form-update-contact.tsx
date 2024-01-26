@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
@@ -12,23 +11,16 @@ import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use.alert';
 import { objChanged } from '@/functions/object';
 import { update } from '@/app/actions/contact';
-import { displayErrors } from '@/functions/form';
+import { displayMessages } from '@/functions/form';
 import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form from './form';
 
-
 export default function FormUpdateContact({ contact }: { contact: Contact }) {
-
 	const { back } = useRouter();
 
-	const {
-		alertType,
-		alertMessage,
-		showAlert,
-		alert
-	} = useAlert();
+	const { alertType, alertMessage, showAlert, alert } = useAlert();
 
 	const {
 		register,
@@ -36,7 +28,7 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 		formState: { errors },
 		getValues,
 		setError,
-		clearErrors
+		clearErrors,
 	} = useForm<Contact>();
 
 	useEffect(() => {
@@ -46,7 +38,7 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 	const contactChnaged = (newContact: Contact) => {
 		return objChanged({
 			newObj: newContact,
-			originalObj: contact
+			originalObj: contact,
 		});
 	};
 
@@ -54,13 +46,12 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 		clearErrors();
 		const newContact = getValues();
 		if (!contactChnaged(newContact)) {
-			alert.show('warning',
-				'O contacto não foi alterado.');
+			alert.show('warning', 'O contacto não foi alterado.');
 			return;
 		}
 		const { errors } = await update(newContact, contact._id);
 		if (errors) {
-			displayErrors(errors, setError);
+			displayMessages(errors, setError);
 			return;
 		}
 		reset();
@@ -70,33 +61,25 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
 
 	return (
 		<Centralize>
-			<Alert
-				variant={alertType}
-				show={showAlert}>
+			<Alert variant={alertType} show={showAlert}>
 				{alertMessage}
 			</Alert>
 			<Form action={updateContact}>
 				<FormHeader text={'Actualizar'} />
 				<Input
-					type='text'
-					name='name'
 					label='Nome'
-					register={register}
-					error={errors.name?.message}
+					{...register('name')}
+					errMessage={errors.name?.message}
 				/>
 				<Input
-					type='text'
-					name='email'
 					label='Email'
-					register={register}
-					error={errors.email?.message}
+					{...register('email')}
+					errMessage={errors.email?.message}
 				/>
 				<Input
-					type='text'
-					name='phoneNumber'
 					label='Phone number'
-					register={register}
-					error={errors.phoneNumber?.message}
+					{...register('phoneNumber')}
+					errMessage={errors.phoneNumber?.message}
 					maxLength={9}
 				/>
 				<SubmitButton

@@ -1,17 +1,11 @@
 import Link from 'next/link';
 
-import footerStyles from '@/../styles/footer.module.css';
-
-
 export default function Footer() {
 	return (
-		<footer className={footerStyles.footer}>
-			<ul>
+		<footer>
+			<ul className='flex justify-center gap-3 pb-[3rem] pt-[1rem]'>
 				<li>
-					<Link
-						href='https://github.com/robertocaliz/contacts-management-front-app'
-						target="_blank"
-					>
+					<Link href={process.env.PROJECT_REPOSITORY as string} target='_blank'>
 						GitHub
 					</Link>
 				</li>

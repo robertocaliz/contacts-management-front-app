@@ -1,4 +1,3 @@
-
 'use client';
 
 import Centralize from './centralize';
@@ -7,16 +6,14 @@ import Input from './input';
 import { User } from '@/types';
 import { useRouter } from 'next/navigation';
 import { recoverSignup } from '@/app/actions/users';
-import { displayErrors } from '@/functions/form';
+import { displayMessages } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
 import { useForm } from 'react-hook-form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form from './form';
 
-
 export default function FormRecoverSignup() {
-
 	const router = useRouter();
 
 	const {
@@ -25,19 +22,19 @@ export default function FormRecoverSignup() {
 		formState: { errors },
 		setError,
 		getValues,
-		clearErrors
+		clearErrors,
 	} = useForm<Pick<User, 'email'>>();
 
 	const handleRecoverSignup = async () => {
 		clearErrors();
 		const { errors, status } = await recoverSignup(getValues().email);
 		if (errors) {
-			displayErrors(errors, setError);
+			displayMessages(errors, setError);
 			return;
 		}
 		if (status === StatusCodes.NOT_FOUND) {
 			setError('email', {
-				message: 'O email não foi encontrado no sistema.'
+				message: 'O email não foi encontrado no sistema.',
 			});
 			return;
 		}
@@ -50,19 +47,13 @@ export default function FormRecoverSignup() {
 			<Form action={handleRecoverSignup}>
 				<FormHeader text='Recuperação de senha' />
 				<Input
-					type='text'
 					label='Digite seu e-mail'
-					name='email'
-					register={register}
-					error={errors.email?.message}
+					{...register('email')}
+					errMessage={errors.email?.message}
 				/>
-				<SubmitButton
-					content='Recuperar'
-					spinnerText='Recuperando...'
-				/>
+				<SubmitButton content='Recuperar' spinnerText='Recuperando...' />
 			</Form>
 			<BackButton />
 		</Centralize>
 	);
-
 }

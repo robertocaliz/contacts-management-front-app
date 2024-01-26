@@ -6,44 +6,37 @@ import { useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { useParams } from 'next/navigation';
 import { activateAccount } from '@/app/actions/users';
-import Container from './container';
+import Container from './div';
 import Centralize from './centralize';
 
-
 export default function SinupActivationControl() {
-
-
 	const params = useParams();
 
-	const {
-		alertType,
-		alertMessage,
-		alert
-	} = useAlert();
-
+	const { alertType, alertMessage, alert } = useAlert();
 
 	useEffect(() => {
 		activateAccount(params.activationToken as string)
-			.then(status => {
+			.then((status) => {
 				if (status === StatusCodes.OK) {
-					alert.show('success',
+					alert.show(
+						'success',
 						`A sua conta foi activada com sucesso.
 							Faça login e comece a utilizar o nosso aplicativo.
-						`
+						`,
 					);
 					return;
 				}
-				alert.show('warning',
+				alert.show(
+					'warning',
 					`Token expirado ou inválido.
 						Faça login para obter um novo token e activar a sua conta.
-					`
+					`,
 				);
 			})
-			.catch(error => {
+			.catch((error) => {
 				console.log(error);
 			});
 	}, []);
-
 
 	return (
 		<Container>
@@ -54,5 +47,4 @@ export default function SinupActivationControl() {
 			</Centralize>
 		</Container>
 	);
-
 }

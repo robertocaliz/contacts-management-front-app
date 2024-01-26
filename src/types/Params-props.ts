@@ -6,5 +6,5 @@ export type ParamsProps = {
 		email: string;
 		activationToken: string;
 		recoveryToken: string;
-	}
+	};
 };

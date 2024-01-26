@@ -1,11 +1,9 @@
 import { FormHTMLAttributes } from 'react';
 
-
-interface FormProps extends FormHTMLAttributes<HTMLFormElement> { }
-
+type FormProps = FormHTMLAttributes<HTMLFormElement>;
 
 function Form({ ...rest }: FormProps) {
-	return <form {...rest}></form>;
+	return <form {...rest} />;
 }
 
 export default Form;
