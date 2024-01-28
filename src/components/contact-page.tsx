@@ -66,14 +66,14 @@ function ContactPage() {
 	return (
 		<>
 			{contacts.map((contact) => (
-				<TableRow key={contact._id} className='hover:border hover:bg-gray-200'>
-					<TableData className='p-2'>{contact.name}</TableData>
-					<TableData className='p-2'>{contact.email}</TableData>
-					<TableData className='p-2'>{contact.phoneNumber}</TableData>
-					<TableData className='p-2'>
+				<TableRow key={contact._id}>
+					<TableData>{contact.name}</TableData>
+					<TableData>{contact.email}</TableData>
+					<TableData>{contact.phoneNumber}</TableData>
+					<TableData>
 						<DeleteButton handleDelete={handleDelete} id={contact._id} />
 					</TableData>
-					<TableData className='p-2'>
+					<TableData>
 						<UpdateButton url={`/contacts/${contact._id}/update`} />
 					</TableData>
 				</TableRow>
