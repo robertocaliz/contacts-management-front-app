@@ -8,7 +8,10 @@ type UpdateButtonProps = {
 
 const UpdateButton = ({ url }: UpdateButtonProps) => {
 	return (
-		<Link className='text-[1.3rem]' href={url}>
+		<Link
+			className='inline-block rounded-full p-3 text-[1.3rem] font-bold  hover:bg-sky-500 hover:text-white focus:bg-white focus:text-sky-500'
+			href={url}
+		>
 			<BsPencil />
 		</Link>
 	);
