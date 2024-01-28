@@ -1,10 +1,9 @@
-import paginationControlsStyles from '@/../styles/pagination-controls.module.css';
 import { useRouter } from 'next/navigation';
 import Spinner from './spinner';
 import { useContext } from 'react';
 import { TableContext } from '@/contexts/table-context';
 import { useTableSearchParams } from '@/hooks/useTableSearchParams';
-import Container from './div';
+import Div from './div';
 
 function PaginationControls() {
 	const router = useRouter();
@@ -30,9 +29,9 @@ function PaginationControls() {
 
 	return (
 		<>
-			<Container className={paginationControlsStyles.container}>
+			<Div className='mt-4 flex flex-wrap items-center justify-center gap-4'>
 				<button
-					className={paginationControlsStyles.control}
+					className='rounded bg-sky-500 px-3 py-1 font-bold text-white hover:bg-sky-600 focus:border-[0.15rem] focus:border-sky-100'
 					disabled={page == 1 ? true : false}
 					onClick={handlePrevPageClick}
 				>
@@ -46,13 +45,13 @@ function PaginationControls() {
 					</span>
 				)}
 				<button
-					className={paginationControlsStyles.control}
+					className='rounded bg-sky-500 px-3 py-1 font-bold text-white hover:bg-sky-600 focus:border-[0.15rem] focus:border-sky-100'
 					disabled={page == pages ? true : false}
 					onClick={handleNextPageClick}
 				>
 					Próxima
 				</button>
-			</Container>
+			</Div>
 		</>
 	);
 }
