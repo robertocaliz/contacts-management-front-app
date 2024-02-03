@@ -1,49 +1,42 @@
+import { SelectOption } from '@/types';
 import { HtmlHTMLAttributes, ReactNode } from 'react';
-
-type Option = {
-	value: string;
-	select?: boolean;
-};
 
 type SelectProps = {
 	label?: string;
 	startAdornment?: ReactNode | string;
 	endAdornment?: ReactNode | string;
-	options: Array<Option>;
-	defaultValue?: string;
+	options: Array<SelectOption>;
 } & HtmlHTMLAttributes<HTMLSelectElement>;
 
-function Select({
+const Select = ({
 	startAdornment,
 	endAdornment,
 	label,
 	options,
-	defaultValue,
 	...rest
-}: SelectProps) {
+}: SelectProps) => {
 	return (
 		<div>
 			{label && <label htmlFor={label}>{label}</label>}
-			<div className='mt-3  flex items-center gap-2 rounded-lg border-2 focus-within:border-sky-400'>
+			<div className='flex items-center gap-2 rounded-lg border-[0.13rem] px-2 focus-within:border-sky-400'>
 				{startAdornment && (
-					<span className='text-3xl text-sky-400'>{startAdornment}</span>
+					<span className='ml-3  text-xl'>{startAdornment}</span>
 				)}
 				<select
 					{...rest}
-					className='mr-2 h-12 w-full bg-white text-slate-600 focus:outline-none'
-					defaultValue={defaultValue}
+					className='mr-2 h-[2.78rem] w-full bg-white focus:outline-none'
 					id={label}
 				>
-					{options.map(({ value }, index) => (
+					{options.map(({ value, content }, index) => (
 						<option value={value} key={index}>
-							{value}
+							{content}
 						</option>
 					))}
 				</select>
-				{endAdornment && <span className='text-3xl'>{endAdornment}</span>}
+				{endAdornment && <span className='mx-2 text-xl'>{endAdornment}</span>}
 			</div>
 		</div>
 	);
-}
+};
 
 export default Select;

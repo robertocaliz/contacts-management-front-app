@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function Footer() {
 	return (
 		<footer>
-			<ul className='flex justify-center gap-3 pb-[3rem] pt-[1rem]'>
+			<ul className='flex flex-col items-center justify-center gap-3 pb-[3rem] pt-[1rem] sm:flex-row'>
 				<li>
 					<Link href={process.env.PROJECT_REPOSITORY as string} target='_blank'>
 						GitHub

@@ -39,11 +39,7 @@ function ContactPage() {
 	}
 
 	const migrateToPrevPage = () => {
-		if (contacts.length - 1 === 0 && page > 1) {
-			router.push(`?page=${Number(page) - 1}&per_page${per_page}`);
-			return true;
-		}
-		false;
+		return contacts.length - 1 === 0 && page > 1 ? true : false;
 	};
 
 	const removeContactFromTable = (contactId: string) => {
@@ -53,13 +49,16 @@ function ContactPage() {
 	const handleDelete = async (contactId: string) => {
 		const deleteContact = confirm('Realmente quer apagar o contacto?');
 		if (deleteContact) {
-			await deleteById(contactId);
-			removeContactFromTable(contactId);
+			await deleteById(contactId).then(() => {
+				removeContactFromTable(contactId);
+				Alerts.success('Contacto apagado.');
+			});
 			const migrate = migrateToPrevPage();
-			if (!migrate) {
-				mutate();
+			if (migrate) {
+				router.push(`?page=${Number(page) - 1}&per_page${per_page}`);
+				return;
 			}
-			Alerts.success('Contacto apagado.');
+			mutate();
 		}
 	};
 

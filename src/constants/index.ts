@@ -17,4 +17,4 @@ export const PER_PAGE = 5;
 
 export const TWENTY_SECONDS = 20;
 
-export const ONE_SECOND = 1000;
+export const ONE_SECOND = 2000;

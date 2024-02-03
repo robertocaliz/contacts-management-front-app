@@ -1,31 +1,51 @@
 import { ONE_SECOND } from '@/constants';
 import { TableContext } from '@/contexts/table-context';
 import wait from '@/lib/wait';
-import { useRouter } from 'next/navigation';
-import { ChangeEvent, useContext, useState } from 'react';
+import { ChangeEvent, HtmlHTMLAttributes, useContext, useState } from 'react';
 import Input from './input';
 import { FaSearch } from 'react-icons/fa';
 import Div from './div';
+import Select from './Select';
+import { FaFilter } from 'react-icons/fa';
+import { SelectT } from '@/types';
+import { useRouter } from 'next/navigation';
 
-function SearchBar() {
+type SearchBarProps = {
+	select: SelectT;
+} & HtmlHTMLAttributes<HTMLDivElement>;
+
+function SearchBar({ select, ...rest }: SearchBarProps) {
 	const router = useRouter();
-	const [criteria] = useState('email');
 	const { setLoadingPage } = useContext(TableContext);
+	const [criteria, setCriteria] = useState(select.defaultValue);
 
-	const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+	const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
 		setLoadingPage(true);
 		await wait(ONE_SECOND).then(() => {
-			router.replace(`?filter=${e.target.value}&criteria=${criteria}`);
+			return router.replace(`?filter=${e.target.value}&criteria=${criteria}`);
 		});
 	};
 
 	return (
-		<Div className='flex-grow-[6] flex-wrap-reverse justify-between'>
-			<Input
-				type='search'
-				endAdornment={<FaSearch className='text-gray-800' />}
-				onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
-			/>
+		<Div {...rest}>
+			<Div className='flex flex-wrap-reverse items-center gap-4'>
+				<Div className='flex-grow-[8]'>
+					<Input
+						type='search'
+						startAdornment={<FaSearch className='text-gray-800' />}
+						onChange={(e: ChangeEvent<HTMLInputElement>) => handleSearch(e)}
+					/>
+				</Div>
+				<Div className='flex-grow-[2]'>
+					<Select
+						options={select.options}
+						startAdornment={<FaFilter />}
+						onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+							setCriteria(e.target.value)
+						}
+					/>
+				</Div>
+			</Div>
 		</Div>
 	);
 }

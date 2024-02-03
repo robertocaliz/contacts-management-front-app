@@ -13,13 +13,25 @@ import { FaPhone } from 'react-icons/fa';
 import { SiGmail } from 'react-icons/si';
 import Div from './div';
 import TableContainer from './table-container';
+import { SelectOption } from '@/types';
 
 export default function ContactTable() {
+	const selectOptions: SelectOption[] = [
+		{ value: 'name', content: 'Nome' },
+		{ value: 'email', content: 'E-mail' },
+		{ value: 'phoneNumber', content: 'Telefone' },
+	];
+
 	return (
 		<>
-			<Div className='flex flex-wrap-reverse items-center justify-between gap-3'>
-				<SearchBar />
-				<ButtonAdd href='/contacts/add' />
+			<Div className='flex flex-wrap-reverse items-center justify-between gap-12'>
+				<SearchBar
+					select={{ options: selectOptions, defaultValue: 'name' }}
+					className='flex-grow-[8]'
+				/>
+				<Div className='flex-grow-[2]'>
+					<ButtonAdd href='/contacts/add' />
+				</Div>
 			</Div>
 			<TableContainer>
 				<Table>
@@ -33,7 +45,7 @@ export default function ContactTable() {
 								</Div>
 							</TableHeader>
 							<TableHeader>
-								<Div className='flex items-center gap-1'>
+								<Div className='flex items-center gap-2'>
 									<span>Telefone</span>
 									<FaPhone />
 								</Div>

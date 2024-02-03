@@ -24,3 +24,13 @@ export type GetAllResponse = {
 	count: number;
 	contacts: Array<Contact>;
 };
+
+export type SelectOption = {
+	value: string;
+	content: string;
+};
+
+export type SelectT = {
+	options: SelectOption[];
+	defaultValue: string;
+};
