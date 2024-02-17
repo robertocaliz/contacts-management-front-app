@@ -2,9 +2,8 @@
 
 import Alert from 'react-bootstrap/Alert';
 import Centralize from './centralize';
-import useAlert from '@/hooks/use.alert';
+import useAlert from '@/hooks/use-alert';
 import { useParams } from 'next/navigation';
-import Container from './div';
 import { useEffect } from 'react';
 import { updateEmail } from '@/app/actions/users';
 import { StatusCodes } from 'http-status-codes';
@@ -16,7 +15,7 @@ export default function EmailChangeConfirmationControl() {
 	const { alertType, alertMessage, alert } = useAlert();
 
 	useEffect(() => {
-		updateEmail(params.alterationToken as string)
+		updateEmail(String(params.alterationToken))
 			.then(async ({ status, newEmail }) => {
 				if (status === StatusCodes.OK) {
 					await updateSessionUser({ email: newEmail });
@@ -24,22 +23,22 @@ export default function EmailChangeConfirmationControl() {
 				}
 				alert.show(
 					'warning',
-					`Token de alteração expirado ou invávildo.
+					`Token de alteração expirado ou inválido.
 						Solicite um novo token de alteração.`,
 				);
 			})
 			.catch((error) => {
-				console.log(error);
+				console.error(error);
 			});
 	}, []);
 
 	return (
-		<Container style={{ marginTop: '4rem', textAlign: 'center' }}>
+		<div className='mt-20'>
 			<Centralize>
-				<Alert variant={alertType}>
+				<Alert variant={alertType} className='text-center'>
 					{alertMessage ?? <span>Analizando o token de alteração...</span>}
 				</Alert>
 			</Centralize>
-		</Container>
+		</div>
 	);
 }

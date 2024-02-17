@@ -6,7 +6,7 @@ import Input from './input';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import useAlert from '@/hooks/use.alert';
+import useAlert from '@/hooks/use-alert';
 import { objChanged } from '@/functions/object';
 import Centralize from './centralize';
 import SubmitButton from './buttons/submit';

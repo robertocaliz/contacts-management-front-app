@@ -1,6 +1,6 @@
 'use client';
 
-import useAlert from '@/hooks/use.alert';
+import useAlert from '@/hooks/use-alert';
 import { StatusCodes } from 'http-status-codes';
 import { useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
@@ -34,7 +34,7 @@ export default function SinupActivationControl() {
 				);
 			})
 			.catch((error) => {
-				console.log(error);
+				console.error(error);
 			});
 	}, []);
 

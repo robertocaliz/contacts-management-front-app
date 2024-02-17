@@ -8,7 +8,7 @@ import Centralize from './centralize';
 import FormHeader from './form-header';
 import Input from './input';
 import Alert from 'react-bootstrap/Alert';
-import useAlert from '@/hooks/use.alert';
+import useAlert from '@/hooks/use-alert';
 import { objChanged } from '@/functions/object';
 import { update } from '@/app/actions/contact';
 import { displayMessages } from '@/functions/form';
