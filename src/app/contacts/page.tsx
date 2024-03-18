@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
-import TableProvider from '@/contexts/table-context';
+import TableProvider from '@/contexts/TableContext';
 import ContactTable from '@/components/contact-table';
-import SearchParamsProvider from '@/contexts/SearchParamsContext';
 
 export const metadata: Metadata = {
     title: 'Contatos',
@@ -12,9 +11,7 @@ export default function ContactsPage() {
         <>
             <section>
                 <TableProvider>
-                    <SearchParamsProvider>
-                        <ContactTable />
-                    </SearchParamsProvider>
+                    <ContactTable />
                 </TableProvider>
             </section>
         </>

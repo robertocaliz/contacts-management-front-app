@@ -4,17 +4,15 @@ import { Contact, GetAllResponse } from '@/types';
 import { useContext, useEffect, useState } from 'react';
 import Alerts from '@/lib/alerts';
 import DeleteButton from './buttons/table/delete';
-import { TableContext } from '@/contexts/table-context';
+import { TableContext } from '@/contexts/TableContext';
 import UpdateButton from './buttons/table/update';
 import TableData from './table/data';
 import TableRow from './table/row';
 import { migrateToPrevPage } from '@/functions/table';
-import { SearchParamsContext } from '@/contexts';
 
 function ContactPage() {
     const [contacts, setContacts] = useState<Contact[]>([]);
-    const { setTotalRecords, setLoadingPage } = useContext(TableContext);
-    const { searchParams } = useContext(SearchParamsContext);
+    const { tablePage, searchParams } = useContext(TableContext);
 
     const { data, error, mutate } = useFetch<GetAllResponse>(
         `/contacts?${searchParams.getAll()}`,
@@ -23,8 +21,8 @@ function ContactPage() {
 
     useEffect(() => {
         if (data) {
-            setLoadingPage(false);
-            setTotalRecords(data.count);
+            tablePage.setIsLoading(false);
+            tablePage.setTotalRecords(data.count);
             setContacts(data.contacts);
         }
     }, [data]);

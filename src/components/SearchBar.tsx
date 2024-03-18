@@ -1,32 +1,25 @@
 import { ONE_SECOND } from '@/constants';
-import { TableContext } from '@/contexts/table-context';
 import wait from '@/lib/wait';
-import { ChangeEvent, HtmlHTMLAttributes, useContext, useState } from 'react';
+import { ChangeEvent, HtmlHTMLAttributes, useContext } from 'react';
 import Input from './input';
 import { FaSearch } from 'react-icons/fa';
 import Select from './Select';
 import { FaFilter } from 'react-icons/fa';
-import { SelectT } from '@/types';
-import { useRouter } from 'next/navigation';
+import { SelectOption } from '@/types';
+import { TableContext } from '@/contexts';
 
 type SearchBarProps = {
-    select: SelectT;
+    selectOptions: SelectOption[];
 } & HtmlHTMLAttributes<HTMLDivElement>;
 
-function SearchBar({ select, ...rest }: SearchBarProps) {
-    const router = useRouter();
-    const { setLoadingPage } = useContext(TableContext);
-    const [criteria, setCriteria] = useState(select.defaultValue);
+function SearchBar({ selectOptions, ...rest }: SearchBarProps) {
+    const { tablePage, searchParams } = useContext(TableContext);
 
     const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value.trim()) {
-            setLoadingPage(true);
-            await wait(ONE_SECOND).then(() => {
-                return router.replace(
-                    `?filter=${e.target.value}&criteria=${criteria}`,
-                );
-            });
-        }
+        tablePage.setIsLoading(true);
+        await wait(ONE_SECOND).then(() => {
+            searchParams.setFilter(e.target.value);
+        });
     };
 
     return (
@@ -34,7 +27,7 @@ function SearchBar({ select, ...rest }: SearchBarProps) {
             <div className='flex flex-wrap-reverse items-center gap-4'>
                 <div className='flex-grow-[8]'>
                     <Input
-                        type='search'
+                        type='text'
                         startAdornment={<FaSearch className='text-gray-800' />}
                         onChange={(e: ChangeEvent<HTMLInputElement>) =>
                             handleSearch(e)
@@ -43,10 +36,10 @@ function SearchBar({ select, ...rest }: SearchBarProps) {
                 </div>
                 <div className='flex-grow-[2]'>
                     <Select
-                        options={select.options}
+                        options={selectOptions}
                         startAdornment={<FaFilter />}
                         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                            setCriteria(e.target.value)
+                            searchParams.setCriteria(e.target.value)
                         }
                     />
                 </div>

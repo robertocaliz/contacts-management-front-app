@@ -13,18 +13,8 @@ import { FaPhone } from 'react-icons/fa';
 import { SiGmail } from 'react-icons/si';
 import TableContainer from './table-container';
 import { SelectOption } from '@/types';
-import { useContext, useEffect } from 'react';
-import { SearchParamsContext } from '@/contexts';
-import { useRouter } from 'next/navigation';
 
-export default function ContactTable() {
-    const router = useRouter();
-    const { searchParams } = useContext(SearchParamsContext);
-
-    useEffect(() => {
-        router.push(`?${searchParams.getAll()}`);
-    }, [searchParams]);
-
+function ContactTable() {
     const selectOptions: SelectOption[] = [
         { value: 'name', content: 'Nome' },
         { value: 'email', content: 'E-mail' },
@@ -35,7 +25,7 @@ export default function ContactTable() {
         <>
             <div className='flex flex-wrap-reverse items-center justify-between gap-12'>
                 <SearchBar
-                    select={{ options: selectOptions, defaultValue: 'name' }}
+                    selectOptions={selectOptions}
                     className='flex-grow-[8]'
                 />
                 <div className='flex-grow-[2]'>
@@ -72,3 +62,5 @@ export default function ContactTable() {
         </>
     );
 }
+
+export default ContactTable;

@@ -1,23 +1,21 @@
 import Spinner from './spinner';
 import { useContext } from 'react';
-import { TableContext } from '@/contexts/table-context';
-import { SearchParamsContext } from '@/contexts';
+import { TableContext } from '@/contexts/TableContext';
 
 function PaginationControls() {
-    const { totalRecords, loadingPage, setLoadingPage } =
-        useContext(TableContext);
+    const { tablePage, searchParams } = useContext(TableContext);
 
-    const { searchParams } = useContext(SearchParamsContext);
-
-    const pages = Math.ceil(totalRecords / Number(searchParams.per_page));
+    const pages = Math.ceil(
+        tablePage.totalRecords / Number(searchParams.per_page),
+    );
 
     const handleNextPageClick = () => {
-        setLoadingPage(true);
+        tablePage.setIsLoading(!tablePage.isLoading);
         searchParams.setPage((page) => ++page);
     };
 
     const handlePrevPageClick = () => {
-        setLoadingPage(true);
+        tablePage.setIsLoading(!tablePage.isLoading);
         searchParams.setPage((page) => --page);
     };
 
@@ -31,11 +29,12 @@ function PaginationControls() {
                 >
                     Anterior
                 </button>
-                {loadingPage ? (
-                    <Spinner loading={loadingPage} />
+                {tablePage.isLoading ? (
+                    <Spinner loading={tablePage.isLoading} />
                 ) : (
                     <span>
-                        {totalRecords === 0 ? 0 : searchParams.page} / {pages}
+                        {tablePage.totalRecords === 0 ? 0 : searchParams.page} /{' '}
+                        {pages}
                     </span>
                 )}
                 <button

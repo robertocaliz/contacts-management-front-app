@@ -8,29 +8,24 @@ export * from './User-credentials';
 export * from './Id';
 
 export type FieldError = {
-	path: string;
-	message: string;
+    path: string;
+    message: string;
 };
 
 export type SignInError = {
-	message: string;
-	status: number;
+    message: string;
+    status: number;
 };
 
 export interface RefreshAccessTokenResBody
-	extends Pick<User, 'accessToken' | 'refreshToken'> {}
+    extends Pick<User, 'accessToken' | 'refreshToken'> {}
 
 export type GetAllResponse = {
-	count: number;
-	contacts: Array<Contact>;
+    count: number;
+    contacts: Array<Contact>;
 };
 
 export type SelectOption = {
-	value: string;
-	content: string;
-};
-
-export type SelectT = {
-	options: SelectOption[];
-	defaultValue: string;
+    value: string;
+    content: string;
 };

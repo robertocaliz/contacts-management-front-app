@@ -8,7 +8,7 @@ import {
     useState,
 } from 'react';
 
-type SearchParamsContextType = {
+type TableContextType = {
     searchParams: {
         page: number;
         per_page: number;
@@ -20,11 +20,20 @@ type SearchParamsContextType = {
         setFilter: Dispatch<SetStateAction<string>>;
         setCriteria: Dispatch<SetStateAction<string>>;
     };
+    tablePage: {
+        totalRecords: number;
+        setTotalRecords: Dispatch<SetStateAction<number>>;
+        isLoading: boolean;
+        setIsLoading: Dispatch<SetStateAction<boolean>>;
+    };
 };
 
-export const SearchParamsContext = createContext({} as SearchParamsContextType);
+export const TableContext = createContext({} as TableContextType);
 
-const SearchParamsProvider = ({ children }: { children: ReactNode }) => {
+function TableProvider({ children }: { children: ReactNode }) {
+    const [totalRecords, setTotalRecords] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+
     const [page, setPage] = useState<number>(1);
     const [per_page, setPerPage] = useState<number>(5);
     const [filter, setFilter] = useState<string>('');
@@ -38,8 +47,14 @@ const SearchParamsProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <SearchParamsContext.Provider
+        <TableContext.Provider
             value={{
+                tablePage: {
+                    totalRecords,
+                    isLoading,
+                    setTotalRecords,
+                    setIsLoading,
+                },
                 searchParams: {
                     page,
                     per_page,
@@ -54,8 +69,8 @@ const SearchParamsProvider = ({ children }: { children: ReactNode }) => {
             }}
         >
             {children}
-        </SearchParamsContext.Provider>
+        </TableContext.Provider>
     );
-};
+}
 
-export default SearchParamsProvider;
+export default TableProvider;
