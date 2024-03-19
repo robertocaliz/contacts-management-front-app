@@ -1,5 +1,3 @@
-export const WAITING_TIME = 4000;
-
 export const PUBLIC_ROUTES = ['/', '/login', '/signup'];
 
 export const RegEx = Object.freeze({
@@ -12,8 +10,6 @@ export const RegEx = Object.freeze({
 export const GLOBAL_ERROR_MESSAGE = `Ops, ocorreu um erro! 
 					Tente novamente. Caso o erro persista, 
 						contacte o suporte.`;
-
-export const PER_PAGE = 5;
 
 export const TWENTY_SECONDS = 20;
 

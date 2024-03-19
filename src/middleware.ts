@@ -1,30 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isPublicRoute } from './functions/is-public-route';
+import {
+    isPublicRoute,
+    isPublicRouteExcludeHomeRoute,
+} from './functions/app-route';
 import { checkIfUserIsAuthenticated } from './functions/session/auth';
 
 export default async function AuthMiddleware(req: NextRequest) {
-    const loginPage = new URL('/login', req.url);
-
-    const isUserAuthenticated = await checkIfUserIsAuthenticated(req);
     const route = req.nextUrl.pathname;
-
+    const homePage = new URL('/', req.url);
+    const loginPage = new URL('/login', req.url);
+    const isUserAuthenticated = await checkIfUserIsAuthenticated(req);
     if (!isUserAuthenticated) {
         if (isPublicRoute(route)) {
             return NextResponse.next();
         }
         return NextResponse.redirect(loginPage);
     }
-
+    if (isUserAuthenticated && isPublicRouteExcludeHomeRoute(route)) {
+        return NextResponse.redirect(homePage);
+    }
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: [
-        '/(contacts|users|dashboard)/:path*',
-        '/api/contacts',
-        '/api/users/(\\d{1,})',
-        '/login',
-        '/',
-        '/signup',
-    ],
+    matcher: ['/(contacts)/:path*', '/', '/login', '/signup', '/profile'],
 };
