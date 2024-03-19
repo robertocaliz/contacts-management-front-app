@@ -3,8 +3,8 @@ import { Contact } from './Contact';
 
 export * from './Contact';
 export * from './User';
-export * from './Params-props';
-export * from './User-credentials';
+export * from './ParamsProps';
+export * from './UserCredentials';
 export * from './Id';
 
 export type FieldError = {

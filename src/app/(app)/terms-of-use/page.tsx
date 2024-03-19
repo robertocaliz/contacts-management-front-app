@@ -1,3 +1,3 @@
 export default function TermsOfUsePage() {
-	return <h1>Termos de uso.</h1>;
+    return <h1>Termos de uso.</h1>;
 }

@@ -13,17 +13,17 @@ import NextAuthSessionProvider from '@/contexts/NextAuthContext';
 const nunito_Sans = Nunito_Sans({ subsets: ['latin'], weight: '500' });
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-	return (
-		<html lang='en'>
-			<body className={nunito_Sans.className}>
-				<NextAuthSessionProvider>
-					<ProgressBar />
-					<Nav />
-					<Main>{children}</Main>
-					<Footer />
-					<ToastContainer />
-				</NextAuthSessionProvider>
-			</body>
-		</html>
-	);
+    return (
+        <html lang='en'>
+            <body className={nunito_Sans.className}>
+                <NextAuthSessionProvider>
+                    <ProgressBar />
+                    <Nav />
+                    <Main>{children}</Main>
+                    <Footer />
+                    <ToastContainer />
+                </NextAuthSessionProvider>
+            </body>
+        </html>
+    );
 }

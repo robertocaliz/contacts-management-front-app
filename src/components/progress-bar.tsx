@@ -3,9 +3,9 @@
 import { AppProgressBar } from 'next-nprogress-bar';
 
 export default function ProgressBar({
-	barColor = '#0070f3',
+    barColor = '#0070f3',
 }: {
-	barColor?: string;
+    barColor?: string;
 }) {
-	return <AppProgressBar color={barColor} />;
+    return <AppProgressBar color={barColor} />;
 }
