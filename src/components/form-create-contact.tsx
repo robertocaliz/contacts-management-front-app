@@ -11,6 +11,7 @@ import { displayMessages } from '@/functions/form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form from './form';
+import RequiredFieldNotification from './required-field-notification';
 
 export default function FormAddContact() {
     const {
@@ -39,7 +40,7 @@ export default function FormAddContact() {
             <Form action={createContact}>
                 <FormHeader text='Adicionar' />
                 <Input
-                    label='Nome'
+                    label='Nome *'
                     {...register('name')}
                     errMessage={errors.name?.message}
                 />
@@ -49,12 +50,13 @@ export default function FormAddContact() {
                     errMessage={errors.email?.message}
                 />
                 <Input
-                    label='Telefone/Telemóvel:'
+                    label='Telefone *'
                     {...register('phoneNumber')}
                     maxLength={9}
                     placeholder='+258'
                     errMessage={errors.phoneNumber?.message}
                 />
+                <RequiredFieldNotification />
                 <SubmitButton
                     content='Criar contacto'
                     spinnerText='Criando...'

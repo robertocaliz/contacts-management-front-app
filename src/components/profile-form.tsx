@@ -15,6 +15,7 @@ import SignupRecoverButton from './buttons/signup-recover';
 import Form from './form';
 import { useUpdateSessionUser } from '@/hooks';
 import { displayMessages } from '@/functions/form';
+import RequiredFieldNotification from './required-field-notification';
 
 export default function FormUpdateProfile() {
     const [userData, setUserData] = useState<Partial<User>>({});
@@ -80,26 +81,23 @@ export default function FormUpdateProfile() {
             </Alert>
             <Form action={handleUpdateProfile}>
                 <FormHeader text='Actualizar Perfíl' />
-                <main>
-                    <Input
-                        label='Nome'
-                        {...register('name')}
-                        errMessage={errors.name?.message}
-                    />
-                    <Input
-                        label='Email'
-                        {...register('email')}
-                        errMessage={errors.email?.message}
-                    />
-                    <SubmitButton
-                        spinnerText='Actualizando...'
-                        content='Actualizar'
-                    />
-                </main>
-                <footer>
-                    <SignupRecoverButton text='Clique aqui para recuperar ou alterar a senha.' />
-                </footer>
+                <Input
+                    label='Nome *'
+                    {...register('name')}
+                    errMessage={errors.name?.message}
+                />
+                <Input
+                    label='Email *'
+                    {...register('email')}
+                    errMessage={errors.email?.message}
+                />
+                <RequiredFieldNotification />
+                <SubmitButton
+                    spinnerText='Actualizando...'
+                    content='Actualizar'
+                />
             </Form>
+            <SignupRecoverButton text='Clique aqui para recuperar ou alterar a senha.' />
         </Centralize>
     );
 }
