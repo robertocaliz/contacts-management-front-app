@@ -1,7 +1,19 @@
 import Link from 'next/link';
+import { ReactNode, AnchorHTMLAttributes } from 'react';
 
-export const LoginButton = ({ text = 'Login' }: { text?: string }) => {
-	return <Link href='/login'>{text}</Link>;
+type LoginButtonProps = {
+    content?: string | ReactNode;
+} & AnchorHTMLAttributes<HTMLAnchorElement>;
+
+export const LoginButton = ({
+    content = 'Login',
+    ...rest
+}: LoginButtonProps) => {
+    return (
+        <Link href='/login' {...rest}>
+            {content}
+        </Link>
+    );
 };
 
 export default LoginButton;

@@ -1,7 +1,19 @@
 import Link from 'next/link';
+import { AnchorHTMLAttributes, ReactNode } from 'react';
 
-const SignUpButton = ({ text = 'Cadastrar' }: { text?: string }) => {
-	return <Link href='/signup'>{text}</Link>;
+type SignUpButtonProps = {
+    content?: string | ReactNode;
+} & AnchorHTMLAttributes<HTMLAnchorElement>;
+
+const SignUpButton = ({
+    content = 'Cadastrar',
+    ...rest
+}: SignUpButtonProps) => {
+    return (
+        <Link href='/signup' {...rest}>
+            {content}
+        </Link>
+    );
 };
 
 export default SignUpButton;

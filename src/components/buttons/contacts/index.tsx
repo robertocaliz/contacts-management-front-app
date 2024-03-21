@@ -1,16 +1,19 @@
 import Link from 'next/link';
-import { AnchorHTMLAttributes } from 'react';
+import { AnchorHTMLAttributes, ReactNode } from 'react';
 
-type ContactsButton = {
-	text?: string;
+type ContactsButtonProps = {
+    content?: string | ReactNode;
 } & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const ContactsButton = ({ text = 'Contactos', ...rest }: ContactsButton) => {
-	return (
-		<Link href='/contacts' {...rest}>
-			{text}
-		</Link>
-	);
+const ContactsButton = ({
+    content = 'Contactos',
+    ...rest
+}: ContactsButtonProps) => {
+    return (
+        <Link href='/contacts' {...rest}>
+            {content}
+        </Link>
+    );
 };
 
 export default ContactsButton;

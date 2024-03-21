@@ -4,18 +4,20 @@ import { AnchorHTMLAttributes } from 'react';
 import { TiContacts } from 'react-icons/ti';
 
 type HomeButtonPorps = {
-	href?: string;
+    href?: string;
 } & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const caveat = Caveat({ subsets: ['latin-ext'] });
+const caveat = Caveat({ subsets: ['latin'] });
 
 export const HomeButton = ({ href = '/', ...rest }: HomeButtonPorps) => {
-	return (
-		<Link href={href} {...rest}>
-			<TiContacts className='size-6' />
-			<span className={`${caveat.className} text-[1.4rem]`}>ContactsPro</span>
-		</Link>
-	);
+    return (
+        <Link href={href} {...rest}>
+            <TiContacts className='size-6' />
+            <span className={`${caveat.className} text-[1rem]`}>
+                ContactsPro
+            </span>
+        </Link>
+    );
 };
 
 export default HomeButton;
