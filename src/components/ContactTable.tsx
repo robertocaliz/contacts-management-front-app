@@ -1,20 +1,17 @@
 'use client';
 
-import PaginationControls from './pagination-controls';
 import TableRow from './table/row';
 import Table from './table';
 import TableHeader from './table/header';
 import TableHead from './table/head';
 import TableBody from './table/body';
 import SearchBar from './SearchBar';
-import ButtonAdd from './button-add';
-import ContactPage from './contact-page';
 import { FaPhone } from 'react-icons/fa';
 import { SiGmail } from 'react-icons/si';
-import TableContainer from './table-container';
 import { SelectOption } from '@/types';
+import { AddButton, ContactPage, PaginationControls, TableContainer } from '.';
 
-function ContactTable() {
+export const ContactTable = () => {
     const selectOptions: SelectOption[] = [
         { value: 'name', content: 'Nome' },
         { value: 'email', content: 'E-mail' },
@@ -29,7 +26,7 @@ function ContactTable() {
                     className='flex-grow-[8]'
                 />
                 <div className='flex-grow-[2]'>
-                    <ButtonAdd href='/contacts/add' />
+                    <AddButton href='/contacts/add' />
                 </div>
             </div>
             <TableContainer>
@@ -61,6 +58,4 @@ function ContactTable() {
             <PaginationControls />
         </>
     );
-}
-
-export default ContactTable;
+};

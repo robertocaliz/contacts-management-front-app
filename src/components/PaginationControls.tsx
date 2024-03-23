@@ -2,7 +2,7 @@ import Spinner from './spinner';
 import { useContext } from 'react';
 import { TableContext } from '@/contexts/TableContext';
 
-function PaginationControls() {
+export const PaginationControls = () => {
     const { tablePage, searchParams } = useContext(TableContext);
 
     const pages = Math.ceil(
@@ -47,6 +47,4 @@ function PaginationControls() {
             </div>
         </>
     );
-}
-
-export default PaginationControls;
+};

@@ -30,7 +30,7 @@ type TableContextType = {
 
 export const TableContext = createContext({} as TableContextType);
 
-function TableProvider({ children }: { children: ReactNode }) {
+export function TableProvider({ children }: { children: ReactNode }) {
     const [totalRecords, setTotalRecords] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -72,5 +72,3 @@ function TableProvider({ children }: { children: ReactNode }) {
         </TableContext.Provider>
     );
 }
-
-export default TableProvider;

@@ -1,3 +1,5 @@
+'use client';
+
 import { deleteById, getAll } from '@/app/actions/contact';
 import { useFetch } from '@/hooks';
 import { Contact, GetAllResponse } from '@/types';
@@ -11,7 +13,7 @@ import TableRow from './table/row';
 import { migrateToPrevPage } from '@/functions/table';
 import Link from 'next/link';
 
-function ContactPage() {
+export const ContactPage = () => {
     const [contacts, setContacts] = useState<Contact[]>([]);
     const { tablePage, searchParams } = useContext(TableContext);
 
@@ -79,6 +81,4 @@ function ContactPage() {
             ))}
         </>
     );
-}
-
-export default ContactPage;
+};

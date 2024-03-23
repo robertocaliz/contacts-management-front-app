@@ -15,9 +15,9 @@ import SignupRecoverButton from './buttons/signup-recover';
 import Form from './form';
 import { useUpdateSessionUser } from '@/hooks';
 import { displayMessages } from '@/functions/form';
-import RequiredFieldNotification from './RequiredFieldNotification';
+import { RequiredFieldNotification } from '.';
 
-export default function FormUpdateProfile() {
+export const ProfileForm = () => {
     const [userData, setUserData] = useState<Partial<User>>({});
 
     const { session, updateSessionUser } = useUpdateSessionUser();
@@ -100,4 +100,4 @@ export default function FormUpdateProfile() {
             <SignupRecoverButton text='Clique aqui para recuperar ou alterar a senha.' />
         </Centralize>
     );
-}
+};

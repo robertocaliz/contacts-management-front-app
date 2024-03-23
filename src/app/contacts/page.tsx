@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import TableProvider from '@/contexts/TableContext';
-import ContactTable from '@/components/contact-table';
+import { ContactTable } from '@/components';
+import { TableProvider } from '@/contexts';
 
 export const metadata: Metadata = {
     title: 'Contatos',
