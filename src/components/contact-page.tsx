@@ -9,6 +9,7 @@ import UpdateButton from './buttons/table/update';
 import TableData from './table/data';
 import TableRow from './table/row';
 import { migrateToPrevPage } from '@/functions/table';
+import Link from 'next/link';
 
 function ContactPage() {
     const [contacts, setContacts] = useState<Contact[]>([]);
@@ -59,7 +60,11 @@ function ContactPage() {
             {contacts.map((contact) => (
                 <TableRow key={contact._id}>
                     <TableData>{contact.name}</TableData>
-                    <TableData>{contact.email}</TableData>
+                    <TableData>
+                        <Link href={`mailto:${contact.email}`}>
+                            {contact.email}
+                        </Link>
+                    </TableData>
                     <TableData>{contact.phoneNumber}</TableData>
                     <TableData>
                         <DeleteButton
