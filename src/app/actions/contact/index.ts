@@ -4,6 +4,7 @@ import {
     CREATE_CONTACT_SCHEMA,
     UPDATE_CONTACT_SCHEMA,
 } from '@/constants/validation-schemas';
+import { MZPhoneNumber } from '@/functions/formatting';
 import { validate } from '@/functions/validation';
 import { axiosAuth } from '@/lib/axios/auth/server';
 import { ConflictError } from '@/lib/errors';
@@ -17,6 +18,7 @@ export async function create(contact: Contact) {
     if (errors) {
         return { errors };
     }
+    contact.phoneNumber = MZPhoneNumber.format(contact.phoneNumber);
     try {
         await axiosAuth.post('/contacts', contact);
         return { errors };
@@ -36,6 +38,7 @@ export async function update(contact: Contact, contactId: string) {
     if (errors) {
         return { errors };
     }
+    contact.phoneNumber = MZPhoneNumber.format(contact.phoneNumber);
     try {
         await axiosAuth.put(`/contacts/${contactId}`, contact);
         return { errors: undefined };
@@ -50,7 +53,10 @@ export async function update(contact: Contact, contactId: string) {
 }
 
 export async function getById(constactId: string) {
-    const { data: contact } = await axiosAuth.get(`/contacts/${constactId}`);
+    const { data: contact } = await axiosAuth.get<Contact>(
+        `/contacts/${constactId}`,
+    );
+    contact.phoneNumber = MZPhoneNumber.normalize(contact.phoneNumber);
     return contact;
 }
 
