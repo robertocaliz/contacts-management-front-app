@@ -16,6 +16,7 @@ import { getErrorMessage } from '@/functions/sign-in-error';
 import { StatusCodes } from 'http-status-codes';
 import { validate } from '@/functions/validation';
 import { LOGIN_SCHEMA } from '@/constants/validation-schemas';
+import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -50,7 +51,7 @@ export const authOptions: NextAuthOptions = {
                             getErrorMessage(
                                 `Email ou senha inválida.
 								Verifique as suas credênciais e tente novamente.`,
-                                error.status,
+                                StatusCodes.UNAUTHORIZED,
                             ),
                         );
                     }
@@ -60,13 +61,13 @@ export const authOptions: NextAuthOptions = {
                                 `Sua conta encontra-se inactiva.
 							Acesse o seu e-mail para ativar a sua conta
 							atravez do email que acabamos de enviar.`,
-                                error.status,
+                                StatusCodes.FORBIDDEN,
                             ),
                         );
                     }
                     throw new AuthError(
                         getErrorMessage(
-                            (error as AuthError).message,
+                            GLOBAL_ERROR_MESSAGE,
                             StatusCodes.INTERNAL_SERVER_ERROR,
                         ),
                     );

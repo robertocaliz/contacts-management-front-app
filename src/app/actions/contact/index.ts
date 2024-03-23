@@ -19,7 +19,7 @@ export async function create(contact: Contact) {
     }
     try {
         await axiosAuth.post('/contacts', contact);
-        return { errors: undefined };
+        return { errors };
     } catch (error) {
         if (error instanceof ConflictError) {
             return { errors: error.errors };

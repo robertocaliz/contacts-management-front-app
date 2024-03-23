@@ -7,9 +7,7 @@ export const RegEx = Object.freeze({
     },
 });
 
-export const GLOBAL_ERROR_MESSAGE = `Ops, ocorreu um erro! 
-					Tente novamente. Caso o erro persista, 
-						contacte o suporte.`;
+export const GLOBAL_ERROR_MESSAGE = `Ops, ocorreu um erro!`;
 
 export const TWENTY_SECONDS = 20;
 

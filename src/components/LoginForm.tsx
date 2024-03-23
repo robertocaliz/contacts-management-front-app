@@ -16,8 +16,9 @@ import SignUpButton from './buttons/signup';
 import SignupRecoverButton from './buttons/signup-recover';
 import Form from './form';
 import { displayMessages } from '@/functions/form';
+import { Footer } from '.';
 
-export default function LoginForm() {
+export function LoginForm() {
     const {
         register,
         formState: { errors },
@@ -33,29 +34,27 @@ export default function LoginForm() {
     const loginUser = async () => {
         clearErrors();
         const credentials = getValues();
-        await signIn('credentials', {
+        const response = await signIn('credentials', {
             ...credentials,
             redirect: false,
-        }).then((response) => {
-            if (response?.error) {
-                const error = JSON.parse(
-                    response?.error as string,
-                ) as SignInError;
-                if (error.status === StatusCodes.BAD_REQUEST) {
-                    displayMessages(JSON.parse(error.message), setError);
-                    return;
-                }
-                if (
-                    error.status === StatusCodes.FORBIDDEN ||
-                    StatusCodes.UNAUTHORIZED
-                ) {
-                    alert.show('warning', error.message);
-                    return;
-                }
-                return Promise.reject(error);
-            }
-            router.replace('/');
         });
+        const error = JSON.parse(String(response?.error)) as SignInError;
+        if (error) {
+            if (error.status === StatusCodes.BAD_REQUEST) {
+                displayMessages(JSON.parse(error.message), setError);
+                return;
+            }
+            if (
+                error.status === StatusCodes.FORBIDDEN ||
+                error.status === StatusCodes.UNAUTHORIZED
+            ) {
+                alert.show('warning', error.message);
+                return;
+            }
+            alert.show('danger', error.message);
+            return;
+        }
+        router.replace('/');
     };
 
     return (
@@ -64,9 +63,7 @@ export default function LoginForm() {
                 {alertMessage}
             </Alert>
             <Form action={loginUser}>
-                <header>
-                    <FormHeader text='Login' />
-                </header>
+                <FormHeader text='Login' />
                 <main>
                     <Input
                         label='Email'
@@ -83,16 +80,16 @@ export default function LoginForm() {
                         spinnerText='Autenticando...'
                     />
                 </main>
-                <footer className='flex flex-col gap-2 text-center'>
-                    <span>
-                        Novo no ContactsPro?{' '}
-                        <SignUpButton text='Crie sua conta aqui.' />
-                    </span>
-                    <span>
-                        Esqueceu sua senha?{' '}
+                <Footer className='flex flex-col gap-2 text-center'>
+                    <div>
+                        <span>Novo no ContactsPro? </span>
+                        <SignUpButton content='Crie sua conta aqui.' />
+                    </div>
+                    <div>
+                        <span>Esqueceu sua senha? </span>
                         <SignupRecoverButton text='Clique aqui.' />
-                    </span>
-                </footer>
+                    </div>
+                </Footer>
             </Form>
         </Centralize>
     );

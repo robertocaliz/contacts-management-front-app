@@ -1,4 +1,4 @@
-import FormAddContact from '@/components/form-create-contact';
+import { FormAddContact } from '@/components';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

@@ -16,10 +16,10 @@ import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form from './form';
-import RequiredFieldNotification from './required-field-notification';
+import { RequiredFieldNotification } from '.';
 
-export default function FormUpdateContact({ contact }: { contact: Contact }) {
-    const { back } = useRouter();
+export function FormUpdateContact({ contact }: { contact: Contact }) {
+    const router = useRouter();
 
     const { alertType, alertMessage, showAlert, alert } = useAlert();
 
@@ -56,7 +56,7 @@ export default function FormUpdateContact({ contact }: { contact: Contact }) {
             return;
         }
         reset();
-        back();
+        router.back();
         Alerts.success('Contacto actualizado.');
     };
 

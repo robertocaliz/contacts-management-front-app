@@ -18,7 +18,7 @@ type FormData = {
     confirmPassword: string;
 };
 
-export default function FormChangePassword() {
+export function FormChangePassword() {
     const router = useRouter();
     const params = useParams();
 

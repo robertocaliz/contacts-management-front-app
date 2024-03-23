@@ -1,10 +1,9 @@
 import { ReactNode } from 'react';
 
-type MainProps = {
+type GlobalMainProps = {
     children: ReactNode;
-    margin?: string;
 };
 
-export default function Main({ children }: MainProps) {
+export const GlobalMain = ({ children }: GlobalMainProps) => {
     return <div className='m-[2rem]'>{children}</div>;
-}
+};

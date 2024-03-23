@@ -13,7 +13,7 @@ import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form from './form';
 
-export default function FormRecoverSignup() {
+export function FormRecoverSignup() {
     const router = useRouter();
 
     const {

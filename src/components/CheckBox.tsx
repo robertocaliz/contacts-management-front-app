@@ -5,7 +5,7 @@ type CheckBoxProps = {
     type?: 'checkbox';
 } & InputHTMLAttributes<HTMLInputElement>;
 
-const CheckBox = ({ label, ...rest }: CheckBoxProps) => {
+export const CheckBox = ({ label, ...rest }: CheckBoxProps) => {
     return (
         <div>
             <label className='flex items-center gap-2'>
@@ -19,5 +19,3 @@ const CheckBox = ({ label, ...rest }: CheckBoxProps) => {
         </div>
     );
 };
-
-export default CheckBox;

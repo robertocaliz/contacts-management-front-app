@@ -12,16 +12,16 @@ import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
 import Form from './form';
-import CheckBox from './check-box';
 import { checkIfEmailExists, createAccount } from '@/app/actions/users';
 import { displayMessages } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
+import { CheckBox, Footer } from '.';
 
 type AccountData = {
     confirmPassword?: string;
 } & User;
 
-export default function SignUpForm() {
+export function SignUpForm() {
     const [disableSubmitButton, setDisableSubmitButton] = useState(true);
 
     const {
@@ -88,14 +88,12 @@ export default function SignUpForm() {
                         {...register('confirmPassword')}
                         errMessage={errors.confirmPassword?.message}
                     />
-                </main>
-                <footer>
                     <CheckBox
                         label={
-                            <span>
-                                Li e estou de acordo com os{' '}
+                            <div>
+                                <span>Li e estou de acordo com os </span>
                                 <Link href='/terms-of-use'>Termos de uso.</Link>
-                            </span>
+                            </div>
                         }
                         onChange={() =>
                             setDisableSubmitButton(
@@ -108,13 +106,13 @@ export default function SignUpForm() {
                         spinnerText='Criando a conta...'
                         disabled={disableSubmitButton}
                     />
+                </main>
+                <Footer>
                     <div className='text-center'>
-                        <span>
-                            Já passue uma conta?{' '}
-                            <LoginButton text='Click aqui para acessar.' />{' '}
-                        </span>
+                        <span>Já passue uma conta? </span>
+                        <LoginButton content='Click aqui para acessar.' />
                     </div>
-                </footer>
+                </Footer>
             </Form>
         </Centralize>
     );

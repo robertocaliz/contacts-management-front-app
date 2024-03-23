@@ -2,10 +2,10 @@
 
 import { AppProgressBar } from 'next-nprogress-bar';
 
-export default function ProgressBar({
-    barColor = '#0070f3',
-}: {
+type ProgressBarProps = {
     barColor?: string;
-}) {
+};
+
+export const ProgressBar = ({ barColor = '#0070f3' }: ProgressBarProps) => {
     return <AppProgressBar color={barColor} />;
-}
+};

@@ -15,7 +15,7 @@ import SignupRecoverButton from './buttons/signup-recover';
 import Form from './form';
 import { useUpdateSessionUser } from '@/hooks';
 import { displayMessages } from '@/functions/form';
-import RequiredFieldNotification from './required-field-notification';
+import RequiredFieldNotification from './RequiredFieldNotification';
 
 export default function FormUpdateProfile() {
     const [userData, setUserData] = useState<Partial<User>>({});

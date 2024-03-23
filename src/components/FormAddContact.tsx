@@ -11,9 +11,9 @@ import { displayMessages } from '@/functions/form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form from './form';
-import RequiredFieldNotification from './required-field-notification';
+import { RequiredFieldNotification } from '.';
 
-export default function FormAddContact() {
+export function FormAddContact() {
     const {
         register,
         getValues,

@@ -9,7 +9,7 @@ import ContactsButton from './buttons/contacts';
 import ProfileButton from './buttons/user-profile';
 import { CgProfile } from 'react-icons/cg';
 
-export default function Nav() {
+export const NavBar = () => {
     const { data: session } = useSession();
 
     return (
@@ -50,4 +50,4 @@ export default function Nav() {
             </ul>
         </nav>
     );
-}
+};

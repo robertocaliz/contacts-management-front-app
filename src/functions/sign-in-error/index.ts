@@ -1,3 +1,3 @@
 export const getErrorMessage = (message: string, status: number) => {
-	return JSON.stringify({ message, status });
+    return JSON.stringify({ message, status });
 };

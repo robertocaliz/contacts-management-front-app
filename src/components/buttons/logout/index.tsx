@@ -6,15 +6,15 @@ import { AnchorHTMLAttributes } from 'react';
 type LoginButtonProps = AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const LogoutButton = ({ ...rest }: LoginButtonProps) => {
-	const { replace } = useRouter();
-	const handleClick = () => {
-		signOut({ redirect: false }).then(() => replace('/login'));
-	};
-	return (
-		<Link href='' onClick={handleClick} {...rest}>
-			Logout
-		</Link>
-	);
+    const { replace } = useRouter();
+    const handleClick = () => {
+        signOut({ redirect: false }).then(() => replace('/login'));
+    };
+    return (
+        <Link href='' onClick={handleClick} {...rest}>
+            Logout
+        </Link>
+    );
 };
 
 export default LogoutButton;
