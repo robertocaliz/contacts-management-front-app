@@ -5,5 +5,5 @@ type CentralizeProps = {
 };
 
 export default function Centralize({ children }: CentralizeProps) {
-    return <div className='m-auto max-w-[600px]'>{children}</div>;
+    return <div className='m-auto max-w-[500px]'>{children}</div>;
 }

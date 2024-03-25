@@ -1,18 +1,18 @@
 'use server';
 
 import {
-    CREATE_CONTACT_SCHEMA,
-    UPDATE_CONTACT_SCHEMA,
-} from '@/constants/validation-schemas';
+    createContactSchema,
+    updateContactSchema,
+} from '@/lib/validation-schemas';
 import { MZPhoneNumber } from '@/functions/formatting';
-import { validate } from '@/functions/validation';
+import { validate } from '@/functions/data-validation';
 import { axiosAuth } from '@/lib/axios/auth/server';
 import { ConflictError } from '@/lib/errors';
 import { Contact, GetAllResponse } from '@/types';
 
 export async function create(contact: Contact) {
     const errors = await validate({
-        schema: CREATE_CONTACT_SCHEMA,
+        schema: createContactSchema,
         obj: contact,
     });
     if (errors) {
@@ -32,7 +32,7 @@ export async function create(contact: Contact) {
 
 export async function update(contact: Contact, contactId: string) {
     const errors = await validate({
-        schema: UPDATE_CONTACT_SCHEMA,
+        schema: updateContactSchema,
         obj: contact,
     });
     if (errors) {

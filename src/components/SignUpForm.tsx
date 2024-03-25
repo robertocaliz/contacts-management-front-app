@@ -68,7 +68,7 @@ export function SignUpForm() {
                 <FormHeader text='Cadastro' />
                 <main>
                     <Input
-                        label='Nome'
+                        label='Nome de usuário'
                         {...register('name')}
                         errMessage={errors.name?.message}
                     />

@@ -26,7 +26,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 )}
                 <div
                     className={clsx(
-                        'mb-3 mt-3 flex h-12 items-center gap-2 overflow-hidden rounded-lg border-[0.13rem] focus-within:border-[0.13rem] focus-within:border-sky-500 focus-within:transition-all',
+                        'mb-3 mt-3 flex h-10 items-center gap-2 overflow-hidden rounded-lg border-[0.124rem] focus-within:border-[0.13rem] focus-within:border-sky-500 focus-within:transition-all',
                         {
                             'border-[0.10rem] border-red-600': errMessage,
                         },

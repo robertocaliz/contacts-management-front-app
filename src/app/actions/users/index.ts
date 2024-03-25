@@ -1,12 +1,12 @@
 'use server';
 
 import {
-    EMAIL_SCHEMA,
-    SIGNUP_SCHEMA,
-    UPDATE_PASSWORD_SCHEMA,
-    UPDATE_USER_SCHEMA,
-} from '@/constants/validation-schemas';
-import { validate } from '@/functions/validation';
+    emailSchema,
+    signupSchema,
+    updatePasswordSchema,
+    updateUserSchema,
+} from '@/lib/validation-schemas';
+import { validate } from '@/functions/data-validation';
 import { axiosAuth } from '@/lib/axios/auth/server';
 import axiosPublic from '@/lib/axios/public';
 import { BadRequestError, ConflictError, NotFoundError } from '@/lib/errors';
@@ -21,7 +21,7 @@ interface CreateAccountResBody extends Email {}
 export async function createAccount(user: User) {
     const errors = await validate({
         obj: user,
-        schema: SIGNUP_SCHEMA,
+        schema: signupSchema,
     });
     if (errors) {
         return {
@@ -45,7 +45,7 @@ export async function createAccount(user: User) {
 export async function recoverSignup(email: string) {
     const errors = await validate({
         obj: { email },
-        schema: EMAIL_SCHEMA,
+        schema: emailSchema,
     });
     if (errors) {
         return {
@@ -76,7 +76,7 @@ type ChangePasswordProps = {
 export const updatePassword = async (param: ChangePasswordProps) => {
     const errors = await validate({
         obj: param.dada,
-        schema: UPDATE_PASSWORD_SCHEMA,
+        schema: updatePasswordSchema,
     });
     if (errors) {
         return { errors };
@@ -118,7 +118,7 @@ interface UpdateUserResBody extends Email {}
 export const update = async (user: Partial<User>, userId: string) => {
     const errors = await validate({
         obj: user,
-        schema: UPDATE_USER_SCHEMA,
+        schema: updateUserSchema,
     });
     if (errors) {
         return {

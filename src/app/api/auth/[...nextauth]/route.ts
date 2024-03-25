@@ -14,8 +14,8 @@ import {
 } from '@/lib/errors';
 import { getErrorMessage } from '@/functions/sign-in-error';
 import { StatusCodes } from 'http-status-codes';
-import { validate } from '@/functions/validation';
-import { LOGIN_SCHEMA } from '@/constants/validation-schemas';
+import { validate } from '@/functions/data-validation';
+import { loginSchema } from '@/lib/validation-schemas';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 
 export const authOptions: NextAuthOptions = {
@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
                 const { email, password } = credentials as UserCredentials;
                 const errors = await validate({
                     obj: { email, password },
-                    schema: LOGIN_SCHEMA,
+                    schema: loginSchema,
                 });
                 if (errors) {
                     throw new BadRequestError(
