@@ -13,6 +13,14 @@ const usernameSchema = object({
         ),
 });
 
+const nameSchema = object({
+    name: string()
+        .trim()
+        .required('"nome" é obrigatório.')
+        .min(3, '"nome" deve conter no mínimo 3 caracteres.')
+        .max(60, '"nome" deve conter no máximo 60 caracteres.'),
+});
+
 export const emailSchema = object({
     email: string()
         .trim()
@@ -55,7 +63,7 @@ export const updatePasswordSchema = passwordSchema.concat(
 
 export const updateUserSchema = usernameSchema.concat(emailSchemaOptional);
 
-export const createContactSchema = usernameSchema
+export const createContactSchema = nameSchema
     .concat(emailSchemaOptional)
     .shape({
         phoneNumber: string()
