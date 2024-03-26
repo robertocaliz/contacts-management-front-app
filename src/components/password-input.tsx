@@ -21,7 +21,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
 
         return (
             <>
-                <div>
+                <div className='mb-3'>
                     {label && (
                         <Label htmlFor={label} className='text-gray-800'>
                             {label}
@@ -29,7 +29,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
                     )}
                     <div
                         className={clsx(
-                            'mb-3 mt-3 flex h-10 items-center gap-2 overflow-hidden rounded-lg border-[0.124rem] focus-within:border-[0.13rem] focus-within:border-sky-500 focus-within:transition-all',
+                            'flex h-10 items-center gap-2 overflow-hidden rounded-lg border-[0.03rem] duration-[50ms] focus-within:border-[0.12rem] focus-within:border-sky-500',
                             {
                                 'border-[0.10rem] border-red-600': errMessage,
                             },
@@ -44,7 +44,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
                             {...rest}
                             id={label}
                             name={name}
-                            className='h-12 w-full pl-2 pr-2 text-slate-600 outline-none'
+                            className='mx-1 h-8 w-full bg-gray-50 pl-2 pr-2 text-slate-600 outline-none focus:bg-white'
                             type={typePassword ? 'password' : 'text'}
                             ref={ref}
                         />
@@ -59,8 +59,8 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
                             )}
                         </span>
                     </div>
+                    <ErrMessageContainer errMessage={errMessage} />
                 </div>
-                <ErrMessageContainer errMessage={errMessage} />
             </>
         );
     },

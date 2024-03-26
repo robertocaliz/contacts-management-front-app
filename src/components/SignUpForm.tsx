@@ -92,7 +92,7 @@ export function SignUpForm() {
                         label={
                             <div>
                                 <span>Li e estou de acordo com os </span>
-                                <Link href='/terms-of-use'>Termos de uso.</Link>
+                                <Link href='/terms-of-use'>Termos de Uso.</Link>
                             </div>
                         }
                         onChange={() =>

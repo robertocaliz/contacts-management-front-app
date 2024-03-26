@@ -7,7 +7,7 @@ type CheckBoxProps = {
 
 export const CheckBox = ({ label, ...rest }: CheckBoxProps) => {
     return (
-        <div>
+        <div className='mt-2'>
             <label className='flex items-center gap-2'>
                 <input
                     {...rest}
