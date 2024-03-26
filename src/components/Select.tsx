@@ -18,13 +18,13 @@ const Select = ({
     return (
         <div>
             {label && <label htmlFor={label}>{label}</label>}
-            <div className='flex items-center gap-2 rounded-lg border-[0.124rem] px-2 focus-within:border-sky-400'>
+            <div className='flex h-10 items-center gap-2 rounded-lg border-[0.03rem] px-2 focus-within:border-[0.13rem] focus-within:border-sky-400'>
                 {startAdornment && (
                     <span className='ml-3'>{startAdornment}</span>
                 )}
                 <select
                     {...rest}
-                    className='mr-2 h-[2.32rem] w-full bg-white focus:outline-none'
+                    className='h-8 w-full bg-gray-50 focus:bg-white focus:outline-none'
                     id={label}
                 >
                     {options.map(({ value, content }, index) => (

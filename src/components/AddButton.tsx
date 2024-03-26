@@ -17,7 +17,7 @@ export const AddButton = ({
         <Link
             href={href}
             {...rest}
-            className='rounded-full bg-green-500 px-5 py-[0.8rem] font-bold text-white hover:bg-green-600 focus:border-[0.6rem] focus:border-green-100'
+            className='rounded-lg bg-green-500 px-5 py-[0.6rem] font-bold text-white hover:bg-green-600 focus:border-[0.2rem] focus:border-green-100'
         >
             {text}
         </Link>
