@@ -34,7 +34,7 @@ export function FormRecoverSignup() {
         }
         if (status === StatusCodes.NOT_FOUND) {
             setError('email', {
-                message: 'O email não foi encontrado no sistema.',
+                message: 'O "email" não foi encontrado no sistema.',
             });
             return;
         }
