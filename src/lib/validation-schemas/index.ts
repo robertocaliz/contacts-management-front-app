@@ -32,6 +32,13 @@ const emailSchemaOptional = object({
     email: string().optional().matches(RegEx.app.EMAIL, '"email" inválido.'),
 });
 
+const MZPhoneNumberSchema = object({
+    phoneNumber: string()
+        .trim()
+        .required('"telefone" é obrigatório.')
+        .matches(RegEx.app.PHONE_NUMBER, '"telefone" inválido.'),
+});
+
 const passwordSchema = object({
     password: string()
         .trim()
@@ -65,11 +72,6 @@ export const updateUserSchema = usernameSchema.concat(emailSchemaOptional);
 
 export const createContactSchema = nameSchema
     .concat(emailSchemaOptional)
-    .shape({
-        phoneNumber: string()
-            .trim()
-            .required('"telefone" é obrigatório.')
-            .matches(RegEx.app.PHONE_NUMBER, '"telefone" inválido.'),
-    });
+    .concat(MZPhoneNumberSchema);
 
 export const updateContactSchema = createContactSchema;
