@@ -28,16 +28,20 @@ function SearchBar({ selectOptions, ...rest }: SearchBarProps) {
                 <div className='flex-grow-[8]'>
                     <Input
                         type='text'
-                        startAdornment={<FaSearch className='text-gray-800' />}
+                        startAdornment={
+                            <FaSearch className='text-gray-800 dark:text-white' />
+                        }
                         onChange={(e: ChangeEvent<HTMLInputElement>) =>
                             handleSearch(e)
                         }
                     />
                 </div>
-                <div className='flex-grow-[2]'>
+                <div className='relative bottom-[0.06rem] flex-grow-[2]'>
                     <Select
                         options={selectOptions}
-                        startAdornment={<FaFilter />}
+                        startAdornment={
+                            <FaFilter className='dark:text-white' />
+                        }
                         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                             searchParams.setCriteria(e.target.value)
                         }

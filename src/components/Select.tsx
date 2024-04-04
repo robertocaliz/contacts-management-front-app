@@ -1,5 +1,6 @@
 import { SelectOption } from '@/types';
 import { HtmlHTMLAttributes, ReactNode } from 'react';
+import { Label } from '.';
 
 type SelectProps = {
     label?: string;
@@ -17,14 +18,14 @@ const Select = ({
 }: SelectProps) => {
     return (
         <div>
-            {label && <label htmlFor={label}>{label}</label>}
-            <div className='flex h-10 items-center gap-2 rounded-lg border-[0.03rem] px-2 focus-within:border-[0.13rem] focus-within:border-sky-400'>
+            {label && <Label htmlFor={label}>{label}</Label>}
+            <div className='flex h-10 items-center gap-2 rounded-lg border-[0.03rem] px-2 focus-within:border-[0.13rem] focus-within:border-sky-400 dark:border-none dark:bg-gray-800'>
                 {startAdornment && (
                     <span className='ml-3'>{startAdornment}</span>
                 )}
                 <select
                     {...rest}
-                    className='h-8 w-full bg-gray-50 focus:bg-white focus:outline-none'
+                    className='h-6 w-full bg-gray-50 focus:bg-white focus:outline-none dark:bg-gray-800 dark:text-white dark:focus:bg-medium'
                     id={label}
                 >
                     {options.map(({ value, content }, index) => (

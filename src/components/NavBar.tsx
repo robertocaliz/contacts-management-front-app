@@ -8,6 +8,7 @@ import SignUpButton from './buttons/signup';
 import ContactsButton from './buttons/contacts';
 import ProfileButton from './buttons/user-profile';
 import { CgProfile } from 'react-icons/cg';
+import { ToggleTheme } from '.';
 
 export const NavBar = () => {
     const { data: session } = useSession();
@@ -47,6 +48,9 @@ export const NavBar = () => {
                         </li>
                     </>
                 )}
+                <li>
+                    <ToggleTheme />
+                </li>
             </ul>
         </nav>
     );

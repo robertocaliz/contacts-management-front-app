@@ -2,8 +2,8 @@ import { LabelHTMLAttributes } from 'react';
 
 type LabelProps = LabelHTMLAttributes<HTMLLabelElement>;
 
-const Label = ({ ...rest }: LabelProps) => {
-    return <label {...rest} className='font-bold text-gray-900' />;
+export const Label = ({ ...rest }: LabelProps) => {
+    return (
+        <label {...rest} className='font-bold text-gray-600 dark:text-white' />
+    );
 };
-
-export default Label;

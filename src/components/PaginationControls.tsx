@@ -32,10 +32,15 @@ export const PaginationControls = () => {
                 {tablePage.isLoading ? (
                     <Spinner loading={tablePage.isLoading} />
                 ) : (
-                    <span>
-                        {tablePage.totalRecords === 0 ? 0 : searchParams.page} /{' '}
-                        {pages}
-                    </span>
+                    <div className='flex gap-2 dark:text-white'>
+                        <span>
+                            {tablePage.totalRecords === 0
+                                ? 0
+                                : searchParams.page}
+                        </span>
+                        <span> /</span>
+                        <span>{pages}</span>
+                    </div>
                 )}
                 <button
                     className='rounded bg-sky-500 px-3 py-1 font-bold text-white hover:bg-sky-600 focus:border-[0.15rem] focus:border-sky-100'

@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import clsx from 'clsx';
 import ErrMessageContainer from './err-message-container';
 import { InputProps } from '@/types/form';
-import Label from './label';
+import { Label } from '.';
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
     (
@@ -19,14 +19,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     ) => {
         return (
             <div className='my-3'>
-                {label && (
-                    <Label htmlFor={label} className='text-gray-600'>
-                        {label}
-                    </Label>
-                )}
+                {label && <Label htmlFor={label}>{label}</Label>}
                 <div
                     className={clsx(
-                        'flex h-10 items-center gap-2 overflow-hidden rounded-lg border-[0.03rem] focus-within:border-[0.13rem] focus-within:border-sky-500 focus-within:transition-all',
+                        'flex h-10 items-center gap-2 overflow-hidden rounded-lg border-[0.03rem] focus-within:border-[0.13rem] focus-within:border-sky-500 dark:border-medium dark:bg-gray-800 dark:focus-within:border-blue-500',
                         {
                             'border-[0.10rem] border-red-600': errMessage,
                         },
@@ -37,7 +33,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     )}
                     <input
                         {...rest}
-                        className='mx-1 h-8 w-full bg-gray-50 pl-2 pr-2 outline-none focus:bg-white'
+                        className='mx-2 h-6 w-full border-none bg-gray-50 pl-2 pr-2 outline-none focus:bg-white dark:bg-gray-800 dark:text-white dark:focus:bg-medium '
                         id={label}
                         type={type}
                         ref={ref}

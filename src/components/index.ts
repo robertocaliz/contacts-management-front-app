@@ -17,3 +17,5 @@ export * from './ProfileForm';
 export * from './TableContainer';
 export * from './PaginationControls';
 export * from './AddButton';
+export * from './ThemeToggle';
+export * from './Label';

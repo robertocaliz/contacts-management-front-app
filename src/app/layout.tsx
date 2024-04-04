@@ -13,7 +13,9 @@ const nunito_Sans = Nunito_Sans({ subsets: ['latin-ext'], weight: '500' });
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang='en'>
-            <body className={nunito_Sans.className}>
+            <body
+                className={`${nunito_Sans.className} dark:bg-medium dark:text-white`}
+            >
                 <NextAuthSessionProvider>
                     <ProgressBar />
                     <NavBar />

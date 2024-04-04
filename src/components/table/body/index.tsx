@@ -1,14 +1,11 @@
 import { ReactNode } from 'react';
 
-
 type TableBodyProps = {
-	children: ReactNode;
-}
-
+    children: ReactNode;
+};
 
 function TableBody({ children }: TableBodyProps) {
-	return <tbody>{children}</tbody>;
+    return <tbody>{children}</tbody>;
 }
-
 
 export default TableBody;
