@@ -1,6 +1,10 @@
 import { TiInfo } from 'react-icons/ti';
 
-function ErrMessageContainer({ errMessage }: { errMessage?: string }) {
+export const ErrorMessageContainer = ({
+    errMessage,
+}: {
+    errMessage?: string;
+}) => {
     return (
         <>
             <div className='mt-1 flex items-center gap-2 text-red-600'>
@@ -15,6 +19,4 @@ function ErrMessageContainer({ errMessage }: { errMessage?: string }) {
             </div>
         </>
     );
-}
-
-export default ErrMessageContainer;
+};

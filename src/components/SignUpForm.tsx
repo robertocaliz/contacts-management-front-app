@@ -3,19 +3,16 @@
 import { redirect } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import Centralize from './centralize';
-import FormHeader from './form-header';
-import Input from './input';
 import Link from 'next/link';
 import { User } from '@/types';
-import PasswordInput from './password-input';
 import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
-import Form from './form';
+import Form, { CheckBox, FormHeader, Input, PasswordInput } from './form';
 import { checkIfEmailExists, createAccount } from '@/app/actions/users';
 import { displayMessages } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
-import { CheckBox, Footer } from '.';
+import { Footer } from '.';
 
 type AccountData = {
     confirmPassword?: string;

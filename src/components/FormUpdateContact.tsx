@@ -5,8 +5,6 @@ import { useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
 import Centralize from './centralize';
-import FormHeader from './form-header';
-import Input from './input';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use-alert';
 import { objChanged } from '@/functions/object';
@@ -15,7 +13,7 @@ import { displayMessages } from '@/functions/form';
 import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
-import Form from './form';
+import Form, { FormHeader, Input } from './form';
 import { RequiredFieldNotification } from '.';
 
 export function FormUpdateContact({ contact }: { contact: Contact }) {

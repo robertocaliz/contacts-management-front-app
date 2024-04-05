@@ -4,17 +4,14 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import Centralize from './centralize';
-import FormHeader from './form-header';
-import Input from './input';
 import { SignInError, UserCredentials } from '@/types';
-import PasswordInput from './password-input';
 import { StatusCodes } from 'http-status-codes';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use-alert';
 import SubmitButton from './buttons/submit';
 import SignUpButton from './buttons/signup';
 import SignupRecoverButton from './buttons/signup-recover';
-import Form from './form';
+import Form, { FormHeader, Input, PasswordInput } from './form';
 import { displayMessages } from '@/functions/form';
 import { Footer } from '.';
 

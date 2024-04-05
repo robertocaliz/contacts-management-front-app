@@ -4,14 +4,12 @@ import Centralize from './centralize';
 import { useForm } from 'react-hook-form';
 import Alert from 'react-bootstrap/Alert';
 import useAlert from '@/hooks/use-alert';
-import PasswordInput from './password-input';
-import FormHeader from './form-header';
 import { StatusCodes } from 'http-status-codes';
 import { useParams, useRouter } from 'next/navigation';
 import SubmitButton from './buttons/submit';
 import { updatePassword } from '@/app/actions/users';
 import { displayMessages } from '@/functions/form';
-import Form from './form';
+import Form, { FormHeader, PasswordInput } from './form';
 
 type FormData = {
     password: string;

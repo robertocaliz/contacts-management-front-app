@@ -1,8 +1,6 @@
 'use client';
 
 import { User } from '@/types';
-import FormHeader from './form-header';
-import Input from './input';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
@@ -12,16 +10,14 @@ import Centralize from './centralize';
 import SubmitButton from './buttons/submit';
 import { update as updateProfile } from '@/app/actions/users';
 import SignupRecoverButton from './buttons/signup-recover';
-import Form from './form';
+import Form, { FormHeader, Input } from './form';
 import { useUpdateSessionUser } from '@/hooks';
 import { displayMessages } from '@/functions/form';
 import { RequiredFieldNotification } from '.';
 
 export const ProfileForm = () => {
     const [userData, setUserData] = useState<Partial<User>>({});
-
     const { session, updateSessionUser } = useUpdateSessionUser();
-
     const { alertType, alertMessage, showAlert, alert } = useAlert();
 
     const {

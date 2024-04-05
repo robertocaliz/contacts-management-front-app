@@ -1,11 +1,11 @@
 import { forwardRef } from 'react';
 
 import clsx from 'clsx';
-import ErrMessageContainer from './err-message-container';
 import { InputProps } from '@/types/form';
-import { Label } from '.';
+import { ErrorMessageContainer } from '..';
+import { Label } from './Label';
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Input = forwardRef<HTMLInputElement, InputProps>(
     (
         {
             label,
@@ -24,7 +24,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     className={clsx(
                         'flex h-10 items-center gap-2 overflow-hidden rounded-lg border-[0.03rem] focus-within:border-[0.13rem] focus-within:border-sky-500 dark:border-medium dark:bg-gray-800 dark:focus-within:border-blue-500',
                         {
-                            'border-[0.10rem] border-red-600': errMessage,
+                            'border-[1px] border-red-600 dark:border-red-600':
+                                errMessage,
                         },
                     )}
                 >
@@ -42,12 +43,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                         <span className='mx-2 text-xl'>{endAdornment}</span>
                     )}
                 </div>
-                <ErrMessageContainer errMessage={errMessage} />
+                <ErrorMessageContainer errMessage={errMessage} />
             </div>
         );
     },
 );
 
 Input.displayName = 'Input';
-
-export default Input;

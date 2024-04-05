@@ -5,11 +5,15 @@ import Table from './table';
 import TableHeader from './table/header';
 import TableHead from './table/head';
 import TableBody from './table/body';
-import SearchBar from './SearchBar';
-import { FaPhone } from 'react-icons/fa';
 import { SiGmail } from 'react-icons/si';
 import { SelectOption } from '@/types';
-import { AddButton, ContactPage, PaginationControls, TableContainer } from '.';
+import {
+    AddButton,
+    ContactPage,
+    PaginationControls,
+    SearchBar,
+    TableContainer,
+} from '.';
 
 export const ContactTable = () => {
     const selectOptions: SelectOption[] = [
@@ -17,7 +21,6 @@ export const ContactTable = () => {
         { value: 'email', content: 'E-mail' },
         { value: 'phoneNumber', content: 'Telefone' },
     ];
-
     return (
         <>
             <div className='flex flex-wrap-reverse items-center justify-between gap-12'>
@@ -37,15 +40,13 @@ export const ContactTable = () => {
                             <TableHeader>
                                 <div className='flex items-center gap-2'>
                                     <span>Email</span>
-                                    <SiGmail />
+                                    <SiGmail
+                                        className='text-red-500'
+                                        size={16}
+                                    />
                                 </div>
                             </TableHeader>
-                            <TableHeader>
-                                <div className='flex items-center gap-2'>
-                                    <span>Telefone</span>
-                                    <FaPhone />
-                                </div>
-                            </TableHeader>
+                            <TableHeader>Telefone</TableHeader>
                             <TableHeader />
                             <TableHeader />
                         </TableRow>

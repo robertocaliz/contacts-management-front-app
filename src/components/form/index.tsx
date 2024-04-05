@@ -7,3 +7,9 @@ function Form({ ...rest }: FormProps) {
 }
 
 export default Form;
+
+export * from './FormHeader';
+export * from './Input';
+export * from './PasswordInput';
+export * from './Select';
+export * from './CheckBox';

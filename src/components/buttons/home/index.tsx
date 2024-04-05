@@ -7,7 +7,7 @@ type HomeButtonPorps = {
     href?: string;
 } & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const caveat = Caveat({ subsets: ['latin'] });
+const caveat = Caveat({ subsets: ['latin-ext'] });
 
 export const HomeButton = ({ href = '/', ...rest }: HomeButtonPorps) => {
     return (

@@ -1,6 +1,6 @@
 import { SelectOption } from '@/types';
 import { HtmlHTMLAttributes, ReactNode } from 'react';
-import { Label } from '.';
+import { Label } from './Label';
 
 type SelectProps = {
     label?: string;
@@ -9,7 +9,7 @@ type SelectProps = {
     options: Array<SelectOption>;
 } & HtmlHTMLAttributes<HTMLSelectElement>;
 
-const Select = ({
+export const Select = ({
     startAdornment,
     endAdornment,
     label,
@@ -39,5 +39,3 @@ const Select = ({
         </div>
     );
 };
-
-export default Select;

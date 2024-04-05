@@ -1,8 +1,6 @@
 'use client';
 
 import Centralize from './centralize';
-import FormHeader from './form-header';
-import Input from './input';
 import { useForm } from 'react-hook-form';
 import { Contact } from '@/types';
 import Alerts from '@/lib/alerts';
@@ -10,7 +8,7 @@ import { create } from '@/app/actions/contact';
 import { displayMessages } from '@/functions/form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
-import Form from './form';
+import Form, { FormHeader, Input } from './form';
 import { RequiredFieldNotification } from '.';
 
 export function FormAddContact() {

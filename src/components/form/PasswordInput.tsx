@@ -1,16 +1,18 @@
+'use client';
+
 import { forwardRef, useState } from 'react';
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 import clsx from 'clsx';
-import ErrMessageContainer from './err-message-container';
 import { InputProps } from '@/types/form';
-import { Label } from '.';
+import { ErrorMessageContainer } from '..';
+import { Label } from './Label';
 
 type PasswordInputProps = {
     type?: 'password';
 } & InputProps;
 
-const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-    ({ name = 'submit', label, startAdornment, errMessage, ...rest }, ref) => {
+export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
+    ({ label, startAdornment, errMessage, ...rest }, ref) => {
         const [displayPassword, setDisplayPassword] = useState(false);
         const [typePassword, setTypePassword] = useState(true);
 
@@ -22,28 +24,24 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         return (
             <>
                 <div className='mb-3'>
-                    {label && (
-                        <Label htmlFor={label} className='text-gray-800'>
-                            {label}
-                        </Label>
-                    )}
+                    {label && <Label htmlFor={label}>{label}</Label>}
                     <div
                         className={clsx(
-                            'flex h-10 items-center gap-2 overflow-hidden rounded-lg border-[0.03rem] focus-within:border-[0.12rem] focus-within:border-sky-500 dark:border-none dark:bg-gray-800',
+                            'flex h-10 items-center gap-2 overflow-hidden rounded-lg border-[0.03rem] focus-within:border-[0.12rem] focus-within:border-sky-500 dark:border-medium dark:bg-gray-800 dark:focus-within:border-sky-500',
                             {
-                                'border-[0.10rem] border-red-600': errMessage,
+                                'border-[1px] border-red-600 dark:border-red-600':
+                                    errMessage,
                             },
                         )}
                     >
                         {startAdornment && (
-                            <span className='ml-5  text-xl text-sky-500'>
+                            <span className='ml-5 text-xl text-green-600'>
                                 {startAdornment}
                             </span>
                         )}
                         <input
                             {...rest}
                             id={label}
-                            name={name}
                             className='mx-2 h-6 w-full bg-gray-50 pl-2 pr-2 text-slate-600 outline-none focus:bg-white dark:bg-gray-800 dark:text-white dark:focus:bg-medium'
                             type={typePassword ? 'password' : 'text'}
                             ref={ref}
@@ -59,7 +57,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
                             )}
                         </span>
                     </div>
-                    <ErrMessageContainer errMessage={errMessage} />
+                    <ErrorMessageContainer errMessage={errMessage} />
                 </div>
             </>
         );
@@ -67,5 +65,3 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
 );
 
 PasswordInput.displayName = 'PasswordInput';
-
-export default PasswordInput;
