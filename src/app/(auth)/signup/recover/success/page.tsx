@@ -9,10 +9,11 @@ export default function SuccessPage() {
     return (
         <Centralize>
             <div className='flex flex-col gap-2 text-center'>
-                <span>Senha alterada!</span>
-                <span>
-                    Faça login e continue usando o <strong>ContactsPro</strong>
-                </span>
+                <span className='font-bold'>Senha alterada!</span>
+                <div>
+                    <span>Faça login ou continue usando o </span>
+                    <span className='font-bold'>ContactsPro.</span>
+                </div>
             </div>
         </Centralize>
     );
