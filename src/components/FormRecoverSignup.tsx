@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
+import { SiGmail } from 'react-icons/si';
 
 export function FormRecoverSignup() {
     const router = useRouter();
@@ -48,6 +49,7 @@ export function FormRecoverSignup() {
                     label='Digite seu e-mail'
                     {...register('email')}
                     errMessage={errors.email?.message}
+                    startAdornment={<SiGmail className='text-red-500' />}
                 />
                 <SubmitButton
                     content='Recuperar'

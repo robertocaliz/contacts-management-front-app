@@ -13,7 +13,7 @@ import SignUpButton from './buttons/signup';
 import SignupRecoverButton from './buttons/signup-recover';
 import Form, { FormHeader, Input, PasswordInput } from './form';
 import { displayMessages } from '@/functions/form';
-import { Footer } from '.';
+import { Footer } from '@/components';
 
 export function LoginForm() {
     const {

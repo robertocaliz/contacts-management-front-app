@@ -12,7 +12,7 @@ import Form, { CheckBox, FormHeader, Input, PasswordInput } from './form';
 import { checkIfEmailExists, createAccount } from '@/app/actions/users';
 import { displayMessages } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
-import { Footer } from '.';
+import { Footer } from '@/components';
 
 type AccountData = {
     confirmPassword?: string;

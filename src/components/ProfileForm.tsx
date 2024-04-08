@@ -13,7 +13,7 @@ import SignupRecoverButton from './buttons/signup-recover';
 import Form, { FormHeader, Input } from './form';
 import { useUpdateSessionUser } from '@/hooks';
 import { displayMessages } from '@/functions/form';
-import { RequiredFieldNotification } from '.';
+import { RequiredFieldNotification } from '@/components';
 
 export const ProfileForm = () => {
     const [userData, setUserData] = useState<Partial<User>>({});

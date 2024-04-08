@@ -9,7 +9,7 @@ import { displayMessages } from '@/functions/form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
-import { RequiredFieldNotification } from '.';
+import { RequiredFieldNotification } from '@/components';
 
 export function FormAddContact() {
     const {

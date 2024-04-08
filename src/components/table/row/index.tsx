@@ -6,7 +6,7 @@ function TableRow({ ...rest }: TableRowProps) {
     return (
         <tr
             {...rest}
-            className='duration-200 hover:bg-gray-50 dark:hover:text-medium'
+            className='duration-300 hover:bg-gray-50 dark:hover:text-medium'
         />
     );
 }

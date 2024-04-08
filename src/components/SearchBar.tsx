@@ -32,6 +32,7 @@ export const SearchBar = ({ selectOptions, ...rest }: SearchBarProps) => {
                         onChange={(e: ChangeEvent<HTMLInputElement>) =>
                             handleSearch(e)
                         }
+                        placeholder='Pesquisar'
                     />
                 </div>
                 <div className='relative bottom-[0.06rem] flex-grow-[2]'>

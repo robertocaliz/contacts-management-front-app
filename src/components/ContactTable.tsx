@@ -5,7 +5,6 @@ import Table from './table';
 import TableHeader from './table/header';
 import TableHead from './table/head';
 import TableBody from './table/body';
-import { SiGmail } from 'react-icons/si';
 import { SelectOption } from '@/types';
 import {
     AddButton,
@@ -13,7 +12,7 @@ import {
     PaginationControls,
     SearchBar,
     TableContainer,
-} from '.';
+} from '@/components';
 
 export const ContactTable = () => {
     const selectOptions: SelectOption[] = [
@@ -40,10 +39,6 @@ export const ContactTable = () => {
                             <TableHeader>
                                 <div className='flex items-center gap-2'>
                                     <span>Email</span>
-                                    <SiGmail
-                                        className='text-red-500'
-                                        size={16}
-                                    />
                                 </div>
                             </TableHeader>
                             <TableHeader>Telefone</TableHeader>

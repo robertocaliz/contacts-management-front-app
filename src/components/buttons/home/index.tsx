@@ -1,21 +1,19 @@
-import { Caveat } from 'next/font/google';
 import Link from 'next/link';
-import { AnchorHTMLAttributes } from 'react';
-import { TiContacts } from 'react-icons/ti';
+import { AnchorHTMLAttributes, ReactNode } from 'react';
 
 type HomeButtonPorps = {
     href?: string;
+    content$?: string | ReactNode;
 } & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const caveat = Caveat({ subsets: ['latin-ext'] });
-
-export const HomeButton = ({ href = '/', ...rest }: HomeButtonPorps) => {
+export const HomeButton = ({
+    href = '/',
+    content$,
+    ...rest
+}: HomeButtonPorps) => {
     return (
         <Link href={href} {...rest}>
-            <TiContacts className='size-6' />
-            <span className={`${caveat.className} text-[1rem]`}>
-                ContactsPro
-            </span>
+            {content$ ?? 'Home'}
         </Link>
     );
 };

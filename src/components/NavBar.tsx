@@ -8,16 +8,31 @@ import SignUpButton from './buttons/signup';
 import ContactsButton from './buttons/contacts';
 import ProfileButton from './buttons/user-profile';
 import { CgProfile } from 'react-icons/cg';
-import { ToggleTheme } from '.';
+import { ToggleTheme } from '@/components';
+import { TiContacts } from 'react-icons/ti';
+import { Caveat } from 'next/font/google';
+
+const caveat = Caveat({ subsets: ['latin-ext'], weight: ['700'] });
 
 export const NavBar = () => {
     const { data: session } = useSession();
-
     return (
         <nav className='flex justify-between bg-gray-800 px-[1.8rem] py-[0.75rem] font-bold'>
             <ul className='flex items-center gap-4'>
                 <li>
-                    <HomeButton className='flex items-center gap-2 text-white' />
+                    <HomeButton
+                        content$={
+                            <div className='flex items-center gap-2'>
+                                <TiContacts size={28} />
+                                <span
+                                    className={`${caveat.className} text-[1rem]`}
+                                >
+                                    ContactsPro
+                                </span>
+                            </div>
+                        }
+                        className='flex items-center gap-2 text-white'
+                    />
                 </li>
                 {session && (
                     <li>

@@ -19,3 +19,4 @@ export * from './ThemeToggle';
 export * from './SearchBar';
 export * from './Footer';
 export * from './ErrorMessageContainer';
+export * from './Modal';

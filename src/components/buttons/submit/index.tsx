@@ -19,7 +19,7 @@ const SubmitButton = ({
         <button
             {...rest}
             className={clsx(
-                'my-3 w-full rounded-lg bg-green-600 p-[0.7rem] font-bold text-white duration-300 hover:bg-green-700  focus:border-none',
+                'my-3 w-full rounded-lg bg-green-600 p-[0.7rem] font-bold text-white shadow-lg duration-300 hover:bg-green-700  focus:border-none',
                 {
                     'opacity-[0.5]': disabled || pending,
                 },

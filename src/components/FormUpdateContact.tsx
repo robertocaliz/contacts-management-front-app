@@ -14,7 +14,7 @@ import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
-import { RequiredFieldNotification } from '.';
+import { RequiredFieldNotification } from '@/components';
 
 export function FormUpdateContact({ contact }: { contact: Contact }) {
     const router = useRouter();
