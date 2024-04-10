@@ -6,7 +6,7 @@ import '../../styles/global.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Nunito_Sans } from 'next/font/google';
 import { GlobalFooter, GlobalMain, NavBar, ProgressBar } from '@/components';
-import { Providers } from './providers';
+import { Providers } from './global-providers';
 
 const nunito_Sans = Nunito_Sans({ subsets: ['latin-ext'], weight: '500' });
 
