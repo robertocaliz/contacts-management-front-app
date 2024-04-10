@@ -12,7 +12,7 @@ import { ToggleTheme } from '@/components';
 import { TiContacts } from 'react-icons/ti';
 import { Caveat } from 'next/font/google';
 
-const caveat = Caveat({ subsets: ['latin-ext'], weight: ['700'] });
+const caveat = Caveat({ subsets: ['latin'], weight: ['700'] });
 
 export const NavBar = () => {
     const { data: session } = useSession();
