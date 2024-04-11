@@ -5,6 +5,6 @@ export const metadata: Metadata = {
     title: 'Perfíl do utilizador',
 };
 
-export default async function ProfilePage() {
+export default function ProfilePage() {
     return <ProfileForm />;
 }
