@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { updateEmail } from '@/app/actions/users';
 import { StatusCodes } from 'http-status-codes';
-import { updateSessionUser } from '@/functions/session';
+import { updateUserSession } from '@/functions/session';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import { Centralize } from '@/components';
 import { useAlert } from '@/hooks';
@@ -18,7 +18,7 @@ export const EmailChangeConfirmationControl = () => {
         updateEmail(String(params.alterationToken))
             .then(async ({ status, newEmail }) => {
                 if (status === StatusCodes.OK) {
-                    return await updateSessionUser({ email: newEmail }).then(
+                    return await updateUserSession({ email: newEmail }).then(
                         () => {
                             alert.show(
                                 'success',

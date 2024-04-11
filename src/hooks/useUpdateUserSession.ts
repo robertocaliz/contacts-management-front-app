@@ -3,10 +3,10 @@
 import { User } from '@/types';
 import { useSession } from 'next-auth/react';
 
-export const useUpdateSessionUser = () => {
+export const useUpdateUserSession = () => {
     const { data: session, update, status: userStatus } = useSession();
 
-    const updateSessionUser = async (userData: Partial<User>) => {
+    const updateUserSession = async (userData: Partial<User>) => {
         await update({
             ...session,
             user: {
@@ -18,7 +18,7 @@ export const useUpdateSessionUser = () => {
 
     return {
         session,
-        updateSessionUser,
+        updateUserSession,
         userStatus,
     };
 };

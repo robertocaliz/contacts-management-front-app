@@ -1,4 +1,4 @@
 export * from './useFetch';
 export * from './useSubmitButton';
-export * from './useUpdateSessionUser';
+export * from './useUpdateUserSession';
 export * from './useAlert';

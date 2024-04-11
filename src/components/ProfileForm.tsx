@@ -9,13 +9,13 @@ import SubmitButton from './buttons/submit';
 import { update as updateProfile } from '@/app/actions/users';
 import SignupRecoverButton from './buttons/signup-recover';
 import Form, { FormHeader, Input } from './form';
-import { useAlert, useUpdateSessionUser } from '@/hooks';
+import { useAlert, useUpdateUserSession } from '@/hooks';
 import { displayMessages } from '@/functions/form';
 import { Centralize, RequiredFieldNotification } from '@/components';
 
 export const ProfileForm = () => {
     const [userData, setUserData] = useState<Partial<User>>({});
-    const { session, updateSessionUser } = useUpdateSessionUser();
+    const { session, updateUserSession } = useUpdateUserSession();
     const { alertType, alertMessage, showAlert, alert } = useAlert();
 
     const {
@@ -56,7 +56,7 @@ export const ProfileForm = () => {
             displayMessages(errors, setError);
             return;
         }
-        await updateSessionUser({ name: newUserData.name }).then(() => {
+        await updateUserSession({ name: newUserData.name }).then(() => {
             if (emailSend) {
                 return alert.show(
                     'warning',
