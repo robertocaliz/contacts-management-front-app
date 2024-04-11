@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { updateSessionUser } from '@/functions/session';
+import { updateUserSession } from '@/functions/session';
 import { RefreshAccessTokenResBody } from '@/types';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { StatusCodes } from 'http-status-codes';
@@ -23,7 +23,7 @@ export const handleUnauthorizedErrorInterceptor = ({
         ) {
             originalRequest._retry = true;
             return await refreshAccessToken().then(async (data) => {
-                await updateSessionUser(data);
+                await updateUserSession(data);
                 originalRequest.headers['Authorization'] =
                     `Bearer ${data.accessToken}`;
                 return axiosAuth(originalRequest);
