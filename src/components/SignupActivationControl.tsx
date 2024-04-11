@@ -1,20 +1,20 @@
 'use client';
 
-import useAlert from '@/hooks/use-alert';
 import { StatusCodes } from 'http-status-codes';
 import { useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { useParams } from 'next/navigation';
 import { activateAccount } from '@/app/actions/users';
-import Centralize from './centralize';
+import { GLOBAL_ERROR_MESSAGE } from '@/constants';
+import { Centralize } from '@/components';
+import { useAlert } from '@/hooks';
 
-export default function SinupActivationControl() {
+export const SinupActivationControl = () => {
     const params = useParams();
-
     const { alertType, alertMessage, alert } = useAlert();
 
     useEffect(() => {
-        activateAccount(params.activationToken as string)
+        activateAccount(String(params.activationToken))
             .then((status) => {
                 if (status === StatusCodes.OK) {
                     alert.show(
@@ -32,18 +32,16 @@ export default function SinupActivationControl() {
 					`,
                 );
             })
-            .catch((error) => {
-                console.error(error);
+            .catch(() => {
+                alert.show('danger', GLOBAL_ERROR_MESSAGE);
             });
     }, []);
 
     return (
-        <div>
-            <Centralize>
-                <Alert variant={alertType}>
-                    {alertMessage ?? 'Analizando o token de activação...'}
-                </Alert>
-            </Centralize>
-        </div>
+        <Centralize>
+            <Alert variant={alertType}>
+                {alertMessage ?? 'Analizando o token de activação...'}
+            </Alert>
+        </Centralize>
     );
-}
+};

@@ -13,6 +13,7 @@ import {
     SearchBar,
     TableContainer,
 } from '@/components';
+import { PrintButton } from './buttons/print';
 
 export const ContactTable = () => {
     const selectOptions: SelectOption[] = [
@@ -27,7 +28,7 @@ export const ContactTable = () => {
                     selectOptions={selectOptions}
                     className='flex-grow-[8]'
                 />
-                <div className='flex-grow-[2]'>
+                <div className='flex flex-grow-[1] items-center gap-4'>
                     <AddButton href='/contacts/add' />
                 </div>
             </div>

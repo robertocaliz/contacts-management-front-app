@@ -1,6 +1,5 @@
 'use client';
 
-import Centralize from './centralize';
 import { User } from '@/types';
 import { useRouter } from 'next/navigation';
 import { recoverSignup } from '@/app/actions/users';
@@ -9,8 +8,9 @@ import { StatusCodes } from 'http-status-codes';
 import { useForm } from 'react-hook-form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
-import Form, { FormHeader, Input } from './form';
+import Form, { FormHeader, Input } from '@/components/form';
 import { SiGmail } from 'react-icons/si';
+import { Centralize } from '@/components';
 
 export function FormRecoverSignup() {
     const router = useRouter();

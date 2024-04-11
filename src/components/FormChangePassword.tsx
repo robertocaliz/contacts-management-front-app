@@ -1,15 +1,15 @@
 'use client';
 
-import Centralize from './centralize';
 import { useForm } from 'react-hook-form';
 import Alert from 'react-bootstrap/Alert';
-import useAlert from '@/hooks/use-alert';
 import { StatusCodes } from 'http-status-codes';
 import { useParams, useRouter } from 'next/navigation';
 import SubmitButton from './buttons/submit';
 import { updatePassword } from '@/app/actions/users';
 import { displayMessages } from '@/functions/form';
-import Form, { FormHeader, PasswordInput } from './form';
+import Form, { FormHeader, PasswordInput } from '@/components/form';
+import { Centralize } from '@/components';
+import { useAlert } from '@/hooks';
 
 type FormData = {
     password: string;

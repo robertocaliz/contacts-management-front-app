@@ -3,17 +3,16 @@
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import Centralize from './centralize';
 import { SignInError, UserCredentials } from '@/types';
 import { StatusCodes } from 'http-status-codes';
 import Alert from 'react-bootstrap/Alert';
-import useAlert from '@/hooks/use-alert';
 import SubmitButton from './buttons/submit';
 import SignUpButton from './buttons/signup';
 import SignupRecoverButton from './buttons/signup-recover';
 import Form, { FormHeader, Input, PasswordInput } from './form';
 import { displayMessages } from '@/functions/form';
-import { Footer } from '@/components';
+import { Centralize, Footer } from '@/components';
+import { useAlert } from '@/hooks';
 
 export function LoginForm() {
     const {
@@ -25,7 +24,6 @@ export function LoginForm() {
     } = useForm<UserCredentials>();
 
     const router = useRouter();
-
     const { alertType, alertMessage, showAlert, alert } = useAlert();
 
     const loginUser = async () => {

@@ -1,4 +1,4 @@
-import SinupActivationControl from '@/components/signup-activation-control';
+import { SinupActivationControl } from '@/components';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

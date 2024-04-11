@@ -20,3 +20,6 @@ export * from './SearchBar';
 export * from './Footer';
 export * from './ErrorMessageContainer';
 export * from './Modal';
+export * from './SignupActivationControl';
+export * from './EmailChangeConfirmationControl';
+export * from './Centralize';

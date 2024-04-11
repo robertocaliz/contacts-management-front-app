@@ -1,4 +1,4 @@
-import Centralize from '@/components/centralize';
+import { Centralize } from '@/components';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

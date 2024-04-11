@@ -1,27 +1,30 @@
 'use client';
 
 import Alert from 'react-bootstrap/Alert';
-import Centralize from './centralize';
-import useAlert from '@/hooks/use-alert';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { updateEmail } from '@/app/actions/users';
 import { StatusCodes } from 'http-status-codes';
 import { updateSessionUser } from '@/functions/session';
+import { GLOBAL_ERROR_MESSAGE } from '@/constants';
+import { Centralize } from '@/components';
+import { useAlert } from '@/hooks';
 
-export default function EmailChangeConfirmationControl() {
+export const EmailChangeConfirmationControl = () => {
     const params = useParams();
-
     const { alertType, alertMessage, alert } = useAlert();
 
     useEffect(() => {
         updateEmail(String(params.alterationToken))
             .then(async ({ status, newEmail }) => {
                 if (status === StatusCodes.OK) {
-                    await updateSessionUser({ email: newEmail });
-                    return alert.show(
-                        'success',
-                        'Seu email foi alterado com sucesso!',
+                    return await updateSessionUser({ email: newEmail }).then(
+                        () => {
+                            alert.show(
+                                'success',
+                                'Seu email foi alterado com sucesso!',
+                            );
+                        },
                     );
                 }
                 alert.show(
@@ -30,20 +33,18 @@ export default function EmailChangeConfirmationControl() {
 						Solicite um novo token de alteração.`,
                 );
             })
-            .catch((error) => {
-                console.error(error);
+            .catch(() => {
+                alert.show('danger', GLOBAL_ERROR_MESSAGE);
             });
     }, []);
 
     return (
-        <div className='mt-20'>
-            <Centralize>
-                <Alert variant={alertType} className='text-center'>
-                    {alertMessage ?? (
-                        <span>Analizando o token de alteração...</span>
-                    )}
-                </Alert>
-            </Centralize>
-        </div>
+        <Centralize>
+            <Alert variant={alertType} className='text-center'>
+                {alertMessage ?? (
+                    <span>Analizando o token de alteração...</span>
+                )}
+            </Alert>
+        </Centralize>
     );
-}
+};

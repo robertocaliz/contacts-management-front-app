@@ -1,4 +1,4 @@
-import Centralize from '@/components/centralize';
+import { Centralize } from '@/components';
 import { ParamsProps } from '@/types';
 import { Metadata } from 'next';
 

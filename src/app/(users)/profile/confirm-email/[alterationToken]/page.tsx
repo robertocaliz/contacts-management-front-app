@@ -1,4 +1,4 @@
-import EmailChangeConfirmationControl from '@/components/email-change-confirmation-control';
+import { EmailChangeConfirmationControl } from '@/components';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

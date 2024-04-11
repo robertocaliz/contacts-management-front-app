@@ -4,16 +4,14 @@ import { User } from '@/types';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import useAlert from '@/hooks/use-alert';
 import { objChanged } from '@/functions/object';
-import Centralize from './centralize';
 import SubmitButton from './buttons/submit';
 import { update as updateProfile } from '@/app/actions/users';
 import SignupRecoverButton from './buttons/signup-recover';
 import Form, { FormHeader, Input } from './form';
-import { useUpdateSessionUser } from '@/hooks';
+import { useAlert, useUpdateSessionUser } from '@/hooks';
 import { displayMessages } from '@/functions/form';
-import { RequiredFieldNotification } from '@/components';
+import { Centralize, RequiredFieldNotification } from '@/components';
 
 export const ProfileForm = () => {
     const [userData, setUserData] = useState<Partial<User>>({});

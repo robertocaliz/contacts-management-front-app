@@ -2,7 +2,6 @@
 
 import { redirect } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import Centralize from './centralize';
 import Link from 'next/link';
 import { User } from '@/types';
 import { useState } from 'react';
@@ -12,7 +11,7 @@ import Form, { CheckBox, FormHeader, Input, PasswordInput } from './form';
 import { checkIfEmailExists, createAccount } from '@/app/actions/users';
 import { displayMessages } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
-import { Footer } from '@/components';
+import { Centralize, Footer } from '@/components';
 
 type AccountData = {
     confirmPassword?: string;

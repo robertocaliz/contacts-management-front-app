@@ -4,9 +4,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
-import Centralize from './centralize';
 import Alert from 'react-bootstrap/Alert';
-import useAlert from '@/hooks/use-alert';
 import { objChanged } from '@/functions/object';
 import { update } from '@/app/actions/contact';
 import { displayMessages } from '@/functions/form';
@@ -14,7 +12,8 @@ import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
-import { RequiredFieldNotification } from '@/components';
+import { Centralize, RequiredFieldNotification } from '@/components';
+import { useAlert } from '@/hooks';
 
 export function FormUpdateContact({ contact }: { contact: Contact }) {
     const router = useRouter();
