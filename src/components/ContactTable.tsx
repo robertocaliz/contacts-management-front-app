@@ -13,7 +13,6 @@ import {
     SearchBar,
     TableContainer,
 } from '@/components';
-import { PrintButton } from './buttons/print';
 
 export const ContactTable = () => {
     const selectOptions: SelectOption[] = [
