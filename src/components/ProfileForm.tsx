@@ -45,12 +45,9 @@ export const ProfileForm = () => {
         if (!profileChanged(newUserData)) {
             return alert.show('warning', 'O perfíl não foi alterado.');
         }
-        if (newUserData.email === userData.email) {
-            delete newUserData['email'];
-        }
         const { errors, emailSend } = await updateProfile(
             newUserData,
-            userData._id as string,
+            String(userData._id),
         );
         if (errors) {
             displayMessages(errors, setError);
