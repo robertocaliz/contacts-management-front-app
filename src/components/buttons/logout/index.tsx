@@ -16,7 +16,7 @@ const LogoutButton = ({ ...rest }: LoginButtonProps) => {
             href=''
             onClick={handleClick}
             {...rest}
-            className='flex items-center gap-1 text-red-600'
+            className='flex items-center gap-1 text-red-500'
         >
             <span>Logout</span>
             <MdLogout size={25} />
