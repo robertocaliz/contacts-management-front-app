@@ -44,13 +44,13 @@ export const NavBar = () => {
                 {session ? (
                     <>
                         <li>
-                            <LogoutButton className='text-white' />
-                        </li>
-                        <li>
                             <ProfileButton
                                 className='text-[1.5rem] text-white'
                                 _content={<CgProfile />}
                             />
+                        </li>
+                        <li>
+                            <LogoutButton className='text-white' />
                         </li>
                     </>
                 ) : (
