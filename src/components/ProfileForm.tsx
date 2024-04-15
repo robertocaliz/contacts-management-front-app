@@ -6,12 +6,12 @@ import { useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { objChanged } from '@/functions/object';
 import SubmitButton from '@/components/buttons/submit';
-import { update as updateProfile } from '@/app/actions/users';
 import SignupRecoverButton from '@/components/buttons/signup-recover';
 import Form, { FormHeader, Input } from '@/components/form';
 import { useAlert, useUpdateUserSession } from '@/hooks';
 import { displayMessages } from '@/functions/form';
 import { Centralize, RequiredFieldNotification } from '@/components';
+import { update as updateProfile } from '../../server/actions/users';
 
 export const ProfileForm = () => {
     const [userData, setUserData] = useState<Partial<User>>({});

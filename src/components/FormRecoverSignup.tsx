@@ -2,7 +2,6 @@
 
 import { User } from '@/types';
 import { useRouter } from 'next/navigation';
-import { recoverSignup } from '@/app/actions/users';
 import { displayMessages } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
 import { useForm } from 'react-hook-form';
@@ -11,6 +10,7 @@ import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from '@/components/form';
 import { SiGmail } from 'react-icons/si';
 import { Centralize } from '@/components';
+import { recoverSignup } from '../../server/actions/users';
 
 export function FormRecoverSignup() {
     const router = useRouter();

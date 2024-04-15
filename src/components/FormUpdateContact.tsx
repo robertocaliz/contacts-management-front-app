@@ -6,7 +6,7 @@ import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
 import Alert from 'react-bootstrap/Alert';
 import { objChanged } from '@/functions/object';
-import { update } from '@/app/actions/contact';
+import { update } from '../../server/actions/contact';
 import { displayMessages } from '@/functions/form';
 import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';

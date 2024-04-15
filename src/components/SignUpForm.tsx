@@ -8,10 +8,10 @@ import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
 import Form, { CheckBox, FormHeader, Input, PasswordInput } from './form';
-import { checkIfEmailExists, createAccount } from '@/app/actions/users';
 import { displayMessages } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
 import { Centralize, Footer } from '@/components';
+import { checkIfEmailExists, createAccount } from '../../server/actions/users';
 
 type AccountData = {
     confirmPassword?: string;

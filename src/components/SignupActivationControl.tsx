@@ -4,10 +4,10 @@ import { StatusCodes } from 'http-status-codes';
 import { useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { useParams } from 'next/navigation';
-import { activateAccount } from '@/app/actions/users';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import { Centralize } from '@/components';
 import { useAlert } from '@/hooks';
+import { activateAccount } from '../../server/actions/users';
 
 export const SinupActivationControl = () => {
     const params = useParams();

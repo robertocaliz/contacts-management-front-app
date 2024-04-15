@@ -1,6 +1,5 @@
 'use client';
 
-import { deleteById, getAll } from '@/app/actions/contact';
 import { useFetch } from '@/hooks';
 import { Contact, GetAllResponse } from '@/types';
 import { useContext, useEffect, useState } from 'react';
@@ -12,6 +11,7 @@ import TableData from './table/data';
 import TableRow from './table/row';
 import { migrateToPrevPage } from '@/functions/table';
 import Link from 'next/link';
+import { getAll, deleteById } from '../../server/actions/contact';
 
 export const ContactPage = () => {
     const [contacts, setContacts] = useState<Contact[]>([]);

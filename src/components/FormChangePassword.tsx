@@ -5,11 +5,11 @@ import Alert from 'react-bootstrap/Alert';
 import { StatusCodes } from 'http-status-codes';
 import { useParams, useRouter } from 'next/navigation';
 import SubmitButton from './buttons/submit';
-import { updatePassword } from '@/app/actions/users';
 import { displayMessages } from '@/functions/form';
 import Form, { FormHeader, PasswordInput } from '@/components/form';
 import { Centralize } from '@/components';
 import { useAlert } from '@/hooks';
+import { updatePassword } from '../../server/actions/users';
 
 type FormData = {
     password: string;

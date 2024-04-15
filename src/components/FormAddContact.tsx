@@ -3,12 +3,12 @@
 import { useForm } from 'react-hook-form';
 import { Contact } from '@/types';
 import Alerts from '@/lib/alerts';
-import { create } from '@/app/actions/contact';
 import { displayMessages } from '@/functions/form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
 import { Centralize, RequiredFieldNotification } from '@/components';
+import { create } from '../../server/actions/contact';
 
 export function FormAddContact() {
     const {

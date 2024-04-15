@@ -3,12 +3,12 @@
 import Alert from 'react-bootstrap/Alert';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { updateEmail } from '@/app/actions/users';
 import { StatusCodes } from 'http-status-codes';
 import { updateUserSession } from '@/functions/session';
 import { GLOBAL_ERROR_MESSAGE } from '@/constants';
 import { Centralize } from '@/components';
 import { useAlert } from '@/hooks';
+import { updateEmail } from '../../server/actions/users';
 
 export const EmailChangeConfirmationControl = () => {
     const params = useParams();
