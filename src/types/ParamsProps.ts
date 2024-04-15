@@ -1,8 +1,6 @@
-import { Id } from '.';
-
 export type ParamsProps = {
     params: {
-        id: Id;
+        id: string;
         email: string;
         activationToken: string;
         recoveryToken: string;

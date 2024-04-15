@@ -59,7 +59,7 @@ export const NavBar = () => {
                             <LoginButton className='text-white' />
                         </li>
                         <li>
-                            <SignUpButton />
+                            <SignUpButton className='text-white' />
                         </li>
                     </>
                 )}

@@ -1,6 +1,5 @@
 'use client';
 
-import { User } from '@/types';
 import { useRouter } from 'next/navigation';
 import { displayMessages } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
@@ -11,6 +10,7 @@ import Form, { FormHeader, Input } from '@/components/form';
 import { SiGmail } from 'react-icons/si';
 import { Centralize } from '@/components';
 import { recoverSignup } from '../../server/actions/users';
+import { RecoverSignupType } from '@/types';
 
 export function FormRecoverSignup() {
     const router = useRouter();
@@ -22,11 +22,11 @@ export function FormRecoverSignup() {
         setError,
         getValues,
         clearErrors,
-    } = useForm<Pick<User, 'email'>>();
+    } = useForm<RecoverSignupType>();
 
     const handleRecoverSignup = async () => {
         clearErrors();
-        const { errors, status } = await recoverSignup(getValues().email);
+        const { errors, status } = await recoverSignup(getValues());
         if (errors) {
             displayMessages(errors, setError);
             return;
@@ -38,7 +38,7 @@ export function FormRecoverSignup() {
             return;
         }
         reset();
-        router.push('/signup/recover/confirm');
+        router.replace('/signup/recover/confirm');
     };
 
     return (

@@ -1,11 +1,24 @@
+import {
+    emailSchema,
+    loginSchema,
+    signupSchema,
+    updatePasswordSchema,
+} from '@/lib/validation-schemas';
 import { User } from '.';
 import { Contact } from './Contact';
+import yup from 'yup';
 
 export * from './Contact';
 export * from './User';
 export * from './ParamsProps';
-export * from './UserCredentials';
-export * from './Id';
+
+export type UserCredentials = yup.InferType<typeof loginSchema>;
+
+export type AccountData = yup.InferType<typeof signupSchema>;
+
+export type Passwords = yup.InferType<typeof updatePasswordSchema>;
+
+export type RecoverSignupType = yup.InferType<typeof emailSchema>;
 
 export type FieldError = {
     path: string;

@@ -1,9 +1,7 @@
 'use client';
 
-import { redirect } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { User } from '@/types';
 import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
@@ -12,13 +10,12 @@ import { displayMessages } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
 import { Centralize, Footer } from '@/components';
 import { checkIfEmailExists, createAccount } from '../../server/actions/users';
-
-type AccountData = {
-    confirmPassword?: string;
-} & User;
+import { AccountData } from '@/types';
+import { useRouter } from 'next/navigation';
 
 export function SignUpForm() {
     const [disableSubmitButton, setDisableSubmitButton] = useState(true);
+    const router = useRouter();
 
     const {
         register,
@@ -50,12 +47,11 @@ export function SignUpForm() {
         const accountData = getValues();
         const { errors } = await createAccount(accountData);
         if (errors) {
-            console.log(errors);
             displayMessages(errors, setError);
             return;
         }
         reset();
-        redirect(`/signup/confirm/${accountData.email}`);
+        router.replace(`/signup/confirm/${accountData.email}`);
     };
 
     return (

@@ -1,8 +1,8 @@
-export interface User {
+import { signupSchema } from '@/lib/validation-schemas';
+import yup from 'yup';
+
+export interface User extends yup.InferType<typeof signupSchema> {
     _id: string;
-    name: string;
-    email: string;
-    password: string;
     accessToken?: string;
     refreshToken?: string;
 }

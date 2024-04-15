@@ -10,11 +10,7 @@ import Form, { FormHeader, PasswordInput } from '@/components/form';
 import { Centralize } from '@/components';
 import { useAlert } from '@/hooks';
 import { updatePassword } from '../../server/actions/users';
-
-type FormData = {
-    password: string;
-    confirmPassword: string;
-};
+import { Passwords } from '@/types';
 
 export function FormChangePassword() {
     const router = useRouter();
@@ -29,12 +25,12 @@ export function FormChangePassword() {
         getValues,
         setError,
         clearErrors,
-    } = useForm<FormData>();
+    } = useForm<Passwords>();
 
     const handleUpdatePassword = async () => {
         clearErrors();
         const { errors, status } = await updatePassword({
-            recoveryToken: params.recoveryToken as string,
+            recoveryToken: String(params.recoveryToken),
             dada: getValues(),
         });
         if (errors) {
@@ -51,7 +47,7 @@ export function FormChangePassword() {
             return;
         }
         reset();
-        router.push('/signup/recover/success');
+        router.replace('/signup/recover/success');
     };
 
     return (

@@ -10,17 +10,15 @@ import { validate } from '@/functions/data-validation';
 import { axiosAuth } from '@/lib/axios/auth/server';
 import axiosPublic from '@/lib/axios/public';
 import { BadRequestError, ConflictError, NotFoundError } from '@/lib/errors';
-import { User } from '@/types';
+import { AccountData, Passwords, RecoverSignupType, User } from '@/types';
 
 type Email = {
     emailSend?: boolean;
 };
 
-interface CreateAccountResBody extends Email {}
-
-export async function createAccount(user: User) {
+export async function createAccount(accountData: AccountData) {
     const errors = await validate({
-        obj: user,
+        obj: accountData,
         schema: signupSchema,
     });
     if (errors) {
@@ -29,9 +27,8 @@ export async function createAccount(user: User) {
         };
     }
     try {
-        const { data: email, status } =
-            await axiosPublic.post<CreateAccountResBody>('/signup', user);
-        return { email, status };
+        const { data, status } = await axiosPublic.post('/signup', accountData);
+        return { data, status };
     } catch (error) {
         if (error instanceof ConflictError) {
             return {
@@ -42,9 +39,9 @@ export async function createAccount(user: User) {
     }
 }
 
-export async function recoverSignup(email: string) {
+export async function recoverSignup(data: RecoverSignupType) {
     const errors = await validate({
-        obj: { email },
+        obj: data,
         schema: emailSchema,
     });
     if (errors) {
@@ -53,7 +50,7 @@ export async function recoverSignup(email: string) {
         };
     }
     try {
-        const { status } = await axiosPublic.post('/recover-sinup', { email });
+        const { status } = await axiosPublic.post('/recover-sinup', data);
         return { status };
     } catch (error) {
         if (error instanceof NotFoundError) {
@@ -67,10 +64,7 @@ export async function recoverSignup(email: string) {
 
 type ChangePasswordProps = {
     recoveryToken: string;
-    dada: {
-        password: string;
-        confirmPassword: string;
-    };
+    dada: Passwords;
 };
 
 export const updatePassword = async (param: ChangePasswordProps) => {
