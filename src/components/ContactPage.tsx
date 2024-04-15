@@ -75,7 +75,7 @@ export const ContactPage = () => {
                         />
                     </TableData>
                     <TableData>
-                        <UpdateButton url={`/contacts/${contact._id}/update`} />
+                        <UpdateButton url={`/contacts/${contact._id}`} />
                     </TableData>
                 </TableRow>
             ))}
