@@ -1,24 +1,18 @@
-import {
-    emailSchema,
-    loginSchema,
-    signupSchema,
-    updatePasswordSchema,
-} from '@/lib/validation-schemas';
+import { loginSchema, passwordsSchema, signupSchema } from '@/lib/schemas';
 import { User } from '.';
 import { Contact } from './Contact';
-import yup from 'yup';
+
+import z from 'zod';
 
 export * from './Contact';
 export * from './User';
 export * from './ParamsProps';
 
-export type UserCredentials = yup.InferType<typeof loginSchema>;
+export type UserCredentials = z.infer<typeof loginSchema>;
 
-export type AccountData = yup.InferType<typeof signupSchema>;
+export type SignupData = z.infer<typeof signupSchema>;
 
-export type Passwords = yup.InferType<typeof updatePasswordSchema>;
-
-export type RecoverSignupType = yup.InferType<typeof emailSchema>;
+export type Passwords = z.infer<typeof passwordsSchema>;
 
 export type FieldError = {
     path: string;
@@ -41,4 +35,9 @@ export type GetAllResponse = {
 export type SelectOption = {
     value: string;
     content: string;
+};
+
+export type LoginError = {
+    message: string;
+    status: number;
 };

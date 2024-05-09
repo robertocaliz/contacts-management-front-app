@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { displayMessages } from '@/functions/form';
 import { StatusCodes } from 'http-status-codes';
 import { useForm } from 'react-hook-form';
 import SubmitButton from './buttons/submit';
@@ -10,7 +9,10 @@ import Form, { FormHeader, Input } from '@/components/form';
 import { SiGmail } from 'react-icons/si';
 import { Centralize } from '@/components';
 import { recoverSignup } from '../../server/actions/users';
-import { RecoverSignupType } from '@/types';
+import { useAction } from 'next-safe-action/hooks';
+import { z } from 'zod';
+import { emailSchema } from '@/lib/schemas';
+import Alerts from '@/lib/alerts';
 
 export function FormRecoverSignup() {
     const router = useRouter();
@@ -22,23 +24,33 @@ export function FormRecoverSignup() {
         setError,
         getValues,
         clearErrors,
-    } = useForm<RecoverSignupType>();
+    } = useForm<z.infer<typeof emailSchema>>();
+
+    const { execute } = useAction(recoverSignup, {
+        onSuccess(data) {
+            if (data.status === StatusCodes.NOT_FOUND) {
+                setError('email', {
+                    message: 'O "email" não foi encontrado no sistema.',
+                });
+                return;
+            }
+            reset();
+            router.replace('/signup/recover/confirm');
+        },
+        onError({ validationErrors, serverError }) {
+            if (validationErrors) {
+                setError('email', {
+                    message: validationErrors.email?.pop(),
+                });
+                return;
+            }
+            Alerts.error(String(serverError));
+        },
+    });
 
     const handleRecoverSignup = async () => {
         clearErrors();
-        const { errors, status } = await recoverSignup(getValues());
-        if (errors) {
-            displayMessages(errors, setError);
-            return;
-        }
-        if (status === StatusCodes.NOT_FOUND) {
-            setError('email', {
-                message: 'O "email" não foi encontrado no sistema.',
-            });
-            return;
-        }
-        reset();
-        router.replace('/signup/recover/confirm');
+        execute(getValues());
     };
 
     return (

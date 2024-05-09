@@ -1,40 +1,52 @@
 'use client';
 
+import Alerts from '@/lib/alerts';
 import { useForm } from 'react-hook-form';
 import { Contact } from '@/types';
-import Alerts from '@/lib/alerts';
-import { displayMessages } from '@/functions/form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
 import { Centralize, RequiredFieldNotification } from '@/components';
-import { create } from '../../server/actions/contact';
+import { createContact } from '../../server/actions/contacts';
+import { displayMessages } from '@/functions/form';
+import { useAction } from 'next-safe-action/hooks';
 
 export function FormAddContact() {
     const {
-        register,
-        getValues,
-        setError,
-        reset,
         clearErrors,
         formState: { errors },
+        getValues,
+        reset,
+        register,
+        setError,
     } = useForm<Contact>();
 
-    const createContact = async () => {
+    const { execute } = useAction(createContact, {
+        onSuccess({ success, errors }) {
+            if (success) {
+                reset();
+                Alerts.success(success.message);
+                return;
+            }
+            displayMessages(errors, setError);
+        },
+        onError({ validationErrors, serverError }) {
+            if (validationErrors) {
+                return;
+            }
+            Alerts.error(String(serverError));
+        },
+    });
+
+    const onSubmit = () => {
         clearErrors();
         const contact = getValues();
-        const { errors } = await create(contact);
-        if (errors) {
-            displayMessages(errors, setError);
-            return;
-        }
-        reset();
-        Alerts.success('Contacto criado.');
+        execute(contact);
     };
 
     return (
         <Centralize>
-            <Form action={createContact}>
+            <Form action={onSubmit}>
                 <FormHeader text='Adicionar' />
                 <Input
                     label='Nome *'

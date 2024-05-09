@@ -2,15 +2,15 @@
 
 import { useForm } from 'react-hook-form';
 import Alert from 'react-bootstrap/Alert';
-import { StatusCodes } from 'http-status-codes';
 import { useParams, useRouter } from 'next/navigation';
 import SubmitButton from './buttons/submit';
-import { displayMessages } from '@/functions/form';
 import Form, { FormHeader, PasswordInput } from '@/components/form';
 import { Centralize } from '@/components';
 import { useAlert } from '@/hooks';
 import { updatePassword } from '../../server/actions/users';
 import { Passwords } from '@/types';
+import { useAction } from 'next-safe-action/hooks';
+import Alerts from '@/lib/alerts';
 
 export function FormChangePassword() {
     const router = useRouter();
@@ -23,31 +23,39 @@ export function FormChangePassword() {
         reset,
         register,
         getValues,
-        setError,
         clearErrors,
     } = useForm<Passwords>();
 
+    const { execute } = useAction(updatePassword, {
+        onSuccess(data) {
+            if (data.invalidOrExpiredRecoveryToken) {
+                alert.show(
+                    'warning',
+                    `Token de recuperação expirado ou inválido.
+            				Clique no link "Clique aqui" da página de login,
+            				para obter um novo token de recuperação.`,
+                );
+                return;
+            }
+            reset();
+            router.replace('/signup/recover/success');
+        },
+        onError({ validationErrors, serverError }) {
+            if (validationErrors) {
+                console.log(validationErrors);
+                return;
+            }
+            Alerts.error(String(serverError));
+        },
+    });
+
     const handleUpdatePassword = async () => {
         clearErrors();
-        const { errors, status } = await updatePassword({
+        execute({
+            ...getValues(),
             recoveryToken: String(params.recoveryToken),
-            dada: getValues(),
         });
-        if (errors) {
-            displayMessages(errors, setError);
-            return;
-        }
-        if (status === StatusCodes.BAD_REQUEST) {
-            alert.show(
-                'warning',
-                `Token de recuperação expirado ou inválido. 
-						Clique no link "Clique aqui" da página de login, 
-						para obter um novo token de recuperação.`,
-            );
-            return;
-        }
-        reset();
-        router.replace('/signup/recover/success');
+        //reset() of next-safe-action
     };
 
     return (

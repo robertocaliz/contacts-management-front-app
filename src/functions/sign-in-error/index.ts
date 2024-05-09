@@ -1,3 +1,5 @@
-export const getErrorMessage = (message: string, status: number) => {
-    return JSON.stringify({ message, status });
+import { LoginError } from '@/types';
+
+export const getLoginCustomError = (message: string, status: number) => {
+    return { message, status } as LoginError;
 };

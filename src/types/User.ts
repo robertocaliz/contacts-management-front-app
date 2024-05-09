@@ -1,8 +1,8 @@
-import { signupSchema } from '@/lib/validation-schemas';
-import yup from 'yup';
+import { signupSchema } from '@/lib/schemas';
+import { z } from 'zod';
 
-export interface User extends yup.InferType<typeof signupSchema> {
-    _id: string;
+export interface User extends z.infer<typeof signupSchema> {
+    id: string;
     accessToken?: string;
     refreshToken?: string;
 }

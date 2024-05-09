@@ -11,7 +11,7 @@ import TableData from './table/data';
 import TableRow from './table/row';
 import { migrateToPrevPage } from '@/functions/table';
 import Link from 'next/link';
-import { getAll, deleteById } from '../../server/actions/contact';
+import { fetchContacts, deleteById } from '../../server/actions/contacts';
 
 export const ContactPage = () => {
     const [contacts, setContacts] = useState<Contact[]>([]);
@@ -19,7 +19,7 @@ export const ContactPage = () => {
 
     const { data, error, mutate } = useFetch<GetAllResponse>(
         `/contacts?${searchParams.getAll()}`,
-        getAll,
+        fetchContacts,
     );
 
     useEffect(() => {
@@ -39,22 +39,28 @@ export const ContactPage = () => {
     };
 
     const handleDelete = async (contactId: string) => {
-        const deleteContact = confirm('Realmente quer apagar o contacto?');
-        if (deleteContact) {
-            await deleteById(contactId).then(() => {
+        await deleteById({ id: contactId })
+            .then(({ serverError }) => {
+                return Promise.reject(serverError);
+            })
+            .then(() => {
                 removeContactFromPage(contactId);
                 Alerts.success('Contacto apagado.');
+            })
+            .then(() => {
+                const migrate = migrateToPrevPage(
+                    contacts.length,
+                    searchParams.page,
+                );
+                if (migrate) {
+                    searchParams.setPage((page) => --page);
+                    return;
+                }
+                mutate();
+            })
+            .catch((serverError) => {
+                Alerts.error(serverError);
             });
-            const migrate = migrateToPrevPage(
-                contacts.length,
-                searchParams.page,
-            );
-            if (migrate) {
-                searchParams.setPage((page) => --page);
-                return;
-            }
-            mutate();
-        }
     };
 
     return (

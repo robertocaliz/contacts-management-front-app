@@ -6,16 +6,21 @@ import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
 import Form, { CheckBox, FormHeader, Input, PasswordInput } from './form';
-import { displayMessages } from '@/functions/form';
-import { StatusCodes } from 'http-status-codes';
+import { displayMessages, showValidationErrors } from '@/functions/form';
 import { Centralize, Footer } from '@/components';
-import { checkIfEmailExists, createAccount } from '../../server/actions/users';
-import { AccountData } from '@/types';
+import { SignupData } from '@/types';
 import { useRouter } from 'next/navigation';
+import { useAction } from 'next-safe-action/hooks';
+import { signupUser } from '../../server/actions/users';
+import { isUserOnline } from '@/functions';
+import Alert from 'react-bootstrap/Alert';
+import { useAlert } from '@/hooks';
+import { DEFAULT_SERVER_ERROR, INTERNET_CONECTION_ERROR } from '@/constants';
 
 export function SignUpForm() {
-    const [disableSubmitButton, setDisableSubmitButton] = useState(true);
     const router = useRouter();
+    const [disableSubmitButton, setDisableSubmitButton] = useState(true);
+    const { alertType, alertMessage, showAlert, alert } = useAlert();
 
     const {
         register,
@@ -24,39 +29,44 @@ export function SignUpForm() {
         formState: { errors },
         getValues,
         clearErrors,
-    } = useForm<AccountData>();
+    } = useForm<SignupData>();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const _checkIfEmailExists = async (e: any) => {
-        const email = e.target.value;
-        await checkIfEmailExists(email).then((status) => {
-            if (!(status === StatusCodes.OK)) {
-                setError('email', {
-                    message: 'Email já está em uso.',
-                });
+    const { execute } = useAction(signupUser, {
+        onSuccess({ dataAlreadyExistsErrors }) {
+            if (dataAlreadyExistsErrors) {
+                displayMessages(dataAlreadyExistsErrors, setError);
                 return;
             }
-            setError('email', {
-                message: '',
-            });
-        });
-    };
+            reset();
+            router.replace(`/signup/confirm/${'mail'}`);
+        },
+        onError({ validationErrors, serverError = DEFAULT_SERVER_ERROR }) {
+            if (validationErrors) {
+                showValidationErrors(
+                    validationErrors as Record<string, string[]>,
+                    setError,
+                );
+                return;
+            }
+            if (!isUserOnline()) {
+                alert.show('danger', INTERNET_CONECTION_ERROR);
+                return;
+            }
+            alert.show('danger', String(serverError));
+        },
+    });
 
-    const handleCreateAccount = async () => {
+    const handleSignupUser = async () => {
         clearErrors();
-        const accountData = getValues();
-        const { errors } = await createAccount(accountData);
-        if (errors) {
-            displayMessages(errors, setError);
-            return;
-        }
-        reset();
-        router.replace(`/signup/confirm/${accountData.email}`);
+        execute(getValues());
     };
 
     return (
         <Centralize>
-            <Form action={handleCreateAccount}>
+            <Alert variant={alertType} show={showAlert}>
+                {alertMessage}
+            </Alert>
+            <Form action={handleSignupUser}>
                 <FormHeader text='Cadastro' />
                 <main>
                     <Input
@@ -68,7 +78,6 @@ export function SignUpForm() {
                         label='Email'
                         {...register('email')}
                         errMessage={errors.email?.message}
-                        onBlur={_checkIfEmailExists}
                     />
                     <PasswordInput
                         label='Senha'

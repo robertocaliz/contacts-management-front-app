@@ -33,23 +33,24 @@ export function LoginForm() {
             ...credentials,
             redirect: false,
         });
-        const error = JSON.parse(String(response?.error)) as SignInError;
-        if (error) {
-            if (error.status === StatusCodes.BAD_REQUEST) {
-                displayMessages(JSON.parse(error.message), setError);
-                return;
-            }
-            if (
-                error.status === StatusCodes.FORBIDDEN ||
-                error.status === StatusCodes.UNAUTHORIZED
-            ) {
-                alert.show('warning', error.message);
-                return;
-            }
-            alert.show('danger', error.message);
-            return;
-        }
-        router.replace('/');
+        console.log(response);
+        // const error = JSON.parse(String(response?.error)) as SignInError;
+        // if (error) {
+        //     if (error.status === StatusCodes.BAD_REQUEST) {
+        //         displayMessages(JSON.parse(error.message), setError);
+        //         return;
+        //     }
+        //     if (
+        //         error.status === StatusCodes.FORBIDDEN ||
+        //         error.status === StatusCodes.UNAUTHORIZED
+        //     ) {
+        //         alert.show('warning', error.message);
+        //         return;
+        //     }
+        //     alert.show('danger', error.message);
+        //     return;
+        // }
+        // router.replace('/');
     };
 
     return (

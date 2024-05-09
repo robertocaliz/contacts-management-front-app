@@ -11,10 +11,11 @@ import Form, { FormHeader, Input } from '@/components/form';
 import { useAlert, useUpdateUserSession } from '@/hooks';
 import { displayMessages } from '@/functions/form';
 import { Centralize, RequiredFieldNotification } from '@/components';
-import { update as updateProfile } from '../../server/actions/users';
+import { updateUserSignup } from '../../server/actions/users';
+import { useAction } from 'next-safe-action/hooks';
 
 export const ProfileForm = () => {
-    const [userData, setUserData] = useState<Partial<User>>({});
+    const [userData, setUserData] = useState<User>({} as User);
     const { session, updateUserSession } = useUpdateUserSession();
     const { alertType, alertMessage, showAlert, alert } = useAlert();
 
@@ -25,44 +26,54 @@ export const ProfileForm = () => {
         getValues,
         clearErrors,
         setError,
-    } = useForm<Partial<User>>();
+    } = useForm<Pick<User, 'id' | 'name' | 'email'>>();
+
+    const { execute } = useAction(updateUserSignup, {
+        async onSuccess({ dataAlreadyExistsErrors, userData, emailSend }) {
+            if (dataAlreadyExistsErrors) {
+                displayMessages(dataAlreadyExistsErrors, setError);
+                return;
+            }
+            await updateUserSession({ name: userData.name }).then(() => {
+                if (emailSend) {
+                    return alert.show(
+                        'warning',
+                        `Clique no link que enviamos, 
+                                para confirmar a alteração do seu email.`,
+                    );
+                }
+                alert.show('success', 'Perfíl actualizado!');
+            });
+        },
+        onError({ validationErrors, serverError }) {
+            if (validationErrors) {
+                console.log(validationErrors);
+                return;
+            }
+            alert.show('danger', String(serverError));
+        },
+    });
 
     useEffect(() => {
-        reset(session?.user);
-        setUserData(session?.user as Partial<User>);
+        setUserData(session?.user as User);
     }, [session]);
 
-    const profileChanged = (newUserData: Partial<User>) => {
-        return objChanged({
-            originalObj: userData,
-            newObj: newUserData,
-        });
-    };
+    useEffect(() => {
+        reset(userData);
+    }, [userData]);
 
     const handleUpdateProfile = async () => {
         clearErrors();
-        const newUserData = getValues();
-        if (!profileChanged(newUserData)) {
+        const data = getValues();
+        if (
+            !objChanged({
+                originalObj: userData,
+                newObj: data,
+            })
+        ) {
             return alert.show('warning', 'O perfíl não foi alterado.');
         }
-        const { errors, emailSend } = await updateProfile(
-            newUserData,
-            String(userData._id),
-        );
-        if (errors) {
-            displayMessages(errors, setError);
-            return;
-        }
-        await updateUserSession({ name: newUserData.name }).then(() => {
-            if (emailSend) {
-                return alert.show(
-                    'warning',
-                    `Clique no link que enviamos, 
-						para confirmar a alteração do seu email.`,
-                );
-            }
-            alert.show('success', 'Perfíl actualizado!');
-        });
+        execute({ ...data, id: String(userData.id) });
     };
 
     return (

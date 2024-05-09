@@ -1,7 +1,7 @@
-import { createContactSchema } from '@/lib/validation-schemas';
-import yup from 'yup';
+import { contactSchema } from '@/lib/schemas';
+import z from 'zod';
 
-export interface Contact extends yup.InferType<typeof createContactSchema> {
+export interface Contact extends z.infer<typeof contactSchema> {
     _id: string;
     createdBy: number;
 }

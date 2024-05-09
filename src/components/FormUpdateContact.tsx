@@ -1,60 +1,78 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
 import Alert from 'react-bootstrap/Alert';
-import { objChanged } from '@/functions/object';
-import { update } from '../../server/actions/contact';
 import { displayMessages } from '@/functions/form';
-import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
 import { Centralize, RequiredFieldNotification } from '@/components';
 import { useAlert } from '@/hooks';
+import { useAction } from 'next-safe-action/hooks';
+import { objChanged } from '@/functions/object';
+import { Contact } from '@/types';
+import { updateContact } from '../../server/actions/contacts';
 
-export function FormUpdateContact({ contact }: { contact: Contact }) {
+type FormUpdateContactProps = {
+    data: Contact;
+};
+
+export function FormUpdateContact({ data }: FormUpdateContactProps) {
     const router = useRouter();
-
+    const [contact, setContact] = useState<Contact>({} as Contact);
     const { alertType, alertMessage, showAlert, alert } = useAlert();
 
-    const {
-        register,
-        reset,
-        formState: { errors },
-        getValues,
-        setError,
-        clearErrors,
-    } = useForm<Contact>();
+    useEffect(() => {
+        setContact(data);
+    }, []);
 
     useEffect(() => {
         reset(contact);
     }, [contact]);
 
-    const contactChnaged = (newContact: Contact) => {
-        return objChanged({
-            newObj: newContact,
-            originalObj: contact,
-        });
-    };
+    const {
+        register,
+        reset,
+        formState: { errors },
+        setError,
+        clearErrors,
+        handleSubmit,
+    } = useForm<Contact>();
 
-    const updateContact = async () => {
+    const { execute } = useAction(updateContact, {
+        onSuccess({ errors, success }) {
+            if (success) {
+                reset();
+                router.back();
+                Alerts.success(success.message);
+                return;
+            }
+            displayMessages(errors, setError);
+        },
+        onError({ validationErrors, serverError }) {
+            if (validationErrors) {
+                console.log(validationErrors);
+                return;
+            }
+            Alerts.error(String(serverError));
+        },
+    });
+
+    const onSubmit: SubmitHandler<Contact> = (newContact) => {
         clearErrors();
-        const newContact = getValues();
-        if (!contactChnaged(newContact)) {
+        if (
+            !objChanged({
+                newObj: newContact,
+                originalObj: contact,
+            })
+        ) {
             alert.show('warning', 'O contacto não foi alterado.');
             return;
         }
-        const { errors } = await update(newContact, contact._id);
-        if (errors) {
-            displayMessages(errors, setError);
-            return;
-        }
-        reset();
-        router.back();
-        Alerts.success('Contacto actualizado.');
+        execute({ ...newContact, id: String(contact._id) });
     };
 
     return (
@@ -62,7 +80,7 @@ export function FormUpdateContact({ contact }: { contact: Contact }) {
             <Alert variant={alertType} show={showAlert}>
                 {alertMessage}
             </Alert>
-            <Form action={updateContact}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormHeader text='Actualizar' />
                 <Input
                     label='Nome *'

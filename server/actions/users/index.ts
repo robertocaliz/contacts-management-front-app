@@ -2,57 +2,52 @@
 
 import {
     emailSchema,
+    idSchema,
+    loginSchema,
+    recoveryTokenSchema,
     signupSchema,
     updatePasswordSchema,
-    updateUserSchema,
-} from '@/lib/validation-schemas';
-import { validate } from '@/functions/data-validation';
+    updateUserSignupSchema,
+} from '@/lib/schemas';
 import { axiosAuth } from '@/lib/axios/auth/server';
 import axiosPublic from '@/lib/axios/public';
 import { BadRequestError, ConflictError, NotFoundError } from '@/lib/errors';
-import { AccountData, Passwords, RecoverSignupType, User } from '@/types';
+import { authAction, publicAction } from '@/lib/safe-action';
+import { User } from '@/types/User';
+import { SignupData } from '@/types';
 
-type Email = {
-    emailSend?: boolean;
-};
+export const loginUser = publicAction(loginSchema, async (credentials) => {
+    const { data: user } = await axiosPublic.post<User>('/login', credentials);
+    return { user, login: { success: true } };
+});
 
-export async function createAccount(accountData: AccountData) {
-    const errors = await validate({
-        obj: accountData,
-        schema: signupSchema,
-    });
-    if (errors) {
-        return {
-            errors,
-        };
-    }
-    try {
-        const { data, status } = await axiosPublic.post('/signup', accountData);
-        return { data, status };
-    } catch (error) {
-        if (error instanceof ConflictError) {
+export const signupUser = publicAction(
+    signupSchema,
+    async (data: SignupData) => {
+        try {
+            await axiosPublic.post('/signup', data);
             return {
-                errors: error.errors,
+                success: {
+                    message: 'Usuário registrato!',
+                },
             };
+        } catch (error) {
+            //DataAlreadyExistsError
+            if (error instanceof ConflictError) {
+                return {
+                    dataAlreadyExistsErrors: error.errors,
+                };
+            }
+            throw error;
         }
-        throw error;
-    }
-}
-
-export async function recoverSignup(data: RecoverSignupType) {
-    const errors = await validate({
-        obj: data,
-        schema: emailSchema,
-    });
-    if (errors) {
-        return {
-            errors,
-        };
-    }
+    },
+);
+export const recoverSignup = publicAction(emailSchema, async (data) => {
     try {
         const { status } = await axiosPublic.post('/recover-sinup', data);
         return { status };
     } catch (error) {
+        //EmailNotFoundError
         if (error instanceof NotFoundError) {
             return {
                 status: error.status,
@@ -60,107 +55,90 @@ export async function recoverSignup(data: RecoverSignupType) {
         }
         throw error;
     }
-}
+});
 
-type ChangePasswordProps = {
-    recoveryToken: string;
-    dada: Passwords;
-};
-
-export const updatePassword = async (param: ChangePasswordProps) => {
-    const errors = await validate({
-        obj: param.dada,
-        schema: updatePasswordSchema,
-    });
-    if (errors) {
-        return { errors };
-    }
-    try {
-        const { status } = await axiosPublic.patch(
-            `/users/${param.recoveryToken}`,
-            { newPassword: param.dada.password },
-        );
-        return {
-            status,
-        };
-    } catch (error) {
-        if (error instanceof BadRequestError) {
+export const updatePassword = publicAction(
+    updatePasswordSchema,
+    async ({ password, recoveryToken }) => {
+        try {
+            await axiosPublic.patch(`/users/${recoveryToken}`, {
+                newPassword: password,
+            });
             return {
-                status: error.status,
+                sucess: { message: 'Senha actualizada.' },
             };
+        } catch (error) {
+            //InvalidOrExpiredRecoveryTokenError
+            if (error instanceof BadRequestError) {
+                return {
+                    invalidOrExpiredRecoveryToken: true,
+                };
+            }
+            throw error;
         }
-        throw error;
-    }
-};
+    },
+);
 
-export const activateAccount = async (activationToken: string) => {
-    try {
-        const { status } = await axiosPublic.patch(
-            `/signup/activate/${activationToken}`,
-        );
-        return status;
-    } catch (error) {
-        if (error instanceof BadRequestError) {
-            return error.status;
+export const activateAccount = publicAction(
+    idSchema,
+    async (activationToken) => {
+        try {
+            await axiosPublic.patch(`/signup/activate/${activationToken}`);
+            return { success: { message: 'Conta activada!' } };
+        } catch (error) {
+            //InvalidOrExpiredRActivationTokenError
+            if (error instanceof BadRequestError) {
+                return { ivalidOrExpiredActivationToken: true };
+            }
+            throw error;
         }
-        throw error;
-    }
-};
+    },
+);
 
-interface UpdateUserResBody extends Email {}
-
-export const update = async (user: Partial<User>, userId: string) => {
-    const errors = await validate({
-        obj: user,
-        schema: updateUserSchema,
-    });
-    if (errors) {
-        return {
-            errors,
-        };
-    }
-    try {
-        const {
-            data: { emailSend },
-        } = await axiosAuth.put<UpdateUserResBody>(`/users/${userId}`, user);
-        return {
-            emailSend: !!emailSend,
-        };
-    } catch (error) {
-        if (error instanceof ConflictError) {
-            return {
-                errors: error.errors,
-            };
+export const updateUserSignup = authAction(
+    updateUserSignupSchema,
+    async (userData) => {
+        try {
+            const {
+                data: { emailSend },
+            } = await axiosAuth.put(`/users/${userData.id}`, userData);
+            return { emailSend: !!emailSend, userData };
+        } catch (error) {
+            if (error instanceof ConflictError) {
+                return {
+                    dataAlreadyExistsErrors: error.errors,
+                };
+            }
+            throw error;
         }
-        throw error;
-    }
-};
+    },
+);
 
-type UpdateEmailResBody = {
+type UpdateUserEmailResBody = {
     newEmail: string;
 };
 
-export const updateEmail = async (alterationToken: string) => {
-    try {
-        const {
-            data: { newEmail },
-            status,
-        } = await axiosPublic.patch<UpdateEmailResBody>(
-            `/update_email/${alterationToken}`,
-        );
-        return {
-            status,
-            newEmail,
-        };
-    } catch (error) {
-        if (error instanceof BadRequestError) {
-            return {
-                status: error.status,
-            };
+export const updateUserEmail = publicAction(
+    recoveryTokenSchema,
+    async (alterationToken) => {
+        try {
+            const {
+                data: { newEmail },
+            } = await axiosPublic.patch<UpdateUserEmailResBody>(
+                `/update_email/${alterationToken}`,
+            );
+            return { newEmail };
+        } catch (error) {
+            //InvalidOrExpiredAlterationkenError
+            if (error instanceof BadRequestError) {
+                return {
+                    invalidOrExpiredAlterationken: true,
+                };
+            }
+            throw error;
         }
-        throw error;
-    }
-};
+    },
+);
 
 export const checkIfEmailExists = async (email: string) => {
     try {

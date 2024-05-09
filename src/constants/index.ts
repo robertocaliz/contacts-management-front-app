@@ -8,7 +8,10 @@ export const RegEx = Object.freeze({
     },
 });
 
-export const GLOBAL_ERROR_MESSAGE = `Ops, ocorreu um erro!`;
+export const DEFAULT_SERVER_ERROR = 'Ops, ocorreu um erro!';
+
+export const INTERNET_CONECTION_ERROR =
+    'Não foi possível se conectar ao ContactsPro. Por favor, verifique sua conexão.';
 
 export const TWENTY_SECONDS = 20;
 

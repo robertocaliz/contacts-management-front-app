@@ -1,9 +1,13 @@
 import Link from 'next/link';
+import { UserStatus } from './UserStatus';
 
 export function GlobalFooter() {
     return (
         <footer>
             <ul className='flex flex-col items-center justify-center gap-3 pb-[3rem] pt-[1rem] sm:flex-row'>
+                <li>
+                    <UserStatus />
+                </li>
                 <li>
                     <Link
                         href={process.env.PROJECT_REPOSITORY as string}
