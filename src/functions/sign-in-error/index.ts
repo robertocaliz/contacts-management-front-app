@@ -1,4 +1,4 @@
-export const getLoginError = (
+export const associate = (
     message: string,
     status: number,
     error: Record<string, unknown>,

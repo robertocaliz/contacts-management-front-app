@@ -21,20 +21,17 @@ export class UnauthorizedError extends APPError {
     }
 }
 
-type AssociationFuncType = (
+type AssociateParams = (
     message: string,
     status: number,
     arror: Record<string, unknown>,
 ) => void;
 
 export class InvalidCredentialsError extends UnauthorizedError {
-    public constructor(
-        message?: string,
-        associationFunc?: AssociationFuncType,
-    ) {
+    public constructor(message?: string, associate?: AssociateParams) {
         super(message);
         this.name = 'InvalidCredentialsError';
-        associationFunc?.(
+        associate?.(
             message as string,
             this.status,
             this as Record<string, unknown>,
@@ -66,13 +63,10 @@ export class ForbiddenError extends APPError {
 }
 
 export class InactiveAcountError extends ForbiddenError {
-    public constructor(
-        message?: string,
-        associationFunc?: AssociationFuncType,
-    ) {
+    public constructor(message?: string, associate?: AssociateParams) {
         super(message);
         this.name = 'InactiveAcountError';
-        associationFunc?.(
+        associate?.(
             message as string,
             this.status,
             this as Record<string, unknown>,

@@ -23,7 +23,7 @@ import {
 import { authAction, publicAction } from '@/lib/safe-action';
 import { User } from '@/types/User';
 import { SignupData } from '@/types';
-import { getLoginError } from '@/functions/sign-in-error';
+import { associate } from '@/functions/sign-in-error';
 
 import {
     INACTIVE_ACCOUNT_ERROR,
@@ -42,7 +42,7 @@ export const loginUser = publicAction(loginSchema, async (credentials) => {
             return {
                 loginError: new InvalidCredentialsError(
                     INVALID_CREADENTIALS_ERROR,
-                    getLoginError,
+                    associate,
                 ),
             };
         }
@@ -50,7 +50,7 @@ export const loginUser = publicAction(loginSchema, async (credentials) => {
             return {
                 loginError: new InactiveAcountError(
                     INACTIVE_ACCOUNT_ERROR,
-                    getLoginError,
+                    associate,
                 ),
             };
         }
