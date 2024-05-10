@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { UserStatus } from './UserStatus';
+import { UserStatus } from '@/components';
 
 export function GlobalFooter() {
     return (

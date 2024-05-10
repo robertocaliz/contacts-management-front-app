@@ -11,14 +11,51 @@ import {
 } from '@/lib/schemas';
 import { axiosAuth } from '@/lib/axios/auth/server';
 import axiosPublic from '@/lib/axios/public';
-import { BadRequestError, ConflictError, NotFoundError } from '@/lib/errors';
+import {
+    BadRequestError,
+    ConflictError,
+    ForbiddenError,
+    InactiveAcountError,
+    InvalidCredentialsError,
+    NotFoundError,
+    UnauthorizedError,
+} from '@/lib/errors';
 import { authAction, publicAction } from '@/lib/safe-action';
 import { User } from '@/types/User';
 import { SignupData } from '@/types';
+import { getLoginError } from '@/functions/sign-in-error';
+
+import {
+    INACTIVE_ACCOUNT_ERROR,
+    INVALID_CREADENTIALS_ERROR,
+} from '@/constants';
 
 export const loginUser = publicAction(loginSchema, async (credentials) => {
-    const { data: user } = await axiosPublic.post<User>('/login', credentials);
-    return { user, login: { success: true } };
+    try {
+        const { data: user } = await axiosPublic.post<User>(
+            '/login',
+            credentials,
+        );
+        return { user };
+    } catch (error) {
+        if (error instanceof UnauthorizedError) {
+            return {
+                loginError: new InvalidCredentialsError(
+                    INVALID_CREADENTIALS_ERROR,
+                    getLoginError,
+                ),
+            };
+        }
+        if (error instanceof ForbiddenError) {
+            return {
+                loginError: new InactiveAcountError(
+                    INACTIVE_ACCOUNT_ERROR,
+                    getLoginError,
+                ),
+            };
+        }
+        throw error;
+    }
 });
 
 export const signupUser = publicAction(
