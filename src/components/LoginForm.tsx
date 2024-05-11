@@ -12,6 +12,8 @@ import { useAlert } from '@/hooks';
 import { SignInError, UserCredentials } from '@/types';
 import { showValidationErrors } from '@/functions/forms';
 import router from 'next/router';
+import { isUserOnline } from '@/functions';
+import { INTERNET_CONECTION_ERROR } from '@/constants';
 
 export function LoginForm() {
     const { alertType, alertMessage, showAlert, alert } = useAlert();
@@ -23,7 +25,10 @@ export function LoginForm() {
         setError,
     } = useForm<UserCredentials>();
 
-    const loginUser = async () => {
+    const handleLoginUser = async () => {
+        if (!isUserOnline()) {
+            return alert.show('danger', INTERNET_CONECTION_ERROR);
+        }
         clearErrors();
         const credentials = getValues();
         const response = await signIn('credentials', {
@@ -53,7 +58,7 @@ export function LoginForm() {
             <Alert variant={alertType} show={showAlert}>
                 {alertMessage}
             </Alert>
-            <Form action={loginUser}>
+            <Form action={handleLoginUser}>
                 <FormHeader text='Login' />
                 <main>
                     <Input

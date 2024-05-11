@@ -6,16 +6,16 @@ import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
 import Form, { CheckBox, FormHeader, Input, PasswordInput } from './form';
-import { displayMessages, showValidationErrors } from '@/functions/forms';
+import { showMessages, showValidationErrors } from '@/functions/forms';
 import { Centralize, Footer } from '@/components';
-import { SignupData } from '@/types';
+import { SignupData, FieldError } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useAction } from 'next-safe-action/hooks';
 import { signupUser } from '../../server/actions/users';
 import { isUserOnline } from '@/functions';
 import Alert from 'react-bootstrap/Alert';
 import { useAlert } from '@/hooks';
-import { DEFAULT_SERVER_ERROR, INTERNET_CONECTION_ERROR } from '@/constants';
+import { INTERNET_CONECTION_ERROR } from '@/constants';
 
 export function SignUpForm() {
     const router = useRouter();
@@ -32,15 +32,15 @@ export function SignUpForm() {
     } = useForm<SignupData>();
 
     const { execute } = useAction(signupUser, {
-        onSuccess({ dataAlreadyExistsErrors }) {
+        onSuccess({ dataAlreadyExistsErrors, userData }) {
             if (dataAlreadyExistsErrors) {
-                displayMessages(dataAlreadyExistsErrors, setError);
+                showMessages(dataAlreadyExistsErrors as FieldError[], setError);
                 return;
             }
             reset();
-            router.replace(`/signup/confirm/${'mail'}`);
+            router.replace(`/signup/confirm/${userData.email}`);
         },
-        onError({ validationErrors, serverError = DEFAULT_SERVER_ERROR }) {
+        onError({ validationErrors, serverError }) {
             if (validationErrors) {
                 showValidationErrors(
                     validationErrors as Record<string, string[]>,
@@ -48,15 +48,16 @@ export function SignUpForm() {
                 );
                 return;
             }
-            if (!isUserOnline()) {
-                alert.show('danger', INTERNET_CONECTION_ERROR);
-                return;
+            if (serverError || !serverError) {
+                alert.show('danger', String(serverError));
             }
-            alert.show('danger', String(serverError));
         },
     });
 
     const handleSignupUser = async () => {
+        if (!isUserOnline()) {
+            return alert.show('danger', INTERNET_CONECTION_ERROR);
+        }
         clearErrors();
         execute(getValues());
     };

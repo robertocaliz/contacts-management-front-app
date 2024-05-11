@@ -14,6 +14,11 @@ export type SignupData = z.infer<typeof signupSchema>;
 
 export type Passwords = z.infer<typeof passwordsSchema>;
 
+export type FieldError = {
+    path: string;
+    message: string;
+};
+
 export type SignInError = {
     content: string | Record<string, string[]>;
     validdationErrors?: boolean;

@@ -22,7 +22,6 @@ import {
 } from '@/lib/errors';
 import { authAction, publicAction } from '@/lib/safe-action';
 import { User } from '@/types/User';
-import { SignupData } from '@/types';
 
 import {
     INACTIVE_ACCOUNT_ERROR,
@@ -55,27 +54,22 @@ export const loginUser = publicAction(loginSchema, async (credentials) => {
     }
 });
 
-export const signupUser = publicAction(
-    signupSchema,
-    async (data: SignupData) => {
-        try {
-            await axiosPublic.post('/signup', data);
+export const signupUser = publicAction(signupSchema, async (userData) => {
+    try {
+        await axiosPublic.post('/signup', userData);
+        return {
+            userData,
+        };
+    } catch (error) {
+        //DataAlreadyExistsError
+        if (error instanceof ConflictError) {
             return {
-                success: {
-                    message: 'Usuário registrato!',
-                },
+                dataAlreadyExistsErrors: error.errors,
             };
-        } catch (error) {
-            //DataAlreadyExistsError
-            if (error instanceof ConflictError) {
-                return {
-                    dataAlreadyExistsErrors: error.errors,
-                };
-            }
-            throw error;
         }
-    },
-);
+        throw error;
+    }
+});
 export const recoverSignup = publicAction(emailSchema, async (data) => {
     try {
         const { status } = await axiosPublic.post('/recover-sinup', data);

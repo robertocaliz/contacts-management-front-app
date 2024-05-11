@@ -2,7 +2,7 @@
 
 import { SignInError } from '@/types';
 import { StatusCodes } from 'http-status-codes';
-import { FieldError } from 'react-hook-form';
+import { FieldError } from '@/types';
 
 export class APPError extends Error {
     public status: number;

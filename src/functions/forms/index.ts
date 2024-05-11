@@ -1,7 +1,7 @@
 import { FieldError } from '@/types';
 import { Path, UseFormSetError } from 'react-hook-form';
 
-export const displayMessages = <T extends Record<string, unknown>>(
+export const showMessages = <T extends Record<string, unknown>>(
     errors: FieldError[],
     handler: UseFormSetError<T>,
 ) => {
