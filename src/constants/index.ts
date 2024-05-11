@@ -20,8 +20,4 @@ export const INACTIVE_ACCOUNT_ERROR = `Sua conta encontra-se inactiva.
 Acesse o seu e-mail para ativar a sua conta
 atravez do email que acabamos de enviar.`;
 
-export const TWENTY_SECONDS = 20;
-
-export const TWO_SECONDS = 2000;
-
 export const ONE_SECOND = 1000;

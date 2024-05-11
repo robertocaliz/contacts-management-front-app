@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { HiStatusOnline, HiStatusOffline } from 'react-icons/hi';
 
 export function UserStatus() {
-    const [onLine, setOnline] = useState(navigator.onLine);
+    const [onLine, setOnline] = useState(false);
 
     useEffect(() => {
         const handleOnline = () => {

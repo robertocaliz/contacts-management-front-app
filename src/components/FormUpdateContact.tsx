@@ -5,14 +5,13 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
 import Alert from 'react-bootstrap/Alert';
-import { displayMessages } from '@/functions/form';
+import { displayMessages, objChanged } from '@/functions/forms';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
 import { Centralize, RequiredFieldNotification } from '@/components';
 import { useAlert } from '@/hooks';
 import { useAction } from 'next-safe-action/hooks';
-import { objChanged } from '@/functions/object';
 import { Contact } from '@/types';
 import { updateContact } from '../../server/actions/contacts';
 

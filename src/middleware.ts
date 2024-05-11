@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import {
     isPublicRoute,
     isPublicRouteExcludeHomeRoute,
-} from './functions/app-route';
+} from './functions/routes';
 import { checkIfUserIsAuthenticated } from './functions/session/auth';
 
 export default async function AuthMiddleware(req: NextRequest) {

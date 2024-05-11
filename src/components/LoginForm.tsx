@@ -9,17 +9,19 @@ import SignupRecoverButton from './buttons/signup-recover';
 import Form, { FormHeader, Input, PasswordInput } from './form';
 import { Centralize, Footer } from '@/components';
 import { useAlert } from '@/hooks';
-import { UserCredentials } from '@/types';
+import { SignInError, UserCredentials } from '@/types';
+import { showValidationErrors } from '@/functions/forms';
+import router from 'next/router';
 
 export function LoginForm() {
+    const { alertType, alertMessage, showAlert, alert } = useAlert();
     const {
-        register,
+        clearErrors,
         formState: { errors },
         getValues,
-        clearErrors,
+        register,
+        setError,
     } = useForm<UserCredentials>();
-
-    const { alertType, alertMessage, showAlert } = useAlert();
 
     const loginUser = async () => {
         clearErrors();
@@ -28,24 +30,22 @@ export function LoginForm() {
             ...credentials,
             redirect: false,
         });
-        console.log(JSON.parse(response?.error as string));
-        // const error = JSON.parse(String(response?.error)) as SignInError;
-        // if (error) {
-        //     if (error.status === StatusCodes.BAD_REQUEST) {
-        //         displayMessages(JSON.parse(error.message), setError);
-        //         return;
-        //     }
-        //     if (
-        //         error.status === StatusCodes.FORBIDDEN ||
-        //         error.status === StatusCodes.UNAUTHORIZED
-        //     ) {
-        //         alert.show('warning', error.message);
-        //         return;
-        //     }
-        //     alert.show('danger', error.message);
-        //     return;
-        // }
-        // router.replace('/');
+        const error = JSON.parse(String(response?.error)) as SignInError;
+        if (error) {
+            if (error.validdationErrors) {
+                return showValidationErrors(
+                    error.content as Record<string, string[]>,
+                    setError,
+                );
+            }
+            if (error.inactiveAccountError || error.invalidCredentialsError) {
+                return alert.show('warning', String(error.content));
+            }
+            if (error.serverError || !error.serverError) {
+                return alert.show('danger', String(error.content));
+            }
+        }
+        router.replace('/');
     };
 
     return (

@@ -9,7 +9,7 @@ import { TableContext } from '@/contexts/TableContext';
 import UpdateButton from './buttons/table/update';
 import TableData from './table/data';
 import TableRow from './table/row';
-import { migrateToPrevPage } from '@/functions/table';
+import { migrateToPrevPage } from '@/functions/tables';
 import Link from 'next/link';
 import { fetchContacts, deleteById } from '../../server/actions/contacts';
 

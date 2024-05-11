@@ -23,7 +23,6 @@ import {
 import { authAction, publicAction } from '@/lib/safe-action';
 import { User } from '@/types/User';
 import { SignupData } from '@/types';
-import { associate } from '@/functions/sign-in-error';
 
 import {
     INACTIVE_ACCOUNT_ERROR,
@@ -40,18 +39,16 @@ export const loginUser = publicAction(loginSchema, async (credentials) => {
     } catch (error) {
         if (error instanceof UnauthorizedError) {
             return {
-                loginError: new InvalidCredentialsError(
-                    INVALID_CREADENTIALS_ERROR,
-                    associate,
-                ),
+                loginError: new InvalidCredentialsError({
+                    content: INVALID_CREADENTIALS_ERROR,
+                }),
             };
         }
         if (error instanceof ForbiddenError) {
             return {
-                loginError: new InactiveAcountError(
-                    INACTIVE_ACCOUNT_ERROR,
-                    associate,
-                ),
+                loginError: new InactiveAcountError({
+                    content: INACTIVE_ACCOUNT_ERROR,
+                }),
             };
         }
         throw error;

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
 import Form, { CheckBox, FormHeader, Input, PasswordInput } from './form';
-import { displayMessages, showValidationErrors } from '@/functions/form';
+import { displayMessages, showValidationErrors } from '@/functions/forms';
 import { Centralize, Footer } from '@/components';
 import { SignupData } from '@/types';
 import { useRouter } from 'next/navigation';

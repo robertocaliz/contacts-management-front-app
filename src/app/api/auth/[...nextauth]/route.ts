@@ -3,7 +3,7 @@ import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { loginUser } from '../../../../../server/actions/users';
 import { User, UserCredentials } from '@/types';
-import { BadRequestError } from '@/lib/errors';
+import { LoginUnexpectedError, ValidationError } from '@/lib/errors';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -18,13 +18,15 @@ export const authOptions: NextAuthOptions = {
                     },
                 );
                 if (validationErrors) {
-                    throw new BadRequestError(JSON.stringify(validationErrors));
+                    throw new ValidationError({ content: validationErrors });
                 }
                 if (data?.loginError) {
                     throw data.loginError;
                 }
                 if (serverError) {
-                    throw new Error(serverError);
+                    throw new LoginUnexpectedError({
+                        content: serverError,
+                    });
                 }
                 return data?.user as User;
             },

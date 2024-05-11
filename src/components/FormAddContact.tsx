@@ -8,7 +8,7 @@ import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
 import { Centralize, RequiredFieldNotification } from '@/components';
 import { createContact } from '../../server/actions/contacts';
-import { displayMessages } from '@/functions/form';
+import { displayMessages } from '@/functions/forms';
 import { useAction } from 'next-safe-action/hooks';
 
 export function FormAddContact() {

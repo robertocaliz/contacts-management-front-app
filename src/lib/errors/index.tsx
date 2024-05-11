@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { FieldError } from '@/types';
+import { SignInError } from '@/types';
 import { StatusCodes } from 'http-status-codes';
+import { FieldError } from 'react-hook-form';
 
 export class APPError extends Error {
     public status: number;
@@ -21,21 +22,13 @@ export class UnauthorizedError extends APPError {
     }
 }
 
-type AssociateParams = (
-    message: string,
-    status: number,
-    arror: Record<string, unknown>,
-) => void;
-
 export class InvalidCredentialsError extends UnauthorizedError {
-    public constructor(message?: string, associate?: AssociateParams) {
-        super(message);
+    public constructor({
+        content,
+        invalidCredentialsError = true,
+    }: SignInError) {
+        super(JSON.stringify({ content, invalidCredentialsError }));
         this.name = 'InvalidCredentialsError';
-        associate?.(
-            message as string,
-            this.status,
-            this as Record<string, unknown>,
-        );
     }
 }
 
@@ -63,14 +56,9 @@ export class ForbiddenError extends APPError {
 }
 
 export class InactiveAcountError extends ForbiddenError {
-    public constructor(message?: string, associate?: AssociateParams) {
-        super(message);
+    public constructor({ content, inactiveAccountError = true }: SignInError) {
+        super(JSON.stringify({ content, inactiveAccountError }));
         this.name = 'InactiveAcountError';
-        associate?.(
-            message as string,
-            this.status,
-            this as Record<string, unknown>,
-        );
     }
 }
 
@@ -78,5 +66,18 @@ export class BadRequestError extends APPError {
     constructor(message?: string) {
         super(StatusCodes.BAD_REQUEST, message);
         this.name = 'BadRequestError';
+    }
+}
+
+export class ValidationError extends BadRequestError {
+    constructor({ content, validdationErrors = true }: SignInError) {
+        super(JSON.stringify({ content, validdationErrors }));
+        this.name = 'ValidationError';
+    }
+}
+
+export class LoginUnexpectedError extends APPError {
+    constructor({ content, serverError = true }: SignInError) {
+        super(undefined, JSON.stringify({ content, serverError }));
     }
 }

@@ -14,14 +14,12 @@ export type SignupData = z.infer<typeof signupSchema>;
 
 export type Passwords = z.infer<typeof passwordsSchema>;
 
-export type FieldError = {
-    path: string;
-    message: string;
-};
-
 export type SignInError = {
-    message: string;
-    status: number;
+    content: string | Record<string, string[]>;
+    validdationErrors?: boolean;
+    invalidCredentialsError?: boolean;
+    inactiveAccountError?: boolean;
+    serverError?: boolean;
 };
 
 export interface RefreshAccessTokenResBody
@@ -35,9 +33,4 @@ export type GetAllResponse = {
 export type SelectOption = {
     value: string;
     content: string;
-};
-
-export type LoginError = {
-    message: string;
-    status: number;
 };
