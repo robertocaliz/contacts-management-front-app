@@ -8,7 +8,7 @@ import SubmitButton from '@/components/buttons/submit';
 import SignupRecoverButton from '@/components/buttons/signup-recover';
 import Form, { FormHeader, Input } from '@/components/form';
 import { useAlert, useUpdateUserSession } from '@/hooks';
-import { displayMessages, objChanged } from '@/functions/forms';
+import { showMessages, objChanged } from '@/functions/forms';
 import { Centralize, RequiredFieldNotification } from '@/components';
 import { updateUserSignup } from '../../server/actions/users';
 import { useAction } from 'next-safe-action/hooks';
@@ -30,7 +30,7 @@ export const ProfileForm = () => {
     const { execute } = useAction(updateUserSignup, {
         async onSuccess({ dataAlreadyExistsErrors, userData, emailSend }) {
             if (dataAlreadyExistsErrors) {
-                displayMessages(dataAlreadyExistsErrors, setError);
+                showMessages(dataAlreadyExistsErrors, setError);
                 return;
             }
             await updateUserSession({ name: userData.name }).then(() => {

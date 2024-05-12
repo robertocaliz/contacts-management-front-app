@@ -3,7 +3,16 @@ import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { loginUser } from '../../../../../server/actions/users';
 import { User, UserCredentials } from '@/types';
-import { LoginUnexpectedError, ValidationError } from '@/lib/errors';
+import {
+    InactiveAcountError,
+    InvalidCredentialsError,
+    LoginUnexpectedError,
+    ValidationError,
+} from '@/lib/errors';
+import {
+    INACTIVE_ACCOUNT_ERROR,
+    INVALID_CREADENTIALS_ERROR,
+} from '@/constants';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -20,8 +29,15 @@ export const authOptions: NextAuthOptions = {
                 if (validationErrors) {
                     throw new ValidationError({ content: validationErrors });
                 }
-                if (data?.loginError) {
-                    throw data.loginError;
+                if (data?.invalidCredentialsError) {
+                    throw new InvalidCredentialsError({
+                        content: INVALID_CREADENTIALS_ERROR,
+                    });
+                }
+                if (data?.inactiveAcountError) {
+                    new InactiveAcountError({
+                        content: INACTIVE_ACCOUNT_ERROR,
+                    });
                 }
                 if (serverError) {
                     throw new LoginUnexpectedError({

@@ -15,18 +15,11 @@ import {
     BadRequestError,
     ConflictError,
     ForbiddenError,
-    InactiveAcountError,
-    InvalidCredentialsError,
     NotFoundError,
     UnauthorizedError,
 } from '@/lib/errors';
 import { authAction, publicAction } from '@/lib/safe-action';
 import { User } from '@/types/User';
-
-import {
-    INACTIVE_ACCOUNT_ERROR,
-    INVALID_CREADENTIALS_ERROR,
-} from '@/constants';
 
 export const loginUser = publicAction(loginSchema, async (credentials) => {
     try {
@@ -38,16 +31,12 @@ export const loginUser = publicAction(loginSchema, async (credentials) => {
     } catch (error) {
         if (error instanceof UnauthorizedError) {
             return {
-                loginError: new InvalidCredentialsError({
-                    content: INVALID_CREADENTIALS_ERROR,
-                }),
+                invalidCredentialsError: true,
             };
         }
         if (error instanceof ForbiddenError) {
             return {
-                loginError: new InactiveAcountError({
-                    content: INACTIVE_ACCOUNT_ERROR,
-                }),
+                inactiveAcountError: true,
             };
         }
         throw error;

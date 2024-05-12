@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
 import Alert from 'react-bootstrap/Alert';
-import { displayMessages, objChanged } from '@/functions/forms';
+import { showMessages, objChanged } from '@/functions/forms';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
@@ -49,7 +49,7 @@ export function FormUpdateContact({ data }: FormUpdateContactProps) {
                 Alerts.success(success.message);
                 return;
             }
-            displayMessages(errors, setError);
+            showMessages(errors, setError);
         },
         onError({ validationErrors, serverError }) {
             if (validationErrors) {
