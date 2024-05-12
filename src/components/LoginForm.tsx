@@ -11,11 +11,12 @@ import { Centralize, Footer } from '@/components';
 import { useAlert } from '@/hooks';
 import { SignInError, UserCredentials } from '@/types';
 import { showValidationErrors } from '@/functions/forms';
-import router from 'next/router';
 import { isUserOnline } from '@/functions';
 import { INTERNET_CONECTION_ERROR } from '@/constants';
+import { useRouter } from 'next/navigation';
 
 export function LoginForm() {
+    const router = useRouter();
     const { alertType, alertMessage, showAlert, alert } = useAlert();
     const {
         clearErrors,
