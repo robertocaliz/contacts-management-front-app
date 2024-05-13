@@ -50,7 +50,6 @@ export const signupUser = publicAction(signupSchema, async (userData) => {
             userData,
         };
     } catch (error) {
-        //DataAlreadyExistsError
         if (error instanceof ConflictError) {
             return {
                 dataAlreadyExistsErrors: error.errors,
@@ -61,13 +60,14 @@ export const signupUser = publicAction(signupSchema, async (userData) => {
 });
 export const recoverSignup = publicAction(emailSchema, async (data) => {
     try {
-        const { status } = await axiosPublic.post('/recover-sinup', data);
-        return { status };
+        await axiosPublic.post('/recover-sinup', data);
+        return { success: {} };
     } catch (error) {
-        //EmailNotFoundError
         if (error instanceof NotFoundError) {
             return {
-                status: error.status,
+                emailNotFound: {
+                    message: 'O "email" não foi encontrado no sistema.',
+                },
             };
         }
         throw error;
@@ -82,10 +82,9 @@ export const updatePassword = publicAction(
                 newPassword: password,
             });
             return {
-                sucess: { message: 'Senha actualizada.' },
+                success: {},
             };
         } catch (error) {
-            //InvalidOrExpiredRecoveryTokenError
             if (error instanceof BadRequestError) {
                 return {
                     invalidOrExpiredRecoveryToken: true,
@@ -103,7 +102,6 @@ export const activateAccount = publicAction(
             await axiosPublic.patch(`/signup/activate/${activationToken}`);
             return { success: { message: 'Conta activada!' } };
         } catch (error) {
-            //InvalidOrExpiredRActivationTokenError
             if (error instanceof BadRequestError) {
                 return { ivalidOrExpiredActivationToken: true };
             }
@@ -115,10 +113,11 @@ export const activateAccount = publicAction(
 export const updateUserSignup = authAction(
     updateUserSignupSchema,
     async (userData) => {
+        console.log(userData);
         try {
             const {
                 data: { emailSend },
-            } = await axiosAuth.put(`/users/${userData.id}`, userData);
+            } = await axiosAuth.put(`/users/${userData._id}`, userData);
             return { emailSend: !!emailSend, userData };
         } catch (error) {
             if (error instanceof ConflictError) {
@@ -146,7 +145,6 @@ export const updateUserEmail = publicAction(
             );
             return { newEmail };
         } catch (error) {
-            //InvalidOrExpiredAlterationkenError
             if (error instanceof BadRequestError) {
                 return {
                     invalidOrExpiredAlterationken: true,

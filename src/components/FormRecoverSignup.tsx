@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { StatusCodes } from 'http-status-codes';
 import { useForm } from 'react-hook-form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
@@ -13,10 +12,15 @@ import { useAction } from 'next-safe-action/hooks';
 import { z } from 'zod';
 import { emailSchema } from '@/lib/schemas';
 import Alerts from '@/lib/alerts';
+import { showValidationErrors } from '@/functions/forms';
+import Alert from 'react-bootstrap/Alert';
+import { useAlert } from '@/hooks';
+import { INTERNET_CONECTION_ERROR } from '@/constants';
+import { isUserOnline } from '@/functions';
 
 export function FormRecoverSignup() {
     const router = useRouter();
-
+    const { alertType, showAlert, alertMessage, alert } = useAlert();
     const {
         reset,
         register,
@@ -27,22 +31,18 @@ export function FormRecoverSignup() {
     } = useForm<z.infer<typeof emailSchema>>();
 
     const { execute } = useAction(recoverSignup, {
-        onSuccess(data) {
-            if (data.status === StatusCodes.NOT_FOUND) {
-                setError('email', {
-                    message: 'O "email" não foi encontrado no sistema.',
+        onSuccess({ emailNotFound }) {
+            if (emailNotFound) {
+                return setError('email', {
+                    message: emailNotFound.message,
                 });
-                return;
             }
             reset();
             router.replace('/signup/recover/confirm');
         },
         onError({ validationErrors, serverError }) {
             if (validationErrors) {
-                setError('email', {
-                    message: validationErrors.email?.pop(),
-                });
-                return;
+                return showValidationErrors(validationErrors, setError);
             }
             Alerts.error(String(serverError));
         },
@@ -50,11 +50,17 @@ export function FormRecoverSignup() {
 
     const handleRecoverSignup = async () => {
         clearErrors();
+        if (!isUserOnline()) {
+            return alert.show('danger', INTERNET_CONECTION_ERROR);
+        }
         execute(getValues());
     };
 
     return (
         <Centralize>
+            <Alert variant={alertType} show={showAlert}>
+                {alertMessage}
+            </Alert>
             <Form action={handleRecoverSignup}>
                 <FormHeader text='Recuperação de senha' />
                 <Input

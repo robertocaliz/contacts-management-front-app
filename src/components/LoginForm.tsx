@@ -27,10 +27,10 @@ export function LoginForm() {
     } = useForm<UserCredentials>();
 
     const handleLoginUser = async () => {
+        clearErrors();
         if (!isUserOnline()) {
             return alert.show('danger', INTERNET_CONECTION_ERROR);
         }
-        clearErrors();
         const credentials = getValues();
         const response = await signIn('credentials', {
             ...credentials,

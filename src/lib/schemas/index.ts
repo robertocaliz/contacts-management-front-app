@@ -32,7 +32,12 @@ export const emailSchema = z.object({
 });
 
 export const emailSchemaOptional = z.object({
-    email: z.string().email('"email" inválido.').optional(),
+    email: z
+        .string()
+        .refine((value) => value === undefined || RegEx.app.EMAIL.test(value), {
+            message: '"email" inválido.',
+            path: ['email'],
+        }),
 });
 
 export const MZPhoneNumberSchema = z.object({
@@ -76,12 +81,12 @@ export const recoveryTokenSchema = z.object({ recoveryToken: z.string() });
 export const updatePasswordSchema = recoveryTokenSchema.and(passwordsSchema);
 
 export const idSchema = z.object({
-    id: z.string(),
+    _id: z.string(),
 });
 
 export const updateUserSignupSchema = idSchema
     .and(usernameSchema)
-    .and(emailSchemaOptional);
+    .and(emailSchema);
 
 export const contactSchema = nameSchema
     .and(emailSchemaOptional)

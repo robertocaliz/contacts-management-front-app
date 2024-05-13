@@ -13,7 +13,7 @@ export const createContact = authAction(contactSchema, async (contact) => {
     } catch (error) {
         if (error instanceof ConflictError) {
             return {
-                errors: error.errors,
+                dataAlreadyExistsErrors: error.errors,
             };
         }
         throw error;
@@ -22,30 +22,30 @@ export const createContact = authAction(contactSchema, async (contact) => {
 
 export const updateContact = authAction(updateContactSchema, async (data) => {
     try {
-        await axiosAuth.put(`/contacts/${data.id}`, data);
+        await axiosAuth.put(`/contacts/${data._id}`, data);
         return { success: { message: 'Contacto alterado.' } };
     } catch (error) {
         if (error instanceof ConflictError) {
             return {
-                errors: error.errors,
+                dataAlreadyExistsErrors: error.errors,
             };
         }
         throw error;
     }
 });
 
-export const getById = authAction(idSchema, async ({ id: constactId }) => {
+export const getById = authAction(idSchema, async ({ _id: constactId }) => {
     const { data: contact } = await axiosAuth.get<Contact>(
         `/contacts/${constactId}`,
     );
     return contact;
 });
 
-export async function fetchContacts(url: string) {
+export const fetchContacts = async (url: string) => {
     const { data } = await axiosAuth.get<GetAllResponse>(url);
     return data;
-}
+};
 
-export const deleteById = authAction(idSchema, async ({ id: contactId }) => {
+export const deleteById = authAction(idSchema, async ({ _id: contactId }) => {
     await axiosAuth.delete(`/contacts/${contactId}`);
 });

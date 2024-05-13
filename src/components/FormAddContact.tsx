@@ -8,7 +8,7 @@ import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
 import { Centralize, RequiredFieldNotification } from '@/components';
 import { createContact } from '../../server/actions/contacts';
-import { showMessages } from '@/functions/forms';
+import { showErrors, showValidationErrors } from '@/functions/forms';
 import { useAction } from 'next-safe-action/hooks';
 
 export function FormAddContact() {
@@ -22,31 +22,30 @@ export function FormAddContact() {
     } = useForm<Contact>();
 
     const { execute } = useAction(createContact, {
-        onSuccess({ success, errors }) {
-            if (success) {
-                reset();
-                Alerts.success(success.message);
-                return;
+        onSuccess({ dataAlreadyExistsErrors, success }) {
+            if (dataAlreadyExistsErrors) {
+                return showErrors(dataAlreadyExistsErrors, setError);
             }
-            showMessages(errors, setError);
+            reset();
+            Alerts.success(success.message);
+            return;
         },
         onError({ validationErrors, serverError }) {
             if (validationErrors) {
-                return;
+                return showValidationErrors(validationErrors, setError);
             }
             Alerts.error(String(serverError));
         },
     });
 
-    const onSubmit = () => {
+    const handleCreateContact = () => {
         clearErrors();
-        const contact = getValues();
-        execute(contact);
+        execute(getValues());
     };
 
     return (
         <Centralize>
-            <Form action={onSubmit}>
+            <Form action={handleCreateContact}>
                 <FormHeader text='Adicionar' />
                 <Input
                     label='Nome *'

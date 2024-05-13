@@ -8,10 +8,18 @@ import SubmitButton from '@/components/buttons/submit';
 import SignupRecoverButton from '@/components/buttons/signup-recover';
 import Form, { FormHeader, Input } from '@/components/form';
 import { useAlert, useUpdateUserSession } from '@/hooks';
-import { showMessages, objChanged } from '@/functions/forms';
+import {
+    showErrors,
+    objChanged,
+    showValidationErrors,
+} from '@/functions/forms';
 import { Centralize, RequiredFieldNotification } from '@/components';
 import { updateUserSignup } from '../../server/actions/users';
 import { useAction } from 'next-safe-action/hooks';
+import { z } from 'zod';
+import { updateUserSignupSchema } from '@/lib/schemas';
+import { INTERNET_CONECTION_ERROR } from '@/constants';
+import { isUserOnline } from '@/functions';
 
 export const ProfileForm = () => {
     const [userData, setUserData] = useState<User>({} as User);
@@ -19,19 +27,18 @@ export const ProfileForm = () => {
     const { alertType, alertMessage, showAlert, alert } = useAlert();
 
     const {
-        register,
-        reset,
+        clearErrors,
         formState: { errors },
         getValues,
-        clearErrors,
+        register,
+        reset,
         setError,
-    } = useForm<Pick<User, 'id' | 'name' | 'email'>>();
+    } = useForm<z.infer<typeof updateUserSignupSchema>>();
 
     const { execute } = useAction(updateUserSignup, {
         async onSuccess({ dataAlreadyExistsErrors, userData, emailSend }) {
             if (dataAlreadyExistsErrors) {
-                showMessages(dataAlreadyExistsErrors, setError);
-                return;
+                return showErrors(dataAlreadyExistsErrors, setError);
             }
             await updateUserSession({ name: userData.name }).then(() => {
                 if (emailSend) {
@@ -46,10 +53,11 @@ export const ProfileForm = () => {
         },
         onError({ validationErrors, serverError }) {
             if (validationErrors) {
-                console.log(validationErrors);
-                return;
+                return showValidationErrors(validationErrors, setError);
             }
-            alert.show('danger', String(serverError));
+            if (serverError || !serverError) {
+                alert.show('danger', String(serverError));
+            }
         },
     });
 
@@ -63,6 +71,9 @@ export const ProfileForm = () => {
 
     const handleUpdateProfile = async () => {
         clearErrors();
+        if (!isUserOnline()) {
+            return alert.show('danger', INTERNET_CONECTION_ERROR);
+        }
         const data = getValues();
         if (
             !objChanged({
@@ -72,7 +83,7 @@ export const ProfileForm = () => {
         ) {
             return alert.show('warning', 'O perfíl não foi alterado.');
         }
-        execute({ ...data, id: String(userData.id) });
+        execute({ ...data, _id: userData._id });
     };
 
     return (

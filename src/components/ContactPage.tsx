@@ -38,8 +38,8 @@ export const ContactPage = () => {
         setContacts(contacts.filter((contact) => contact._id !== contactId));
     };
 
-    const handleDelete = async (contactId: string) => {
-        await deleteById({ id: contactId })
+    const handleDeleteContact = async (contactId: string) => {
+        await deleteById({ _id: contactId })
             .then(({ serverError }) => {
                 return Promise.reject(serverError);
             })
@@ -76,7 +76,7 @@ export const ContactPage = () => {
                     <TableData>{contact.phoneNumber}</TableData>
                     <TableData>
                         <DeleteButton
-                            handleDelete={handleDelete}
+                            handleDelete={handleDeleteContact}
                             id={contact._id}
                         />
                     </TableData>

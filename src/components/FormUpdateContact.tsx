@@ -1,11 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
 import Alert from 'react-bootstrap/Alert';
-import { showMessages, objChanged } from '@/functions/forms';
+import {
+    showErrors,
+    objChanged,
+    showValidationErrors,
+} from '@/functions/forms';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from './form';
@@ -14,6 +18,8 @@ import { useAlert } from '@/hooks';
 import { useAction } from 'next-safe-action/hooks';
 import { Contact } from '@/types';
 import { updateContact } from '../../server/actions/contacts';
+import { INTERNET_CONECTION_ERROR } from '@/constants';
+import { isUserOnline } from '@/functions';
 
 type FormUpdateContactProps = {
     data: Contact;
@@ -33,45 +39,49 @@ export function FormUpdateContact({ data }: FormUpdateContactProps) {
     }, [contact]);
 
     const {
+        clearErrors,
+        formState: { errors },
+        getValues,
         register,
         reset,
-        formState: { errors },
         setError,
-        clearErrors,
-        handleSubmit,
     } = useForm<Contact>();
 
     const { execute } = useAction(updateContact, {
-        onSuccess({ errors, success }) {
-            if (success) {
-                reset();
-                router.back();
-                Alerts.success(success.message);
-                return;
+        onSuccess({ dataAlreadyExistsErrors, success }) {
+            if (dataAlreadyExistsErrors) {
+                return showErrors(dataAlreadyExistsErrors, setError);
             }
-            showMessages(errors, setError);
+            reset();
+            router.back();
+            Alerts.success(success.message);
+            return;
         },
         onError({ validationErrors, serverError }) {
             if (validationErrors) {
-                console.log(validationErrors);
-                return;
+                return showValidationErrors(validationErrors, setError);
             }
-            Alerts.error(String(serverError));
+            if (serverError || !serverError) {
+                alert.show('danger', String(serverError));
+            }
         },
     });
 
-    const onSubmit: SubmitHandler<Contact> = (newContact) => {
+    const handleUpdateContact = () => {
         clearErrors();
+        if (!isUserOnline()) {
+            return alert.show('danger', INTERNET_CONECTION_ERROR);
+        }
+        const data = getValues();
         if (
             !objChanged({
-                newObj: newContact,
+                newObj: data,
                 originalObj: contact,
             })
         ) {
-            alert.show('warning', 'O contacto não foi alterado.');
-            return;
+            return alert.show('warning', 'O contacto não foi alterado.');
         }
-        execute({ ...newContact, id: String(contact._id) });
+        execute({ ...data, _id: String(contact._id) });
     };
 
     return (
@@ -79,7 +89,7 @@ export function FormUpdateContact({ data }: FormUpdateContactProps) {
             <Alert variant={alertType} show={showAlert}>
                 {alertMessage}
             </Alert>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form action={handleUpdateContact}>
                 <FormHeader text='Actualizar' />
                 <Input
                     label='Nome *'

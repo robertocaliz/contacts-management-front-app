@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function UpdateContactPage({ params }: ParamsProps) {
-    const { data, serverError } = await getById({ id: params.contactId });
+    const { data, serverError } = await getById({ _id: params.contactId });
     return serverError ? (
         <Centralize>
             <Alert variant='danger' show={true}>

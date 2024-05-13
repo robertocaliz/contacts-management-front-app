@@ -1,7 +1,8 @@
 import { FieldError } from '@/types';
 import { Path, UseFormSetError } from 'react-hook-form';
 
-export const showMessages = <T extends Record<string, unknown>>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const showErrors = <T extends Record<string, any>>(
     errors: FieldError[],
     handler: UseFormSetError<T>,
 ) => {
@@ -12,7 +13,8 @@ export const showMessages = <T extends Record<string, unknown>>(
     });
 };
 
-export const showValidationErrors = <T extends Record<string, unknown>>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const showValidationErrors = <T extends Record<string, any>>(
     validationErrors: Record<string, string[]>,
     setError: UseFormSetError<T>,
 ) => {

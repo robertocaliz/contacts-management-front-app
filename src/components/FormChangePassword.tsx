@@ -11,11 +11,13 @@ import { updatePassword } from '../../server/actions/users';
 import { Passwords } from '@/types';
 import { useAction } from 'next-safe-action/hooks';
 import Alerts from '@/lib/alerts';
+import { showValidationErrors } from '@/functions/forms';
+import { INTERNET_CONECTION_ERROR } from '@/constants';
+import { isUserOnline } from '@/functions';
 
 export function FormChangePassword() {
     const router = useRouter();
     const params = useParams();
-
     const { alertType, alertMessage, showAlert, alert } = useAlert();
 
     const {
@@ -24,11 +26,12 @@ export function FormChangePassword() {
         register,
         getValues,
         clearErrors,
+        setError,
     } = useForm<Passwords>();
 
     const { execute } = useAction(updatePassword, {
-        onSuccess(data) {
-            if (data.invalidOrExpiredRecoveryToken) {
+        onSuccess({ invalidOrExpiredRecoveryToken }) {
+            if (invalidOrExpiredRecoveryToken) {
                 alert.show(
                     'warning',
                     `Token de recuperação expirado ou inválido.
@@ -42,7 +45,7 @@ export function FormChangePassword() {
         },
         onError({ validationErrors, serverError }) {
             if (validationErrors) {
-                console.log(validationErrors);
+                showValidationErrors(validationErrors, setError);
                 return;
             }
             Alerts.error(String(serverError));
@@ -51,11 +54,13 @@ export function FormChangePassword() {
 
     const handleUpdatePassword = async () => {
         clearErrors();
+        if (!isUserOnline()) {
+            return alert.show('danger', INTERNET_CONECTION_ERROR);
+        }
         execute({
             ...getValues(),
             recoveryToken: String(params.recoveryToken),
         });
-        //reset() of next-safe-action
     };
 
     return (

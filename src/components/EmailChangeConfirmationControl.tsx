@@ -22,7 +22,7 @@ export const EmailChangeConfirmationControl = () => {
 						Solicite um novo token de alteração.`,
                 );
             }
-            return await updateUserSession({ email: newEmail }).then(() => {
+            await updateUserSession({ email: newEmail }).then(() => {
                 alert.show('success', 'Seu email foi alterado com sucesso!');
             });
         },

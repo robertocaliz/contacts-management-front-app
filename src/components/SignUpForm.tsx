@@ -6,7 +6,7 @@ import { useState } from 'react';
 import SubmitButton from './buttons/submit';
 import LoginButton from './buttons/login';
 import Form, { CheckBox, FormHeader, Input, PasswordInput } from './form';
-import { showMessages, showValidationErrors } from '@/functions/forms';
+import { showErrors, showValidationErrors } from '@/functions/forms';
 import { Centralize, Footer } from '@/components';
 import { SignupData, FieldError } from '@/types';
 import { useRouter } from 'next/navigation';
@@ -34,7 +34,7 @@ export function SignUpForm() {
     const { execute } = useAction(signupUser, {
         onSuccess({ dataAlreadyExistsErrors, userData }) {
             if (dataAlreadyExistsErrors) {
-                showMessages(dataAlreadyExistsErrors as FieldError[], setError);
+                showErrors(dataAlreadyExistsErrors as FieldError[], setError);
                 return;
             }
             reset();
@@ -55,10 +55,10 @@ export function SignUpForm() {
     });
 
     const handleSignupUser = async () => {
+        clearErrors();
         if (!isUserOnline()) {
             return alert.show('danger', INTERNET_CONECTION_ERROR);
         }
-        clearErrors();
         execute(getValues());
     };
 
