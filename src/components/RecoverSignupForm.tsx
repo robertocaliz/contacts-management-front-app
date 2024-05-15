@@ -17,7 +17,7 @@ import { useAlert } from '@/hooks';
 import { INTERNET_CONECTION_ERROR } from '@/constants';
 import { isUserOnline } from '@/functions';
 
-export function FormRecoverSignup() {
+export function RecoverSignupForm() {
     const router = useRouter();
     const { alertType, showAlert, alertMessage, alert } = useAlert();
     const {

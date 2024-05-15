@@ -1,4 +1,4 @@
-import { FormAddContact } from '@/components';
+import { CreateContactForm } from '@/components';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default async function AddContactPage() {
-    return <FormAddContact />;
+    return <CreateContactForm />;
 }

@@ -21,11 +21,11 @@ import { updateContact } from '../../server/actions/contacts';
 import { INTERNET_CONECTION_ERROR } from '@/constants';
 import { isUserOnline } from '@/functions';
 
-type FormUpdateContactProps = {
+type UpdateContactFormProps = {
     data: Contact;
 };
 
-export function FormUpdateContact({ data }: FormUpdateContactProps) {
+export function UpdateContactForm({ data }: UpdateContactFormProps) {
     const router = useRouter();
     const [contact, setContact] = useState<Contact>({} as Contact);
     const { alertType, alertMessage, showAlert, alert } = useAlert();

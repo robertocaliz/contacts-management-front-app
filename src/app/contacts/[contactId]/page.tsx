@@ -1,4 +1,4 @@
-import { Centralize, FormUpdateContact } from '@/components';
+import { Centralize, UpdateContactForm } from '@/components';
 import { Metadata } from 'next';
 import { getById } from '../../../../server/actions/contacts';
 import { Contact, ParamsProps } from '@/types';
@@ -17,6 +17,6 @@ export default async function UpdateContactPage({ params }: ParamsProps) {
             </Alert>
         </Centralize>
     ) : (
-        <FormUpdateContact data={data as Contact} />
+        <UpdateContactForm data={data as Contact} />
     );
 }

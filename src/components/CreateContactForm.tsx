@@ -11,7 +11,7 @@ import { createContact } from '../../server/actions/contacts';
 import { showErrors, showValidationErrors } from '@/functions/forms';
 import { useAction } from 'next-safe-action/hooks';
 
-export function FormAddContact() {
+export function CreateContactForm() {
     const {
         clearErrors,
         formState: { errors },

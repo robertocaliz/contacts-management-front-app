@@ -1,4 +1,4 @@
-import { FormChangePassword } from '@/components';
+import { UpdatePasswordForm } from '@/components';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function ChangePasswordPage() {
-    return <FormChangePassword />;
+    return <UpdatePasswordForm />;
 }

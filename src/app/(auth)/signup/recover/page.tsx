@@ -1,4 +1,4 @@
-import { FormRecoverSignup } from '@/components';
+import { RecoverSignupForm } from '@/components';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function RecoverSignupPage() {
-    return <FormRecoverSignup />;
+    return <RecoverSignupForm />;
 }

@@ -15,7 +15,7 @@ import { showValidationErrors } from '@/functions/forms';
 import { INTERNET_CONECTION_ERROR } from '@/constants';
 import { isUserOnline } from '@/functions';
 
-export function FormChangePassword() {
+export function UpdatePasswordForm() {
     const router = useRouter();
     const params = useParams();
     const { alertType, alertMessage, showAlert, alert } = useAlert();

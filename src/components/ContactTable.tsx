@@ -28,7 +28,7 @@ export const ContactTable = () => {
                     className='flex-grow-[8]'
                 />
                 <div className='flex flex-grow-[1] items-center gap-4'>
-                    <AddButton href='/contacts/add' />
+                    <AddButton href='/contacts/create' />
                 </div>
             </div>
             <TableContainer>
