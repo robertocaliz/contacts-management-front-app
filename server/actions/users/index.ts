@@ -2,9 +2,9 @@
 
 import {
     activationTokenSchema,
+    alterationTokenSchema,
     emailSchema,
     loginSchema,
-    recoveryTokenSchema,
     signupSchema,
     updatePasswordSchema,
     updateUserSignupSchema,
@@ -134,10 +134,9 @@ type UpdateUserEmailResBody = {
     newEmail: string;
 };
 
-//Change param
 export const updateUserEmail = publicAction(
-    recoveryTokenSchema,
-    async (alterationToken) => {
+    alterationTokenSchema,
+    async ({ alterationToken }) => {
         try {
             const {
                 data: { newEmail },
@@ -155,15 +154,3 @@ export const updateUserEmail = publicAction(
         }
     },
 );
-
-export const checkIfEmailExists = async (email: string) => {
-    try {
-        const { status } = await axiosPublic.post('/check_email', { email });
-        return status;
-    } catch (error) {
-        if (error instanceof ConflictError) {
-            return error.status;
-        }
-        throw error;
-    }
-};

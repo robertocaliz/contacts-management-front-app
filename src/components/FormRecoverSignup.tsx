@@ -11,7 +11,6 @@ import { recoverSignup } from '../../server/actions/users';
 import { useAction } from 'next-safe-action/hooks';
 import { z } from 'zod';
 import { emailSchema } from '@/lib/schemas';
-import Alerts from '@/lib/alerts';
 import { showValidationErrors } from '@/functions/forms';
 import Alert from 'react-bootstrap/Alert';
 import { useAlert } from '@/hooks';
@@ -44,7 +43,7 @@ export function FormRecoverSignup() {
             if (validationErrors) {
                 return showValidationErrors(validationErrors, setError);
             }
-            Alerts.error(String(serverError));
+            alert.show('danger', String(serverError));
         },
     });
 

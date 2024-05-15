@@ -22,7 +22,7 @@ export const EmailChangeConfirmationControl = () => {
 						Solicite um novo token de alteração.`,
                 );
             }
-            await updateUserSession({ email: newEmail }).then(() => {
+            return await updateUserSession({ email: newEmail }).then(() => {
                 alert.show('success', 'Seu email foi alterado com sucesso!');
             });
         },
@@ -32,7 +32,7 @@ export const EmailChangeConfirmationControl = () => {
     });
 
     useEffect(() => {
-        execute({ recoveryToken: String(params.alterationToken) });
+        execute({ alterationToken: String(params.alterationToken) });
     }, [params]);
 
     return (
