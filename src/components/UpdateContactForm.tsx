@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
@@ -25,7 +25,9 @@ type UpdateContactFormProps = {
     data: Contact;
 };
 
-export function UpdateContactForm({ data }: UpdateContactFormProps) {
+export const UpdateContactForm: React.FC<UpdateContactFormProps> = ({
+    data,
+}) => {
     const router = useRouter();
     const [contact, setContact] = useState<Contact>({} as Contact);
     const { alertType, alertMessage, showAlert, alert } = useAlert();
@@ -116,4 +118,4 @@ export function UpdateContactForm({ data }: UpdateContactFormProps) {
             <BackButton />
         </Centralize>
     );
-}
+};
