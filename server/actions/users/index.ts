@@ -58,6 +58,7 @@ export const signupUser = publicAction(signupSchema, async (userData) => {
         throw error;
     }
 });
+
 export const recoverSignup = publicAction(emailSchema, async (data) => {
     try {
         await axiosPublic.post('/recover-sinup', data);
