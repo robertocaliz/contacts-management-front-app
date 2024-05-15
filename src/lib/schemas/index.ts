@@ -84,6 +84,10 @@ export const idSchema = z.object({
     _id: z.string(),
 });
 
+export const activationTokenSchema = z.object({
+    activationToken: z.string(),
+});
+
 export const updateUserSignupSchema = idSchema
     .and(usernameSchema)
     .and(emailSchema);

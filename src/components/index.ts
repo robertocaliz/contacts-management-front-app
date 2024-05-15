@@ -24,3 +24,4 @@ export * from './SignupActivationControl';
 export * from './EmailChangeConfirmationControl';
 export * from './Centralize';
 export * from './UserStatus';
+export * from './SquareRain';

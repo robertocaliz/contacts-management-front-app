@@ -1,8 +1,8 @@
 'use server';
 
 import {
+    activationTokenSchema,
     emailSchema,
-    idSchema,
     loginSchema,
     recoveryTokenSchema,
     signupSchema,
@@ -96,14 +96,14 @@ export const updatePassword = publicAction(
 );
 
 export const activateAccount = publicAction(
-    idSchema,
-    async (activationToken) => {
+    activationTokenSchema,
+    async ({ activationToken }) => {
         try {
             await axiosPublic.patch(`/signup/activate/${activationToken}`);
             return { success: { message: 'Conta activada!' } };
         } catch (error) {
             if (error instanceof BadRequestError) {
-                return { ivalidOrExpiredActivationToken: true };
+                return { invalidOrExpiredActivationToken: true };
             }
             throw error;
         }
@@ -113,7 +113,6 @@ export const activateAccount = publicAction(
 export const updateUserSignup = authAction(
     updateUserSignupSchema,
     async (userData) => {
-        console.log(userData);
         try {
             const {
                 data: { emailSend },
