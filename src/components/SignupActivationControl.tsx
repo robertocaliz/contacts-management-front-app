@@ -8,7 +8,8 @@ import { useAlert } from '@/hooks';
 import { activateAccount } from '../../server/actions/users';
 import { useAction } from 'next-safe-action/hooks';
 
-export const SinupActivationControl = () => {
+//Change name
+export const SignupActivationControl = () => {
     const params = useParams();
     const { alertType, alertMessage, alert } = useAlert();
     const [showSquareRain, setShowSquareRain] = useState(false);

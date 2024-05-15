@@ -19,7 +19,7 @@ import {
     UnauthorizedError,
 } from '@/lib/errors';
 import { authAction, publicAction } from '@/lib/safe-action';
-import { User } from '@/types/User';
+import { User } from '@/types';
 
 export const loginUser = publicAction(loginSchema, async (credentials) => {
     try {
@@ -133,6 +133,7 @@ type UpdateUserEmailResBody = {
     newEmail: string;
 };
 
+//Change param
 export const updateUserEmail = publicAction(
     recoveryTokenSchema,
     async (alterationToken) => {

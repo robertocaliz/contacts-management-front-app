@@ -36,6 +36,7 @@ export function LoginForm() {
             ...credentials,
             redirect: false,
         });
+        console.log(response);
         const error = JSON.parse(String(response?.error)) as SignInError;
         if (error) {
             if (error.validdationErrors) {

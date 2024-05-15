@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
                     });
                 }
                 if (data?.inactiveAcountError) {
-                    new InactiveAcountError({
+                    throw new InactiveAcountError({
                         content: INACTIVE_ACCOUNT_ERROR,
                     });
                 }
