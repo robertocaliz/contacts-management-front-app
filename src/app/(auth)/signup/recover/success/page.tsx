@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     title: 'Signup recovered',
 };
 
-export default function SuccessPage() {
+export default function Success() {
     return (
         <Centralize>
             <div className='flex flex-col gap-2 text-center'>

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     title: 'Confira seu email',
 };
 
-function ConfirmSignupPage({ params }: ParamsProps) {
+export default function ConfirmSignup({ params }: ParamsProps) {
     return (
         <>
             <Centralize>
@@ -26,5 +26,3 @@ function ConfirmSignupPage({ params }: ParamsProps) {
         </>
     );
 }
-
-export default ConfirmSignupPage;

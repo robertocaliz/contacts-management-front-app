@@ -5,6 +5,6 @@ export const metadata: Metadata = {
     title: 'Recuperar cadastro',
 };
 
-export default function RecoverSignupPage() {
+export default function RecoverSignup() {
     return <RecoverSignupForm />;
 }

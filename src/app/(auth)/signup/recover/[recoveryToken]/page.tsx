@@ -5,6 +5,6 @@ export const metadata: Metadata = {
     title: 'Recuperar Senha',
 };
 
-export default function ChangePasswordPage() {
+export default function ChangePassword() {
     return <UpdatePasswordForm />;
 }

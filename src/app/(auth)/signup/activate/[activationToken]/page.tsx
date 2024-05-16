@@ -5,6 +5,6 @@ export const metadata: Metadata = {
     title: 'Activar conta',
 };
 
-export default function ActivateUserAcountPage() {
+export default function ActivateUserAcount() {
     return <SignupActivationControl />;
 }

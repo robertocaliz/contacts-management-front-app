@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     title: 'Confira seu mail',
 };
 
-export default function ConfirmEmailPage() {
+export default function ConfirmEmail() {
     return (
         <Centralize>
             <div className='flex flex-col gap-2 text-center'>
