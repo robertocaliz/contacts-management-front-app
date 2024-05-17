@@ -1,4 +1,4 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/authOptions';
 import { User } from '@/types';
 import { getServerSession } from 'next-auth';
 import { getCsrfToken, getSession } from 'next-auth/react';

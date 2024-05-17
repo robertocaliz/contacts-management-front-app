@@ -48,4 +48,5 @@ export const fetchContacts = async (url: string) => {
 
 export const deleteById = authAction(idSchema, async ({ _id: contactId }) => {
     await axiosAuth.delete(`/contacts/${contactId}`);
+    return { contactId };
 });

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { RefreshAccessTokenResBody } from '@/types';
 import { axiosConfig } from '../..';
 import axiosPublic from '../../public';
@@ -9,6 +8,7 @@ import {
     handleResponseInterceptor,
     handleUnauthorizedErrorInterceptor,
 } from '../../interceptors';
+import { authOptions } from '@/lib/authOptions';
 
 export const axiosAuth = axios.create(axiosConfig);
 

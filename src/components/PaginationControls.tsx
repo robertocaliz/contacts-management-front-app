@@ -20,7 +20,7 @@ export const PaginationControls = () => {
     };
 
     return (
-        <>
+        <main>
             <div className='mt-4 flex flex-wrap items-center justify-center gap-4'>
                 <button
                     className='rounded bg-sky-500 px-3 py-1 font-bold text-white hover:bg-sky-600 focus:border-[0.15rem] focus:border-sky-100'
@@ -50,6 +50,6 @@ export const PaginationControls = () => {
                     Próxima
                 </button>
             </div>
-        </>
+        </main>
     );
 };

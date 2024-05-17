@@ -10,7 +10,6 @@ export * from './ProgressBar';
 export * from './GlobalMain';
 export * from './RequiredFieldNotification';
 export * from './ContactTable';
-export * from './ContactPage';
 export * from './ProfileForm';
 export * from './TableContainer';
 export * from './PaginationControls';
