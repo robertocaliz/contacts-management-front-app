@@ -17,7 +17,6 @@ import TableData from './table/data';
 import { TableContext } from '@/contexts';
 import { migrateToPrevPage } from '@/functions/tables';
 import Alerts from '@/lib/alerts';
-import { useAction } from 'next-safe-action/hooks';
 
 export const ContactTable: React.FC = () => {
     const [contacts, setContacts] = useState<Contact[]>([]);
@@ -44,28 +43,20 @@ export const ContactTable: React.FC = () => {
         setContacts(contacts.filter((contact) => contact._id !== contactId));
     };
 
-    const { execute: deleteContact } = useAction(deleteById, {
-        onSuccess({ contactId }) {
-            removeContactFromPage(contactId);
-            Alerts.success('Contacto apagado.');
+    const handleDeleteContact = async (contactId: string) => {
+        const { serverError } = await deleteById({ _id: contactId });
+        if (serverError) {
+            return Alerts.error(serverError);
+        }
+        removeContactFromPage(contactId);
+        Alerts.success('Contacto apagado.');
 
-            const migrate = migrateToPrevPage(
-                contacts.length,
-                searchParams.page,
-            );
+        const migrate = migrateToPrevPage(contacts.length, searchParams.page);
+        if (migrate) {
+            return searchParams.setPage((page) => --page);
+        }
 
-            if (migrate) {
-                return searchParams.setPage((page) => --page);
-            }
-            mutate();
-        },
-        onError({ serverError }) {
-            Alerts.error(String(serverError));
-        },
-    });
-
-    const handleDeleteContact = (contactId: string) => {
-        deleteContact({ _id: contactId });
+        mutate();
     };
 
     return (
