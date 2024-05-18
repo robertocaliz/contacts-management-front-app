@@ -1,7 +1,7 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Alert from 'react-bootstrap/Alert';
 import SubmitButton from './buttons/submit';
 import SignUpButton from './buttons/signup';
@@ -11,47 +11,46 @@ import { Centralize, Footer } from '@/components';
 import { useAlert } from '@/hooks';
 import { SignInError, UserCredentials } from '@/types';
 import { showValidationErrors } from '@/functions/forms';
-import { isUserOnline } from '@/functions';
-import { INTERNET_CONECTION_ERROR } from '@/constants';
 import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 
 export function LoginForm() {
     const router = useRouter();
     const { alertType, alertMessage, showAlert, alert } = useAlert();
+    const [isPending, startTransition] = useTransition();
     const {
         clearErrors,
         formState: { errors },
-        getValues,
+        handleSubmit,
         register,
         setError,
     } = useForm<UserCredentials>();
 
-    const handleLoginUser = async () => {
+    const onSubmit: SubmitHandler<UserCredentials> = (credentials) => {
         clearErrors();
-        if (!isUserOnline()) {
-            return alert.show('danger', INTERNET_CONECTION_ERROR);
-        }
-        const credentials = getValues();
-        const response = await signIn('credentials', {
-            ...credentials,
-            redirect: false,
-        });
-        const error = JSON.parse(String(response?.error)) as SignInError;
-        if (error) {
-            if (error.validdationErrors) {
-                return showValidationErrors(
-                    error.content as Record<string, string[]>,
-                    setError,
-                );
-            }
-            if (error.inactiveAccountError || error.invalidCredentialsError) {
-                return alert.show('warning', String(error.content));
-            }
-            if (error.serverError || !error.serverError) {
+        startTransition(async () => {
+            const response = await signIn('credentials', {
+                ...credentials,
+                redirect: false,
+            });
+            const error = JSON.parse(String(response?.error)) as SignInError;
+            if (error) {
+                if (error.validdationErrors) {
+                    return showValidationErrors(
+                        error.content as Record<string, string[]>,
+                        setError,
+                    );
+                }
+                if (
+                    error.inactiveAccountError ||
+                    error.invalidCredentialsError
+                ) {
+                    return alert.show('warning', String(error.content));
+                }
                 return alert.show('danger', String(error.content));
             }
-        }
-        router.replace('/');
+            router.replace('/');
+        });
     };
 
     return (
@@ -59,7 +58,7 @@ export function LoginForm() {
             <Alert variant={alertType} show={showAlert}>
                 {alertMessage}
             </Alert>
-            <Form action={handleLoginUser}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormHeader text='Login' />
                 <main>
                     <Input
@@ -75,6 +74,7 @@ export function LoginForm() {
                     <SubmitButton
                         content='login'
                         spinnerText='Autenticando...'
+                        submittingForm={isPending}
                     />
                 </main>
                 <Footer className='flex flex-col gap-2 text-center'>
