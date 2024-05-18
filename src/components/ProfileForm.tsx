@@ -1,7 +1,7 @@
 'use client';
 
 import { User } from '@/types';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import SubmitButton from '@/components/buttons/submit';
@@ -18,8 +18,6 @@ import { updateUserSignup } from '../../server/actions/users';
 import { useAction } from 'next-safe-action/hooks';
 import { z } from 'zod';
 import { updateUserSignupSchema } from '@/lib/schemas';
-import { INTERNET_CONECTION_ERROR } from '@/constants';
-import { isUserOnline } from '@/functions';
 
 export const ProfileForm = () => {
     const [userData, setUserData] = useState<User>({} as User);
@@ -29,13 +27,13 @@ export const ProfileForm = () => {
     const {
         clearErrors,
         formState: { errors },
-        getValues,
+        handleSubmit,
         register,
         reset,
         setError,
     } = useForm<z.infer<typeof updateUserSignupSchema>>();
 
-    const { execute } = useAction(updateUserSignup, {
+    const { execute, status: formStatus } = useAction(updateUserSignup, {
         async onSuccess({ dataAlreadyExistsErrors, userData, emailSend }) {
             if (dataAlreadyExistsErrors) {
                 return showErrors(dataAlreadyExistsErrors, setError);
@@ -55,9 +53,7 @@ export const ProfileForm = () => {
             if (validationErrors) {
                 return showValidationErrors(validationErrors, setError);
             }
-            if (serverError || !serverError) {
-                alert.show('danger', String(serverError));
-            }
+            alert.show('danger', String(serverError));
         },
     });
 
@@ -69,12 +65,11 @@ export const ProfileForm = () => {
         reset(userData);
     }, [userData]);
 
-    const handleUpdateProfile = async () => {
+    const onSubmit: SubmitHandler<z.infer<typeof updateUserSignupSchema>> = (
+        data,
+    ) => {
         clearErrors();
-        if (!isUserOnline()) {
-            return alert.show('danger', INTERNET_CONECTION_ERROR);
-        }
-        const data = getValues();
+
         if (
             !objChanged({
                 originalObj: userData,
@@ -83,6 +78,7 @@ export const ProfileForm = () => {
         ) {
             return alert.show('warning', 'O perfíl não foi alterado.');
         }
+
         execute({ ...data, _id: userData._id });
     };
 
@@ -91,7 +87,7 @@ export const ProfileForm = () => {
             <Alert variant={alertType} show={showAlert}>
                 {alertMessage}
             </Alert>
-            <Form action={handleUpdateProfile}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormHeader text='Actualizar Perfíl' />
                 <Input
                     label='Nome *'
@@ -107,6 +103,7 @@ export const ProfileForm = () => {
                 <SubmitButton
                     spinnerText='Actualizando...'
                     content='Actualizar'
+                    submittingForm={formStatus === 'executing'}
                 />
             </Form>
             <SignupRecoverButton text='Clique aqui para recuperar ou alterar a senha.' />

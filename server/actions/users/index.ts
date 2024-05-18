@@ -43,11 +43,11 @@ export const loginUser = publicAction(loginSchema, async (credentials) => {
     }
 });
 
-export const signupUser = publicAction(signupSchema, async (userData) => {
+export const signupUser = publicAction(signupSchema, async (signupData) => {
     try {
-        await axiosPublic.post('/signup', userData);
+        await axiosPublic.post('/signup', signupData);
         return {
-            userData,
+            signupData,
         };
     } catch (error) {
         if (error instanceof ConflictError) {

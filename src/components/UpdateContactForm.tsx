@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Alerts from '@/lib/alerts';
 import { useRouter } from 'next/navigation';
 import Alert from 'react-bootstrap/Alert';
@@ -18,8 +18,8 @@ import { useAlert } from '@/hooks';
 import { useAction } from 'next-safe-action/hooks';
 import { Contact } from '@/types';
 import { updateContact } from '../../server/actions/contacts';
-import { INTERNET_CONECTION_ERROR } from '@/constants';
-import { isUserOnline } from '@/functions';
+import { z } from 'zod';
+import { updateContactSchema } from '@/lib/schemas';
 
 type UpdateContactFormProps = {
     data: Contact;
@@ -43,38 +43,38 @@ export const UpdateContactForm: React.FC<UpdateContactFormProps> = ({
     const {
         clearErrors,
         formState: { errors },
-        getValues,
+        handleSubmit,
         register,
         reset,
         setError,
-    } = useForm<Contact>();
+    } = useForm<z.infer<typeof updateContactSchema>>();
 
-    const { execute } = useAction(updateContact, {
+    const { execute, status: formStatus } = useAction(updateContact, {
         onSuccess({ dataAlreadyExistsErrors, success }) {
             if (dataAlreadyExistsErrors) {
                 return showErrors(dataAlreadyExistsErrors, setError);
             }
+
             reset();
             router.back();
             Alerts.success(success.message);
+
             return;
         },
         onError({ validationErrors, serverError }) {
             if (validationErrors) {
                 return showValidationErrors(validationErrors, setError);
             }
-            if (serverError || !serverError) {
-                alert.show('danger', String(serverError));
-            }
+
+            alert.show('danger', String(serverError));
         },
     });
 
-    const handleUpdateContact = () => {
+    const onSubmit: SubmitHandler<z.infer<typeof updateContactSchema>> = (
+        data,
+    ) => {
         clearErrors();
-        if (!isUserOnline()) {
-            return alert.show('danger', INTERNET_CONECTION_ERROR);
-        }
-        const data = getValues();
+
         if (
             !objChanged({
                 newObj: data,
@@ -83,6 +83,7 @@ export const UpdateContactForm: React.FC<UpdateContactFormProps> = ({
         ) {
             return alert.show('warning', 'O contacto não foi alterado.');
         }
+
         execute({ ...data, _id: String(contact._id) });
     };
 
@@ -91,7 +92,7 @@ export const UpdateContactForm: React.FC<UpdateContactFormProps> = ({
             <Alert variant={alertType} show={showAlert}>
                 {alertMessage}
             </Alert>
-            <Form action={handleUpdateContact}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormHeader text='Actualizar' />
                 <Input
                     label='Nome *'
@@ -113,6 +114,7 @@ export const UpdateContactForm: React.FC<UpdateContactFormProps> = ({
                 <SubmitButton
                     content='Actualizar contacto'
                     spinnerText='Actualizando...'
+                    submittingForm={formStatus === 'executing'}
                 />
             </Form>
             <BackButton />

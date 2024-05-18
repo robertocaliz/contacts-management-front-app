@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
 import Form, { FormHeader, Input } from '@/components/form';
@@ -14,22 +14,20 @@ import { emailSchema } from '@/lib/schemas';
 import { showValidationErrors } from '@/functions/forms';
 import Alert from 'react-bootstrap/Alert';
 import { useAlert } from '@/hooks';
-import { INTERNET_CONECTION_ERROR } from '@/constants';
-import { isUserOnline } from '@/functions';
 
 export function RecoverSignupForm() {
     const router = useRouter();
     const { alertType, showAlert, alertMessage, alert } = useAlert();
     const {
+        clearErrors,
+        formState: { errors },
+        handleSubmit,
         reset,
         register,
-        formState: { errors },
         setError,
-        getValues,
-        clearErrors,
     } = useForm<z.infer<typeof emailSchema>>();
 
-    const { execute } = useAction(recoverSignup, {
+    const { execute, status: actonStatus } = useAction(recoverSignup, {
         onSuccess({ emailNotFound }) {
             if (emailNotFound) {
                 return setError('email', {
@@ -43,16 +41,14 @@ export function RecoverSignupForm() {
             if (validationErrors) {
                 return showValidationErrors(validationErrors, setError);
             }
+
             alert.show('danger', String(serverError));
         },
     });
 
-    const handleRecoverSignup = async () => {
+    const onSubmit: SubmitHandler<z.infer<typeof emailSchema>> = (email) => {
         clearErrors();
-        if (!isUserOnline()) {
-            return alert.show('danger', INTERNET_CONECTION_ERROR);
-        }
-        execute(getValues());
+        execute(email);
     };
 
     return (
@@ -60,7 +56,7 @@ export function RecoverSignupForm() {
             <Alert variant={alertType} show={showAlert}>
                 {alertMessage}
             </Alert>
-            <Form action={handleRecoverSignup}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormHeader text='Recuperação de senha' />
                 <Input
                     label='Digite seu e-mail'
@@ -71,6 +67,7 @@ export function RecoverSignupForm() {
                 <SubmitButton
                     content='Recuperar'
                     spinnerText='Recuperando...'
+                    submittingForm={actonStatus === 'executing'}
                 />
             </Form>
             <BackButton />

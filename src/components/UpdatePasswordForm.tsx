@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Alert from 'react-bootstrap/Alert';
 import { useParams, useRouter } from 'next/navigation';
 import SubmitButton from './buttons/submit';
@@ -10,10 +10,7 @@ import { useAlert } from '@/hooks';
 import { updatePassword } from '../../server/actions/users';
 import { Passwords } from '@/types';
 import { useAction } from 'next-safe-action/hooks';
-import Alerts from '@/lib/alerts';
 import { showValidationErrors } from '@/functions/forms';
-import { INTERNET_CONECTION_ERROR } from '@/constants';
-import { isUserOnline } from '@/functions';
 
 export function UpdatePasswordForm() {
     const router = useRouter();
@@ -22,14 +19,14 @@ export function UpdatePasswordForm() {
 
     const {
         formState: { errors },
+        handleSubmit,
         reset,
         register,
-        getValues,
         clearErrors,
         setError,
     } = useForm<Passwords>();
 
-    const { execute } = useAction(updatePassword, {
+    const { execute, status: actionStatus } = useAction(updatePassword, {
         onSuccess({ invalidOrExpiredRecoveryToken }) {
             if (invalidOrExpiredRecoveryToken) {
                 alert.show(
@@ -40,6 +37,7 @@ export function UpdatePasswordForm() {
                 );
                 return;
             }
+
             reset();
             router.replace('/signup/recover/success');
         },
@@ -48,17 +46,16 @@ export function UpdatePasswordForm() {
                 showValidationErrors(validationErrors, setError);
                 return;
             }
-            Alerts.error(String(serverError));
+
+            alert.show('danger', String(serverError));
         },
     });
 
-    const handleUpdatePassword = async () => {
+    const onSubmit: SubmitHandler<Passwords> = (passwords) => {
         clearErrors();
-        if (!isUserOnline()) {
-            return alert.show('danger', INTERNET_CONECTION_ERROR);
-        }
+
         execute({
-            ...getValues(),
+            ...passwords,
             recoveryToken: String(params.recoveryToken),
         });
     };
@@ -68,7 +65,7 @@ export function UpdatePasswordForm() {
             <Alert variant={alertType} show={showAlert}>
                 {alertMessage}
             </Alert>
-            <Form action={handleUpdatePassword}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormHeader text='Defina uma nova senha' />
                 <PasswordInput
                     type='password'
@@ -85,6 +82,7 @@ export function UpdatePasswordForm() {
                 <SubmitButton
                     content='Alterar senha'
                     spinnerText='Alterando...'
+                    submittingForm={actionStatus === 'executing'}
                 />
             </Form>
         </Centralize>

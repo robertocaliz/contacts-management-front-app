@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { useState } from 'react';
 import SubmitButton from './buttons/submit';
@@ -12,10 +12,8 @@ import { SignupData, FieldError } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useAction } from 'next-safe-action/hooks';
 import { signupUser } from '../../server/actions/users';
-import { isUserOnline } from '@/functions';
 import Alert from 'react-bootstrap/Alert';
 import { useAlert } from '@/hooks';
-import { INTERNET_CONECTION_ERROR } from '@/constants';
 
 export function SignUpForm() {
     const router = useRouter();
@@ -23,43 +21,43 @@ export function SignUpForm() {
     const { alertType, alertMessage, showAlert, alert } = useAlert();
 
     const {
+        clearErrors,
+        formState: { errors },
+        handleSubmit,
         register,
         reset,
         setError,
-        formState: { errors },
-        getValues,
-        clearErrors,
     } = useForm<SignupData>();
 
-    const { execute } = useAction(signupUser, {
-        onSuccess({ dataAlreadyExistsErrors, userData }) {
+    const { execute, status: actionStatus } = useAction(signupUser, {
+        onSuccess({ dataAlreadyExistsErrors, signupData }) {
+            //
             if (dataAlreadyExistsErrors) {
-                showErrors(dataAlreadyExistsErrors as FieldError[], setError);
-                return;
+                return showErrors(
+                    dataAlreadyExistsErrors as FieldError[],
+                    setError,
+                );
             }
+
             reset();
-            router.replace(`/signup/confirm/${userData.email}`);
+            router.replace(`/signup/confirm/${signupData.email}`);
         },
         onError({ validationErrors, serverError }) {
+            //
             if (validationErrors) {
-                showValidationErrors(
+                return showValidationErrors(
                     validationErrors as Record<string, string[]>,
                     setError,
                 );
-                return;
             }
-            if (serverError || !serverError) {
-                alert.show('danger', String(serverError));
-            }
+
+            alert.show('danger', String(serverError));
         },
     });
 
-    const handleSignupUser = async () => {
+    const onSubmit: SubmitHandler<SignupData> = (data) => {
         clearErrors();
-        if (!isUserOnline()) {
-            return alert.show('danger', INTERNET_CONECTION_ERROR);
-        }
-        execute(getValues());
+        execute(data);
     };
 
     return (
@@ -67,7 +65,7 @@ export function SignUpForm() {
             <Alert variant={alertType} show={showAlert}>
                 {alertMessage}
             </Alert>
-            <Form action={handleSignupUser}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormHeader text='Cadastro' />
                 <main>
                     <Input
@@ -106,6 +104,7 @@ export function SignUpForm() {
                     <SubmitButton
                         content='Criar conta'
                         spinnerText='Criando a conta...'
+                        submittingForm={actionStatus === 'executing'}
                         disabled={disableSubmitButton}
                     />
                 </main>

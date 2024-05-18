@@ -1,7 +1,7 @@
 'use client';
 
 import Alerts from '@/lib/alerts';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Contact } from '@/types';
 import SubmitButton from './buttons/submit';
 import BackButton from './buttons/back';
@@ -15,13 +15,13 @@ export function CreateContactForm() {
     const {
         clearErrors,
         formState: { errors },
-        getValues,
+        handleSubmit,
         reset,
         register,
         setError,
     } = useForm<Contact>();
 
-    const { execute } = useAction(createContact, {
+    const { execute, status: formStatus } = useAction(createContact, {
         onSuccess({ dataAlreadyExistsErrors, success }) {
             if (dataAlreadyExistsErrors) {
                 return showErrors(dataAlreadyExistsErrors, setError);
@@ -38,14 +38,14 @@ export function CreateContactForm() {
         },
     });
 
-    const handleCreateContact = () => {
+    const onSubmit: SubmitHandler<Contact> = (contact) => {
         clearErrors();
-        execute(getValues());
+        execute(contact);
     };
 
     return (
         <Centralize>
-            <Form action={handleCreateContact}>
+            <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormHeader text='Adicionar' />
                 <Input
                     label='Nome *'
@@ -68,6 +68,7 @@ export function CreateContactForm() {
                 <SubmitButton
                     content='Criar contacto'
                     spinnerText='Criando...'
+                    submittingForm={formStatus === 'executing'}
                 />
             </Form>
             <BackButton />
