@@ -1,10 +1,11 @@
 import useSWR from 'swr';
 
+type ActionParams = { path: string };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Action = (url: string) => Promise<any>;
+type Action = ({ path }: ActionParams) => Promise<any>;
 
-export const useFetch = <Data = unknown>(url: string, action: Action) => {
-    return useSWR<Data>(url, async (url: string) => {
-        return await action(url);
+export const useFetch = <Data = unknown>(path: string, action: Action) => {
+    return useSWR<Data>(path, async (path: string) => {
+        return await action({ path });
     });
 };

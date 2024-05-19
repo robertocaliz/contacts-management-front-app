@@ -1,10 +1,15 @@
 'use server';
 
 import { axiosAuth } from '@/lib/axios/auth/server';
-import { Contact, GetAllResponse } from '@/types';
+import { Contact, FetchData } from '@/types';
 import { ConflictError } from '@/lib/errors';
 import { authAction } from '@/lib/safe-action';
-import { contactSchema, idSchema, updateContactSchema } from '@/lib/schemas';
+import {
+    contactSchema,
+    fetchDataSchema,
+    idSchema,
+    updateContactSchema,
+} from '@/lib/schemas';
 
 export const createContact = authAction(contactSchema, async (contact) => {
     try {
@@ -41,10 +46,10 @@ export const getById = authAction(idSchema, async ({ _id: constactId }) => {
     return contact;
 });
 
-export const fetchContacts = async (url: string) => {
-    const { data } = await axiosAuth.get<GetAllResponse>(url);
+export const fetchContacts = authAction(fetchDataSchema, async ({ path }) => {
+    const { data } = await axiosAuth.get<FetchData<Contact>>(path);
     return data;
-};
+});
 
 export const deleteById = authAction(idSchema, async ({ _id: contactId }) => {
     await axiosAuth.delete(`/contacts/${contactId}`);

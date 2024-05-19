@@ -3,16 +3,16 @@
 import Link from 'next/link';
 import { AnchorHTMLAttributes } from 'react';
 
-type AddButtonProps = {
+type ButtonCreateProps = {
     href: string;
     text?: string;
 } & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-export const AddButton = ({
+export const ButtonCreate: React.FC<ButtonCreateProps> = (
     href,
-    text = 'Adicionar',
+    text = 'Criar',
     ...rest
-}: AddButtonProps) => {
+) => {
     return (
         <Link
             href={href}

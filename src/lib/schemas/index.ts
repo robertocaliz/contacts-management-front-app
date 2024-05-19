@@ -92,6 +92,10 @@ export const activationTokenSchema = z.object({
     activationToken: z.string(),
 });
 
+export const fetchDataSchema = z.object({
+    path: z.string(),
+});
+
 export const updateUserSignupSchema = idSchema
     .and(usernameSchema)
     .and(emailSchema);

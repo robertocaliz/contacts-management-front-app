@@ -1,6 +1,5 @@
 import { loginSchema, passwordsSchema, signupSchema } from '@/lib/schemas';
 import { User } from '.';
-import { Contact } from './Contact';
 
 import z from 'zod';
 
@@ -30,9 +29,9 @@ export type SignInError = {
 export interface RefreshAccessTokenResBody
     extends Pick<User, 'accessToken' | 'refreshToken'> {}
 
-export type GetAllResponse = {
+export type FetchData<T> = {
     count: number;
-    contacts: Array<Contact>;
+    items: Array<T>;
 };
 
 export type SelectOption = {

@@ -13,7 +13,7 @@ export * from './ContactTable';
 export * from './ProfileForm';
 export * from './TableContainer';
 export * from './PaginationControls';
-export * from './AddButton';
+export * from './ButtonCreate';
 export * from './ThemeToggle';
 export * from './SearchBar';
 export * from './Footer';

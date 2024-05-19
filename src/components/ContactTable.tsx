@@ -7,7 +7,7 @@ import TableHead from './table/head';
 import TableBody from './table/body';
 import { PaginationControls, TableContainer } from '@/components';
 import { useFetch } from '@/hooks';
-import { Contact, GetAllResponse } from '@/types';
+import { Contact, FetchData } from '@/types';
 import { deleteById, fetchContacts } from '../../server/actions/contacts';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
@@ -17,27 +17,37 @@ import TableData from './table/data';
 import { TableContext } from '@/contexts';
 import { migrateToPrevPage } from '@/functions/tables';
 import Alerts from '@/lib/alerts';
+import { HookResult } from 'next-safe-action/hooks';
+import Alert from 'react-bootstrap/Alert';
 
 export const ContactTable: React.FC = () => {
     const [contacts, setContacts] = useState<Contact[]>([]);
     const { tablePage, searchParams } = useContext(TableContext);
 
-    const { data, error, mutate } = useFetch<GetAllResponse>(
+    const {
+        data: result,
+        mutate,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } = useFetch<HookResult<any, FetchData<Contact>>>(
         `/contacts?${searchParams.getAll()}`,
         fetchContacts,
     );
 
-    if (error) {
-        throw error;
-    }
-
     useEffect(() => {
-        if (data) {
+        if (result?.data) {
             tablePage.setIsLoading(false);
-            tablePage.setTotalRecords(data.count);
-            setContacts(data.contacts);
+            tablePage.setTotalRecords(result.data.count);
+            setContacts(result.data.items);
         }
-    }, [data]);
+    }, [result]);
+
+    if (result?.serverError) {
+        return (
+            <Alert variant='danger' show={true}>
+                {result.serverError}
+            </Alert>
+        );
+    }
 
     const removeContactFromPage = (contactId: string) => {
         setContacts(contacts.filter((contact) => contact._id !== contactId));
@@ -90,7 +100,7 @@ export const ContactTable: React.FC = () => {
                                 </TableData>
                                 <TableData>
                                     <UpdateButton
-                                        url={`/contacts/${contact._id}`}
+                                        path={`/contacts/${contact._id}`}
                                     />
                                 </TableData>
                             </TableRow>
