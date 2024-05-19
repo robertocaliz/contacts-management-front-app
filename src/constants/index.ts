@@ -1,3 +1,5 @@
+import { SelectOption } from '@/types';
+
 export const PUBLIC_ROUTES = ['/', '/login', '/signup'];
 
 export const RegEx = Object.freeze({
@@ -21,3 +23,9 @@ Acesse o seu e-mail para ativar a sua conta
 atravez do email que acabamos de enviar.`;
 
 export const ONE_SECOND = 1000;
+
+export const CONTACT_SEARCH_CRITERIAS: Array<SelectOption> = [
+    { content: 'Nome', value: 'name' },
+    { content: 'E-mail', value: 'email' },
+    { content: 'Telefone', value: 'phoneNumber' },
+];

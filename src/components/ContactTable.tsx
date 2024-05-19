@@ -5,7 +5,12 @@ import Table from './table';
 import TableHeader from './table/header';
 import TableHead from './table/head';
 import TableBody from './table/body';
-import { PaginationControls, TableContainer } from '@/components';
+import {
+    CreateButton,
+    PaginationControls,
+    SearchBar,
+    TableContainer,
+} from '@/components';
 import { useFetch } from '@/hooks';
 import { Contact, FetchData } from '@/types';
 import { deleteById, fetchContacts } from '../../server/actions/contacts';
@@ -19,6 +24,7 @@ import { migrateToPrevPage } from '@/functions/tables';
 import Alerts from '@/lib/alerts';
 import { HookResult } from 'next-safe-action/hooks';
 import Alert from 'react-bootstrap/Alert';
+import { CONTACT_SEARCH_CRITERIAS } from '@/constants';
 
 export const ContactTable: React.FC = () => {
     const [contacts, setContacts] = useState<Contact[]>([]);
@@ -70,7 +76,15 @@ export const ContactTable: React.FC = () => {
     };
 
     return (
-        <main>
+        <div>
+            <div className='flex flex-wrap-reverse items-center gap-4'>
+                <div className='flex-grow-[7]'>
+                    <SearchBar searchCriterias={CONTACT_SEARCH_CRITERIAS} />
+                </div>
+                <div className='flex-grow-[2]'>
+                    <CreateButton path='/contacts/create' />
+                </div>
+            </div>
             <TableContainer>
                 <Table>
                     <TableHead>
@@ -109,6 +123,6 @@ export const ContactTable: React.FC = () => {
                 </Table>
             </TableContainer>
             <PaginationControls />
-        </main>
+        </div>
     );
 };

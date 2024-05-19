@@ -3,19 +3,19 @@
 import Link from 'next/link';
 import { AnchorHTMLAttributes } from 'react';
 
-type ButtonCreateProps = {
-    href: string;
+type CreateButtonProps = {
+    path: string;
     text?: string;
 } & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-export const ButtonCreate: React.FC<ButtonCreateProps> = (
-    href,
+export const CreateButton = ({
+    path,
     text = 'Criar',
     ...rest
-) => {
+}: CreateButtonProps) => {
     return (
         <Link
-            href={href}
+            href={path}
             {...rest}
             className='rounded-lg bg-green-600 px-5 py-[0.6rem] font-bold text-white shadow-lg duration-300 hover:bg-green-700 focus:border-[0.2rem] focus:border-green-100'
         >

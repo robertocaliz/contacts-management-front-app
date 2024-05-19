@@ -6,11 +6,11 @@ import { SelectOption } from '@/types';
 import { TableContext } from '@/contexts';
 import { Input, Select } from './form';
 
-type SearchBarProps = {
-    selectOptions: SelectOption[];
-} & HtmlHTMLAttributes<HTMLDivElement>;
+interface SearchBarProps extends HtmlHTMLAttributes<HTMLDivElement> {
+    searchCriterias: SelectOption[];
+}
 
-export const SearchBar = ({ selectOptions, ...rest }: SearchBarProps) => {
+export const SearchBar = ({ searchCriterias, ...rest }: SearchBarProps) => {
     const { tablePage, searchParams } = useContext(TableContext);
 
     const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ export const SearchBar = ({ selectOptions, ...rest }: SearchBarProps) => {
                 </div>
                 <div className='relative bottom-[0.06rem] flex-grow-[2]'>
                     <Select
-                        options={selectOptions}
+                        options={searchCriterias}
                         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                             searchParams.setCriteria(e.target.value)
                         }
