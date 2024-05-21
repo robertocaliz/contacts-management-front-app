@@ -6,6 +6,7 @@ import TableHeader from './table/header';
 import TableHead from './table/head';
 import TableBody from './table/body';
 import {
+    Contacts,
     CreateButton,
     PaginationControls,
     SearchBar,
@@ -14,11 +15,7 @@ import {
 import { useFetch } from '@/hooks';
 import { Contact, FetchData } from '@/types';
 import { deleteById, fetchContacts } from '../../server/actions/contacts';
-import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react';
-import DeleteButton from './buttons/table/delete';
-import UpdateButton from './buttons/table/update';
-import TableData from './table/data';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { TableContext } from '@/contexts';
 import { migrateToPrevPage } from '@/functions/tables';
 import Alerts from '@/lib/alerts';
@@ -59,21 +56,27 @@ export const ContactTable: React.FC = () => {
         setContacts(contacts.filter((contact) => contact._id !== contactId));
     };
 
-    const handleDeleteContact = async (contactId: string) => {
-        const { serverError } = await deleteById({ _id: contactId });
-        if (serverError) {
-            return Alerts.error(serverError);
-        }
-        removeContactFromPage(contactId);
-        Alerts.success('Contacto apagado.');
+    const handleDelete = useCallback(
+        async (contactId: string) => {
+            const { serverError } = await deleteById({ _id: contactId });
+            if (serverError) {
+                return Alerts.error(serverError);
+            }
+            removeContactFromPage(contactId);
+            Alerts.success('Contacto apagado.');
 
-        const migrate = migrateToPrevPage(contacts.length, searchParams.page);
-        if (migrate) {
-            return searchParams.setPage((page) => --page);
-        }
+            const migrate = migrateToPrevPage(
+                contacts.length,
+                searchParams.page,
+            );
+            if (migrate) {
+                return searchParams.setPage((page) => --page);
+            }
 
-        mutate();
-    };
+            mutate();
+        },
+        [contacts],
+    );
 
     return (
         <div>
@@ -97,28 +100,10 @@ export const ContactTable: React.FC = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {contacts.map((contact) => (
-                            <TableRow key={contact._id}>
-                                <TableData>{contact.name}</TableData>
-                                <TableData>
-                                    <Link href={`mailto:${contact.email}`}>
-                                        {contact.email}
-                                    </Link>
-                                </TableData>
-                                <TableData>{contact.phoneNumber}</TableData>
-                                <TableData>
-                                    <DeleteButton
-                                        handleDelete={handleDeleteContact}
-                                        id={contact._id}
-                                    />
-                                </TableData>
-                                <TableData>
-                                    <UpdateButton
-                                        path={`/contacts/${contact._id}`}
-                                    />
-                                </TableData>
-                            </TableRow>
-                        ))}
+                        <Contacts
+                            contacts={contacts}
+                            handleDelete={handleDelete}
+                        />
                     </TableBody>
                 </Table>
             </TableContainer>

@@ -1,5 +1,7 @@
+'use client';
+
 import Spinner from '@/components/spinner';
-import { useTransition } from 'react';
+import { memo, useTransition } from 'react';
 import { RiDeleteBinLine } from 'react-icons/ri';
 
 type DeleteButtonProps = {
@@ -7,7 +9,7 @@ type DeleteButtonProps = {
     id: string;
 };
 
-const DeleteButton = ({ handleDelete, id }: DeleteButtonProps) => {
+const DeleteButtonFC = ({ handleDelete, id }: DeleteButtonProps) => {
     const [isPending, startTransition] = useTransition();
     return (
         <button
@@ -19,4 +21,4 @@ const DeleteButton = ({ handleDelete, id }: DeleteButtonProps) => {
     );
 };
 
-export default DeleteButton;
+export const DeleteButton = memo(DeleteButtonFC);
