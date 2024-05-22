@@ -7,10 +7,10 @@ type ProfileButtonProps = {
 
 const ProfileButton = ({
     _content = 'Perfíl',
-    ...rest
+    ...props
 }: ProfileButtonProps) => {
     return (
-        <Link href='/profile' {...rest}>
+        <Link href='/profile' {...props}>
             {_content}
         </Link>
     );

@@ -13,7 +13,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             endAdornment,
             errMessage,
             type = 'text',
-            ...rest
+            ...props
         },
         ref,
     ) => {
@@ -33,7 +33,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         <span className='ml-5  text-xl'>{startAdornment}</span>
                     )}
                     <input
-                        {...rest}
+                        {...props}
                         className='mx-2 h-6 w-full border-none bg-gray-50 pl-2 pr-2 outline-none focus:bg-white dark:bg-gray-800 dark:text-white dark:focus:bg-medium '
                         id={label}
                         type={type}

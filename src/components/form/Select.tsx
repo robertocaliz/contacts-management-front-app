@@ -14,7 +14,7 @@ export const Select = ({
     endAdornment,
     label,
     options,
-    ...rest
+    ...props
 }: SelectProps) => {
     return (
         <div>
@@ -24,7 +24,7 @@ export const Select = ({
                     <span className='ml-3'>{startAdornment}</span>
                 )}
                 <select
-                    {...rest}
+                    {...props}
                     className='h-6 w-full bg-gray-50 focus:bg-white focus:outline-none dark:bg-gray-800 dark:text-white dark:focus:bg-medium'
                     id={label}
                 >

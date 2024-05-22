@@ -9,10 +9,10 @@ type HomeButtonPorps = {
 export const HomeButton = ({
     href = '/',
     content$,
-    ...rest
+    ...props
 }: HomeButtonPorps) => {
     return (
-        <Link href={href} {...rest}>
+        <Link href={href} {...props}>
             {content$ ?? 'Home'}
         </Link>
     );

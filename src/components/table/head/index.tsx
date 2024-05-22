@@ -4,8 +4,8 @@ type TableHead = {
     children: ReactNode;
 } & TableHTMLAttributes<HTMLTableSectionElement>;
 
-function TableHead({ children, ...rest }: TableHead) {
-    return <thead {...rest}>{children}</thead>;
+function TableHead({ children, ...props }: TableHead) {
+    return <thead {...props}>{children}</thead>;
 }
 
 export default TableHead;

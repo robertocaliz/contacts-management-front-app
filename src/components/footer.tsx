@@ -2,6 +2,6 @@ import { HTMLAttributes } from 'react';
 
 interface FooterProps extends HTMLAttributes<HTMLElement> {}
 
-export const Footer = ({ ...rest }: FooterProps) => {
-    return <footer {...rest} />;
+export const Footer = ({ ...props }: FooterProps) => {
+    return <footer {...props} />;
 };

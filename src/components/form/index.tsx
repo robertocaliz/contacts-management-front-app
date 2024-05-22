@@ -2,11 +2,9 @@ import { FormHTMLAttributes } from 'react';
 
 type FormProps = FormHTMLAttributes<HTMLFormElement>;
 
-function Form({ ...rest }: FormProps) {
-    return <form {...rest} />;
+export default function Form({ ...props }: FormProps) {
+    return <form {...props} />;
 }
-
-export default Form;
 
 export * from './FormHeader';
 export * from './Input';

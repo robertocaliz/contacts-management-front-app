@@ -10,7 +10,7 @@ interface SearchBarProps extends HtmlHTMLAttributes<HTMLDivElement> {
     searchCriterias: SelectOption[];
 }
 
-export const SearchBar = ({ searchCriterias, ...rest }: SearchBarProps) => {
+export const SearchBar = ({ searchCriterias, ...props }: SearchBarProps) => {
     const { tablePage, searchParams } = useContext(TableContext);
 
     const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +21,7 @@ export const SearchBar = ({ searchCriterias, ...rest }: SearchBarProps) => {
     };
 
     return (
-        <div {...rest}>
+        <div {...props}>
             <div className='flex flex-wrap-reverse items-center gap-4'>
                 <div className='flex-grow-[8]'>
                     <Input

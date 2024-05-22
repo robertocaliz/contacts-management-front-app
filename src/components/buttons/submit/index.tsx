@@ -13,11 +13,11 @@ const SubmitButton = ({
     spinnerText,
     disabled,
     submittingForm,
-    ...rest
+    ...props
 }: SubmitButtonProps) => {
     return (
         <button
-            {...rest}
+            {...props}
             className={clsx(
                 'my-3 w-full rounded-lg bg-green-600 p-[0.7rem] font-bold text-white shadow-lg duration-300 hover:bg-green-700  focus:border-none',
                 {

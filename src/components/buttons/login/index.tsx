@@ -7,10 +7,10 @@ type LoginButtonProps = {
 
 export const LoginButton = ({
     content = 'Login',
-    ...rest
+    ...props
 }: LoginButtonProps) => {
     return (
-        <Link href='/login' {...rest}>
+        <Link href='/login' {...props}>
             {content}
         </Link>
     );

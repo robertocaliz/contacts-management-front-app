@@ -7,10 +7,10 @@ type ContactsButtonProps = {
 
 const ContactsButton = ({
     content = 'Contactos',
-    ...rest
+    ...props
 }: ContactsButtonProps) => {
     return (
-        <Link href='/contacts' {...rest}>
+        <Link href='/contacts' {...props}>
             {content}
         </Link>
     );

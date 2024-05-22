@@ -7,10 +7,10 @@ type SignUpButtonProps = {
 
 const SignUpButton = ({
     content = 'Cadastrar',
-    ...rest
+    ...props
 }: SignUpButtonProps) => {
     return (
-        <Link href='/signup' {...rest}>
+        <Link href='/signup' {...props}>
             {content}
         </Link>
     );

@@ -12,7 +12,7 @@ type PasswordInputProps = {
 } & InputProps;
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-    ({ label, startAdornment, errMessage, ...rest }, ref) => {
+    ({ label, startAdornment, errMessage, ...props }, ref) => {
         const [displayPassword, setDisplayPassword] = useState(false);
         const [typePassword, setTypePassword] = useState(true);
 
@@ -40,7 +40,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
                             </span>
                         )}
                         <input
-                            {...rest}
+                            {...props}
                             id={label}
                             className='mx-2 h-6 w-full bg-gray-50 pl-2 pr-2 text-slate-600 outline-none focus:bg-white dark:bg-gray-800 dark:text-white dark:focus:bg-medium'
                             type={typePassword ? 'password' : 'text'}

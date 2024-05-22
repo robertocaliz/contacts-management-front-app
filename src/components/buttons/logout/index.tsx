@@ -6,7 +6,7 @@ import { MdLogout } from 'react-icons/md';
 
 type LoginButtonProps = AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const LogoutButton = ({ ...rest }: LoginButtonProps) => {
+const LogoutButton = ({ ...props }: LoginButtonProps) => {
     const { replace } = useRouter();
     const handleClick = () => {
         signOut({ redirect: false }).then(() => replace('/login'));
@@ -15,7 +15,7 @@ const LogoutButton = ({ ...rest }: LoginButtonProps) => {
         <Link
             href=''
             onClick={handleClick}
-            {...rest}
+            {...props}
             className='flex items-center gap-1 text-red-500'
         >
             <span>Logout</span>
